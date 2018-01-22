@@ -1,7 +1,7 @@
-package sfn.cms.adapters
+package pme123.adapters
 
 import org.scalatest.{BeforeAndAfter, BeforeAndAfterAll, FlatSpec, Matchers}
-import sfn.cms.adapters.shared.Logger
+import pme123.adapters.shared.Logger
 
 trait UnitTest
   extends FlatSpec

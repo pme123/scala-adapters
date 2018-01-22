@@ -1,4 +1,4 @@
-package sfn.cms.adapters
+package pme123.adapters
 
 // test dummy to check testing is working
 // AT THE MOMENT IT IS NOT WORKING

@@ -11,40 +11,9 @@ import play.api.inject.guice._
  */
 class AcceptanceSpecSuite extends PlaySpec with GuiceOneAppPerSuite {
 
-override def nestedSuites = Vector(new AFConfigSpec
-  , new AnimationFactoryGenericSpec
-  , new AnimationFactorySpecificSpec
-  , new AFTimingSpec
-  , new AssetGenericSpec
-  , new AssetSpecificSpec
-  , new AssetTimingSpec
-  , new UploadAssetSpec
-  , new DirectoryBoundarySpec
-  , new LayoutGenericSpec
-  , new LayoutPlayerSpec
-  , new LayoutRegionPlaylistSpec
-  , new LayoutRegionSpec
-  , new PlayerGenericSpec
-  , new PlayerLayoutSpec
-  , new PlayerShutdownTimingSpec
-  , new PlayerSpecificSpec
-  , new PlaylistGenericSpec
-  , new PlaylistEntrySpec
-  , new PlaylistLayoutRegionSpec
-  , new ProfileGenericSpec
-  , new ProfileAnimationFactorySpec
-  , new ProfileAssetSpec
-  , new ProfilePlayerSpec
-  , new ProfileLayoutSpec
-  , new ProfileValueSpec
-  , new SiteGenericSpec
-  , new TimingGenericSpec
-  , new TimingEntrySpec
-  , new UserGenericSpec
-  , new UserRoleSpec
-  , new RoleGenericSpec
-  , new RoleRightSpec
-  , new DataRepositorySpec)
+override def nestedSuites = Vector(
+  // no tests yet
+)
 
 // Override app if you need an Application with other than non-default parameters.
   override def fakeApplication(): Application =

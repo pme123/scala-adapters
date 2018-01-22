@@ -1,7 +1,6 @@
 package pme123.adapters.server.control.mail
 
 import pme123.adapters.server.entity.{MailMessage, SmtpConfig}
-import pme123.adapters.server.entity.mail.SmtpConfig
 
 import scala.concurrent.duration._
 /**
@@ -22,6 +21,6 @@ trait MailTestsHelper {
     sender,
     content,
     smtpConfig,
-    10 minutes
+    10.minutes
   )
 }

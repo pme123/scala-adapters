@@ -3,7 +3,6 @@ package pme123.adapters.server.entity
 import java.time.format.DateTimeParseException
 import java.time.{LocalDate, LocalTime}
 
-import pme123.adapters.server.entity.content.ExceptionMessages
 
 /**
   * Created by pascal.mengelt on 09.03.2015.
@@ -11,8 +10,10 @@ import pme123.adapters.server.entity.content.ExceptionMessages
   */
 class DateTimeHelperTest
   extends UnitTest
-    with ExceptionMessages
     with DateTimeHelper {
+
+  val exceptionRequirementFailed = "requirement failed: "
+
   // toDayDate
   {
     val dayDateStr = "2005-05-12"
@@ -38,13 +39,7 @@ class DateTimeHelperTest
       }
       exc.getMessage should be("Text '2005-04-31' could not be parsed: Invalid date 'APRIL 31'")
     }
-    it should "throw an IllegalArgumentException if the dateString is null" in {
-      val dayDateStr = null
-      val exc = intercept[IllegalArgumentException] {
-        toDayDate(dayDateStr)
-      }
-      exc.getMessage should be(exceptionRequirementFailed + dayMustNotBeBlank)
-    }
+
     it should "work even if there are tailing spaces and backslashes" in {
       validateDayDate(toDayDate(" " + dayDateStr + "\t\n\r "))
     }
@@ -77,12 +72,6 @@ class DateTimeHelperTest
       }
       exc.getMessage should be("Text '25:00:00' could not be parsed: Invalid value for HourOfDay (valid values 0 - 23): 25")
     }
-    it should "throw an IllegalArgumentException if the dateString is null" in {
-      val exc = intercept[IllegalArgumentException] {
-        toTime(null)
-      }
-      exc.getMessage should be(exceptionRequirementFailed + timeMustNotBeBlank)
-    }
     it should "work even if there are tailing spaces and backslashes" in {
       validateTimeWithSeconds(toTime(" " + timeStr + "\t\n\r "))
     }
@@ -107,12 +96,6 @@ class DateTimeHelperTest
         toTime(timeDateStr)
       }
       exc.getMessage should be("Text '25:00:00' could not be parsed: Invalid value for HourOfDay (valid values 0 - 23): 25")
-    }
-    it should "throw an IllegalArgumentException if the dateString is blank" in {
-      val exc = intercept[IllegalArgumentException] {
-        toTime(" ")
-      }
-      exc.getMessage should be(exceptionRequirementFailed + timeMustNotBeBlank)
     }
     it should "work even if there are tailing spaces and backslashes" in {
       validateTimeWithSeconds(toTime(" " + timeStr + "\t\n\r "))
@@ -221,7 +204,7 @@ class DateTimeHelperTest
   {
     object MockDateHelper extends DateTimeHelper {
       var day = 3
-      override private[date] def now = {
+      override private[entity] def now = {
         day += 1
         LocalDate.of(2017, 5, day)
       }

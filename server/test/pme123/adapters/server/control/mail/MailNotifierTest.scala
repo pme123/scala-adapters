@@ -1,12 +1,10 @@
 package pme123.adapters.server.control.mail
 
 import org.scalamock.scalatest.MockFactory
-import pme123.adapters.server.entity.mail.MailAttachment
-import pme123.adapters.shared.LogLevel._
-import pme123.adapters.shared._
 import pme123.adapters.server.entity.AdaptersContext.settings.smtpConfig
 import pme123.adapters.server.entity.{MailAttachment, MailMessage, UnitTest}
-import pme123.adapters.shared.LogReport
+import pme123.adapters.shared.LogLevel._
+import pme123.adapters.shared.{LogReport, _}
 
 import scala.concurrent.duration._
 
@@ -18,8 +16,7 @@ class MailNotifierTest
   extends UnitTest
     with MockFactory {
 
-  // Notify the admin is ignored because of problem with the Mocking framework (Nullpointer: https://github.com/paulbutcher/ScalaMock/issues/25)
-  ignore should "create a MailMessage and call the MailService" in {
+  "Notify the admin" should "create a MailMessage and call the MailService" in {
     val mailService = mock[MailService]
     val mailMessage = mock[MockedMailMessage]
     (mailService.send _).expects(mailMessage)

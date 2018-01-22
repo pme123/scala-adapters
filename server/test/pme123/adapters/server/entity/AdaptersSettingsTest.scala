@@ -8,34 +8,29 @@ class AdaptersSettingsTest
   extends UnitTest
 with DateTimeHelper{
 
-  override protected def beforeAll() {
-    PropertiesConfiguration.init()
-    sys.props.put("config.resource", "common-dev.conf")
-  }
-
   private val testYear = 2017
   private val testDay = 4
   private val testMonth = 5
   private val testNow = LocalDate.of(testYear, testMonth, testDay)
 
   object TestAdaptersSettings extends AdaptersSettings(ConfigFactory.load()) {
-    override private[utils] def now = testNow
+    override private[entity] def now = testNow
   }
 
   object TestAdaptersSettingsThursday extends AdaptersSettings(ConfigFactory.load()) {
-    override private[utils] def now = testNow
+    override private[entity] def now = testNow
 
     override def dayOfWeek: Option[DayOfWeek] = Some(DayOfWeek.THURSDAY)
   }
 
   object TestAdaptersSettingsFriday extends AdaptersSettings(ConfigFactory.load()) {
-    override private[utils] def now = testNow
+    override private[entity] def now = testNow
 
     override def dayOfWeek: Option[DayOfWeek] = Some(DayOfWeek.FRIDAY)
   }
 
   object TestAdaptersSettingsMonday extends AdaptersSettings(ConfigFactory.load()) {
-    override private[utils] def now = testNow
+    override private[entity] def now = testNow
 
     override def dayOfWeek: Option[DayOfWeek] = Some(DayOfWeek.MONDAY)
   }
