@@ -16,7 +16,8 @@ class MailNotifierTest
   extends UnitTest
     with MockFactory {
 
-  "Notify the admin" should "create a MailMessage and call the MailService" in {
+  // Notify the admin is ignored because of problem with the Mocking framework (Nullpointer: https://github.com/paulbutcher/ScalaMock/issues/25)
+  ignore should "create a MailMessage and call the MailService" in {
     val mailService = mock[MailService]
     val mailMessage = mock[MockedMailMessage]
     (mailService.send _).expects(mailMessage)
