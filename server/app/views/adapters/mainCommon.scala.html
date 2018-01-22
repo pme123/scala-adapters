@@ -1,0 +1,35 @@
+@(assets: AssetsFinder
+        , webJarsUtil: org.webjars.play.WebJarsUtil
+)(
+        title: String
+        , icon: String = assets.path("assets/images/favicon.png")
+        , styles: Html = Html("")
+        , clientScripts: Html = Html("")
+)(content: Html)(
+        implicit r: Request[_], rh: RequestHeader)
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>@title</title>
+        <link rel="shortcut icon" type="image/png" href="@icon">
+        @Html(webJarsUtil.css("semantic.min.css"))
+        @styles
+            <!-- for scalajs routing -->
+        @helper.javascriptRouter("jsRoutes")(routes.javascript.Assets.versioned)
+
+
+    </head>
+    <body>
+        @content
+        @clientScripts
+        <script type="text/javascript">
+                (function () {
+                    var oldVersioned = jsRoutes.controllers.Assets.versioned;
+                    jsRoutes.controllers.Assets.versioned = function (path) {
+                        return oldVersioned.apply(jsRoutes.controllers.Assets, [versioned[path] || path]);
+                    };
+                })();
+        </script>
+    </body>
+</html>

@@ -1,0 +1,18 @@
+@this(webJarsUtil: org.webjars.play.WebJarsUtil)
+@(assets: AssetsFinder)(implicit r: Request[_], rh: RequestHeader)
+
+@views.html.adapters.mainCommon(assets = assets
+    , webJarsUtil = webJarsUtil
+)(title = "Common Test Adapter"
+    , icon = assets.withUrlPrefix("../../../../../../target/scala-2.12/routes/main/common").path("assets/images/favicon.png")
+    , styles = Html("<link rel=\"stylesheet\" type=\"text/css\" href=\"" +assets.withUrlPrefix("../../../../../../target/scala-2.12/routes/main/common").path("assets/stylesheets/main.css") + "\">")
+    , clientScripts = Html("<script src=\"" +assets.withUrlPrefix("../../../../../../target/scala-2.12/routes/main/common").path("assets/javascripts/versioned.js")+ "\" ></script>")
+) {
+
+    @scalajs.html.scripts("cms-adapters-common-client",
+        routes.Assets.at(_).toString,
+        name => getClass.getResource(s"/public/$name") != null)
+
+    <script>client.TestProjectClient.main("Common Test Adapter");</script>
+
+}

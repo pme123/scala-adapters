@@ -1,0 +1,8 @@
+.idea
+target
+logs
+project/project
+tmp
+dist
+.cache
+

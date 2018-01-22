@@ -1,0 +1,31 @@
+<data>
+    <movievar>
+        <sf_dataset_Number_batchintervall>
+            10000
+        </sf_dataset_Number_batchintervall>
+        <sf_dataset_Number_itemsperbatch>
+            1
+        </sf_dataset_Number_itemsperbatch>
+        <sf_dataset_animationFactory_PromoAF>
+            afPromo.swf
+        </sf_dataset_animationFactory_PromoAF>
+        <sf_dataset_animationFactory_GlobalAF>
+            afGlobal.swf
+        </sf_dataset_animationFactory_GlobalAF>
+    </movievar>
+    <dataset>
+        <sf_dataset_shortText_Language>
+            FR
+        </sf_dataset_shortText_Language>
+        <sf_dataset_shortText_Price>
+            24.85
+        </sf_dataset_shortText_Price>
+        <sf_dataset_longText_Description>
+            Omo Liquide super- concentré Active, 1400ml
+        </sf_dataset_longText_Description><sf_dataset_shortText_DiscountType>
+        Bon
+    </sf_dataset_shortText_DiscountType><sf_dataset_shortText_DiscountAmount>
+        11.95
+    </sf_dataset_shortText_DiscountAmount>
+    </dataset>
+</data>

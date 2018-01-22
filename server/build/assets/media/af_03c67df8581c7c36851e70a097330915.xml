@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<data>
+  <movievar>
+    <sf_dataset_Number_batchinterval>10000</sf_dataset_Number_batchinterval>
+    <sf_dataset_Number_itemsperbatch>1</sf_dataset_Number_itemsperbatch>
+    <sf_dataset_shortText_slogan>Hallo Welt</sf_dataset_shortText_slogan>
+    <sf_dataset_image_logo/>
+    <sf_dataset_video_advertiseVideo/>
+    <sf_dataset_boolean_hasBackground>true</sf_dataset_boolean_hasBackground>
+    <sf_dataset_color_bgColor>000000</sf_dataset_color_bgColor>
+    <sf_dataset_timing_timing/>
+    <sf_dataset_dropdown_logoPosition>0</sf_dataset_dropdown_logoPosition>
+    <sf_dataset_date_displayDate/>
+    <sf_dataset_time_displayTime/>
+    <sf_dataset_animationFactory_promoAF/>
+  </movievar>
+  <dataset>
+    <sf_dataset_shortText_manufacturer>Hallo Welt</sf_dataset_shortText_manufacturer>
+    <sf_dataset_shortText_articleTitle/>
+    <sf_dataset_longText_articleDescr>Hallo Welt2</sf_dataset_longText_articleDescr>
+    <sf_dataset_color_textColor>c1bbaf</sf_dataset_color_textColor>
+    <sf_dataset_image_articleImg/>
+    <sf_dataset_boolean_snowEffect>false</sf_dataset_boolean_snowEffect>
+    <sf_dataset_Number_nrSnowflakes>1</sf_dataset_Number_nrSnowflakes>
+    <sf_dataset_dropdown_imageScale>100</sf_dataset_dropdown_imageScale>
+    <sf_dataset_date_showDate/>
+    <sf_dataset_time_showTime/>
+  </dataset>
+</data>
