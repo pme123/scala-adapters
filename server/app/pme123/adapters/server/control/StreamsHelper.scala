@@ -25,7 +25,7 @@ trait StreamsHelper
   val nrOfWorker = 10
   val maximumFrameLength = 10000
 
-  implicit val actorSystem: ActorSystem = ActorSystem("sfn-cms-adapters-actors")
+  implicit val actorSystem: ActorSystem = ActorSystem("pme123-adapters-actors")
   implicit val materializer: ActorMaterializer = ActorMaterializer()
   implicit val executionService: ExecutionContextExecutor = actorSystem.dispatcher
 

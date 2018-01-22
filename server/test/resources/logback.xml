@@ -8,8 +8,7 @@
   </appender>
 
   <logger name="play" level="INFO" />
-  <logger name="sfn" level="INFO" />
-  <logger name="com.screenfood" level="INFO" />
+  <logger name="pme123" level="INFO" />
   <logger name="application" level="INFO" />
   <logger name="access-filter"  level="INFO" />
 

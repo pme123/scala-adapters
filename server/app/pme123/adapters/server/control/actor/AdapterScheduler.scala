@@ -13,7 +13,7 @@ import scala.concurrent.ExecutionContext
 import scala.concurrent.duration._
 
 /**
-  * Part of the adapter framework - see https://screenfood.atlassian.net/wiki/pages/viewpage.action?pageId=78872588
+  * Part of the adapter framework.
   * - Scheduler that can be configured:
   * pme123.adapters.server.scheduler.execution {
   * // the first time of day the Import should run (this is the Server time!). (format is HH:mm)

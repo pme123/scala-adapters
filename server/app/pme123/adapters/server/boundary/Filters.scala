@@ -41,7 +41,7 @@ class LoggingFilter @Inject()(registry: MetricRegistry)(implicit ec: ExecutionCo
 
   private lazy val runJmxReporter = JmxReporter
     .forRegistry(registry)
-    .inDomain(s"sfn-cms-adapters-$project")
+    .inDomain(s"pme123-adapters-$project")
     .convertRatesTo(TimeUnit.MINUTES)
     .build.start()
 
