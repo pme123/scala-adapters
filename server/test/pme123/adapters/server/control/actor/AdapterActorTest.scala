@@ -1,7 +1,5 @@
 package pme123.adapters.server.control.actor
 
-import javax.inject.Inject
-
 import akka.actor.{ActorSystem, Props}
 import akka.stream.{ActorMaterializer, Materializer}
 import akka.testkit.{ImplicitSender, TestKit}
@@ -41,7 +39,7 @@ class AdapterActorTest(_system: ActorSystem) extends TestKit(_system)
 
 }
 
-case class TestAdapterActor @Inject()()(implicit val mat: Materializer, val ec: ExecutionContext)
+case class TestAdapterActor()(implicit val mat: Materializer, val ec: ExecutionContext)
   extends AdapterActor {
 
   override protected def runAdapter(user: String): Future[Unit] = Future{
