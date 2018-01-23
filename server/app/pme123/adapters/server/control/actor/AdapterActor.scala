@@ -45,9 +45,9 @@ trait AdapterActor
   def receive = LoggingReceive {
     // subscribe a user with its id and its websocket-Actor
     // this is called when the websocket for a user is created
-    case SubscribeAdapter(userId, wsActor) =>
-      info(s"Subscribed User: $userId: $wsActor")
-      val aRef = userActors.getOrElseUpdate(userId, wsActor)
+    case SubscribeAdapter(clientIdent, wsActor) =>
+      info(s"Subscribed User: $clientIdent: $wsActor")
+      val aRef = userActors.getOrElseUpdate(clientIdent, wsActor)
       val status =
         if (isRunning)
           AdapterRunning(logService.get.logReport)
@@ -58,9 +58,9 @@ trait AdapterActor
       adapterInfo.foreach(aRef ! _)
     // Unsubscribe a user(remove from the map)
     // this is called when the connection from a user websocket is closed
-    case UnSubscribeAdapter(userId) =>
-      info(s"Unsubscribe User: $userId")
-      userActors -= userId
+    case UnSubscribeAdapter(clientIdent) =>
+      info(s"Unsubscribe User: $clientIdent")
+      userActors -= clientIdent
     // called if a user runs the Adapter Process (Button)
     case si:SchedulerInfo =>
       adapterInfo = adapterInfo.map(_.copy(schedulerInfo = Some(si)))
@@ -151,10 +151,10 @@ trait AdapterActor
 }
 
 object AdapterActor {
+  type ClientIdent = String
+  case class SubscribeAdapter(clientIdent: ClientIdent, wsActor: ActorRef)
 
-  case class SubscribeAdapter(userId: String, wsActor: ActorRef)
-
-  case class UnSubscribeAdapter(userId: String)
+  case class UnSubscribeAdapter(clientIdent: ClientIdent)
 
   case class RunAdapterFromScheduler(schedulerInfo: () => Unit)
 

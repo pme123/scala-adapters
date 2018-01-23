@@ -1,4 +1,4 @@
-package pme123.adapters
+package pme123.adapters.client
 
 // test dummy to check testing is working
 // AT THE MOMENT IT IS NOT WORKING

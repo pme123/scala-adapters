@@ -13,8 +13,7 @@ import scala.util.Random
   * This actor runs the Adapter Process.
   * During this process it will inform all clients with LogEntries.
   */
-class TestAdapterActor @Inject()()
-(implicit val mat: Materializer, val ec: ExecutionContext)
+class TestAdapterActor @Inject()()(implicit val mat: Materializer, val ec: ExecutionContext)
   extends AdapterActor {
 
   val createAdapterInfo: Unit =

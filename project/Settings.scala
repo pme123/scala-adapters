@@ -88,16 +88,16 @@ object Settings {
     )
   )
   lazy val clientDependencies: Seq[Def.Setting[_]] = Def.settings(libraryDependencies ++= Seq(
-    "org.scala-js" %%% "scalajs-dom" % "0.9.3",
-    "org.scala-lang.modules" %% "scala-xml" % "1.0.6",
-    "com.typesafe.play" %%% "play-json" % "2.6.1",
-    "com.thoughtworks.binding" %%% "dom" % bindingV,
-    "com.thoughtworks.binding" %%% "futurebinding" % bindingV,
-    "fr.hmil" %%% "roshttp" % "2.0.2",
+    "org.scala-js" %%% "scalajs-dom" % "0.9.3"
+    , "org.scala-lang.modules" %% "scala-xml" % "1.0.6"
+    , "com.typesafe.play" %%% "play-json" % "2.6.1"
+    , "com.thoughtworks.binding" %%% "dom" % bindingV
+    , "com.thoughtworks.binding" %%% "futurebinding" % bindingV
+    , "fr.hmil" %%% "roshttp" % "2.0.2"
     // java.time support for ScalaJS
-    "org.scala-js" %%% "scalajs-java-time" % "0.2.2",
+    , "org.scala-js" %%% "scalajs-java-time" % "0.2.2"
     // jquery support for ScalaJS
-    "be.doeraene" %%% "scalajs-jquery" % "0.9.1"
+    , "be.doeraene" %%% "scalajs-jquery" % "0.9.1"
     , "org.scalatest" %%% "scalatest" % scalaTestV % Test
   ))
 

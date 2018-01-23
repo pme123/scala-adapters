@@ -1,6 +1,7 @@
 package pme123.adapters.server.control
 
 import org.scalatestplus.play.ConfiguredApp
+import org.scalatestplus.play.guice.GuiceOneServerPerSuite
 
 import scala.reflect.ClassTag
 
@@ -10,9 +11,9 @@ import scala.reflect.ClassTag
 trait GuiceAcceptanceSpec
   extends AcceptanceSpec
     // if you want to test only one Test you need:
-    // with GuiceOneServerPerSuite {
+    with GuiceOneServerPerSuite {
     // if you want to test all:
-    with ConfiguredApp {
+  //  with ConfiguredApp {
 
   def inject[A](implicit tag: ClassTag[A]): A =
     app.injector.instanceOf(tag)
