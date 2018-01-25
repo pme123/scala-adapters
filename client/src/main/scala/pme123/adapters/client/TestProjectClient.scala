@@ -8,6 +8,6 @@ object TestProjectClient {
 
   @JSExportTopLevel("client.TestProjectClient.main")
   def main(title: String): Unit = {
-    AdapterClient("common", title).create()
+    AdapterClient("adapters", title).create()
   }
 }

@@ -5,9 +5,8 @@ import java.time.temporal.ChronoUnit
 
 import akka.actor.{ActorRef, ActorSystem, Cancellable}
 import pme123.adapters.server.control.actor.AdapterActor.RunAdapterFromScheduler
-import pme123.adapters.shared.{Logger, SchedulerInfo}
-import pme123.adapters.server.entity.AdaptersContext.settings.{schedulerExecutionFirstTime, schedulerExecutionFirstWeekday, schedulerExecutionPeriodInMin}
 import pme123.adapters.server.entity.DateTimeHelper
+import pme123.adapters.shared.{JobConfig, Logger, SchedulerInfo}
 
 import scala.concurrent.ExecutionContext
 import scala.concurrent.duration._
@@ -35,6 +34,8 @@ trait AdapterScheduler
   implicit def actorSystem: ActorSystem
   implicit def ec: ExecutionContext
 
+  def jobConfig: JobConfig
+
   def adapterActor: ActorRef
 
   // possible to have different offsetTimes than configured, e.g. if you have more than one adapter.
@@ -45,15 +46,17 @@ trait AdapterScheduler
   def executionPeriodInSec: Long = Int.MaxValue
 
   // default of the calculated execution period
-  def executionPeriodDuration: Option[Long] = Some(executionPeriodInMin)
+  def executionPeriodDuration: Option[Long] = Some(intervalInMin)
 
   // possibility to cancel the scheduler job
   def cancel(): Boolean = importScheduler.cancel()
 
-  private val minExecutionPeriodInMin = 1
-  private lazy val executionPeriodInMin = Math.max(minExecutionPeriodInMin, schedulerExecutionPeriodInMin).asInstanceOf[Long]
+  private val minIntervalInMin = 1
+  private[actor] lazy val intervalInMin =
+    Math.max(minIntervalInMin, jobConfig.jobSchedule.map(_.intervalInMin).getOrElse(minIntervalInMin)).asInstanceOf[Long]
 
-  private[actor] lazy val executionPeriod = Math.min(executionPeriodInSec, executionPeriodInMin * 60).seconds
+  private[actor] lazy val intervalDuration: FiniteDuration =
+    Math.min(executionPeriodInSec, intervalInMin * 60).seconds
 
   private[actor] lazy val firstExecution = initNextExecution()
 
@@ -63,28 +66,30 @@ trait AdapterScheduler
   //noinspection ConvertibleToMethodValue
   // (initNextExecution _) _ is needed - see https://stackoverflow.com/questions/45657747/deprecation-warning-when-compiling-eta-expansion-of-zero-argument-method
   protected lazy val importScheduler: Cancellable = actorSystem.scheduler.schedule(
-    executionStart, executionPeriod,
+    executionStart, intervalDuration,
     adapterActor, RunAdapterFromScheduler(initNextExecution _))
 
   def initNextExecution(): Instant = {
 
     def init(execDateTime: Instant): Instant = {
       if (execDateTime isBefore Instant.now) {
-        init(execDateTime.plusSeconds(executionPeriod.toSeconds))
+        init(execDateTime.plusSeconds(intervalDuration.toSeconds))
       } else {
         execDateTime
       }
     }
 
+    jobConfig.jobSchedule.map { schedule =>
+      val firstExec = init(schedule.firstTime.plus(offsetInMin, ChronoUnit.MINUTES))
 
-    val firstExec = init(schedulerExecutionFirstTime.plus(offsetInMin, ChronoUnit.MINUTES))
-
-    adapterActor ! SchedulerInfo(
+      adapterActor ! SchedulerInfo(
+        firstExec
+        , schedule.firstWeekDay.getOrElse("-")
+        , schedule.intervalInMin
+      )
       firstExec
-      , schedulerExecutionFirstWeekday
-      , schedulerExecutionPeriodInMin
-    )
-    firstExec
+    }.getOrElse(Instant.now())
+
   }
 
 }
@@ -93,7 +98,7 @@ trait AdapterScheduler
 /**
   * If you don't need a Scheduler, you can use this class that does nothing.
   */
-case class NoAdapterScheduler(adapterActor: ActorRef)
+case class NoAdapterScheduler(adapterActor: ActorRef, jobConfig: JobConfig)
                              (implicit val actorSystem: ActorSystem, val ec: ExecutionContext)
   extends AdapterScheduler {
 

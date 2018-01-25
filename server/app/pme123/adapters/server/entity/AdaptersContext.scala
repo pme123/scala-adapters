@@ -32,15 +32,11 @@ object AdaptersSettings extends Logger {
   val adminMailRecipientProp = "admin.mail.recipient"
   val adminMailSubjectProp = "admin.mail.subject"
   val adminMailLoglevelProp = "admin.mail.loglevel"
-  val schedulerExecutionFirstTimeProp = "scheduler.execution.first.time"
-  val schedulerExecutionFirstWeekdayProp = "scheduler.execution.first.weekday"
-  val schedulerExecutionPeriodInMinProp = "scheduler.execution.period.minutes"
-  val importLogEnabledProp = "import.log.enabled"
-  val importLogPathProp = "import.log.path"
-  val logServiceProp = "log.service"
-  val profilesReplaceMissingProp = "profiles.replace.missing"
-  val profilesAllowEmptyValuesProp = "profiles.allow.empty.values"
+  val processLogEnabledProp = "process.log.enabled"
+  val processLogPathProp = "process.log.path"
   val wsocketHostsAllowedProp = "wsocket.hosts.allowed"
+
+  val jobConfigsProp = "job.configs"
 
   def config(): Config = {
     ConfigFactory.invalidateCaches()
@@ -68,6 +64,7 @@ class AdaptersSettings(config: Config) extends Logger {
   val project: String = projectConfig.getString(projectProp)
   val runMode: String = projectConfig.getString(runModeProp)
   val timezone: String = projectConfig.getString(timezoneProp)
+  val timezoneID: ZoneId = ZoneId.of(timezone)
 
   // mail server
   val mailSmtpTls: Boolean = projectConfig.getBoolean(mailSmtpTlsProp)
@@ -89,50 +86,21 @@ class AdaptersSettings(config: Config) extends Logger {
   val adminMailRecipient: String = projectConfig.getString(adminMailRecipientProp)
   val adminMailSubject: String = projectConfig.getString(adminMailSubjectProp)
   val adminMailLoglevel: LogLevel = LogLevel.fromLevel(projectConfig.getString(adminMailLoglevelProp)).get
-  val schedulerExecutionFirstWeekday: String = projectConfig.getString(schedulerExecutionFirstWeekdayProp)
-  val profilesReplaceMissing: Boolean = projectConfig.getBoolean(profilesReplaceMissingProp)
-  val profilesAllowEmptyValues: Boolean = projectConfig.getBoolean(profilesAllowEmptyValuesProp)
   val wsocketHostsAllowed: Seq[String] = projectConfig.getStringList(wsocketHostsAllowedProp).asScala
-  // for testing
-  private[entity] def dayOfWeek: Option[DayOfWeek] = schedulerExecutionFirstWeekday match {
-    case "monday" => Some(DayOfWeek.MONDAY)
-    case "tuesday" => Some(DayOfWeek.TUESDAY)
-    case "wednesday" => Some(DayOfWeek.WEDNESDAY)
-    case "thursday" => Some(DayOfWeek.THURSDAY)
-    case "friday" => Some(DayOfWeek.FRIDAY)
-    case "saturday" => Some(DayOfWeek.SATURDAY)
-    case "sunday" => Some(DayOfWeek.SUNDAY)
-    case _ => None
-  }
 
-  // for testing
-  private[entity] def now = LocalDate.now
+  val processLogEnabled: Boolean = projectConfig.getBoolean(processLogEnabledProp)
+  val processLogPath: String = projectConfig.getString(processLogPathProp)
 
-  private val firstTime = {
-    val offset = dayOfWeek
-      .map { dow =>
-        val weekDay = dow.getValue
-        val currentDay = now.getDayOfWeek.getValue
-        if (weekDay >= currentDay)
-          weekDay - currentDay
-        else
-          7 - currentDay + weekDay
-      }.getOrElse(0)
-    val ldt = LocalDateTime
-      .of(now, DateTimeHelper.toTime(projectConfig.getString(schedulerExecutionFirstTimeProp)))
-      .plusDays(offset)
-    val zo = ZoneId.of(timezone).getRules.getOffset(ldt)
-    ldt.toInstant(zo)
-  }
+  val isProdMode: Boolean = runMode == "PROD"
+  val isDevMode: Boolean = runMode == "DEV"
 
-  val schedulerExecutionFirstTime: Instant = firstTime
-  val schedulerExecutionPeriodInMin: Int = projectConfig.getInt(schedulerExecutionPeriodInMinProp)
-  val importLogEnabled: Boolean = projectConfig.getBoolean(importLogEnabledProp)
-  val importLogPath: String = projectConfig.getString(importLogPathProp)
-  val logService: String = projectConfig.getString(logServiceProp)
+  val  jobConfigs : JobConfigs =  JobConfigs(
+    projectConfig.getConfigList(jobConfigsProp).asScala.toList
+      .map{ c =>
+      JobConfigCreator(c, ZoneId.of(timezone)).create()
+    }.toMap
+  )
 
-  lazy val isProdMode: Boolean = runMode == "PROD"
-  lazy val isDevMode: Boolean = runMode == "DEV"
 }
 
 import pme123.adapters.server.entity.AdaptersSettings._
@@ -163,13 +131,9 @@ class AdaptersContext(config: Config)
       , AdaptersContextProp(adminMailRecipientProp, settings.adminMailRecipient)
       , AdaptersContextProp(adminMailSubjectProp, settings.adminMailSubject)
       , AdaptersContextProp(adminMailLoglevelProp, settings.adminMailLoglevel)
-      , AdaptersContextProp(schedulerExecutionFirstTimeProp, settings.schedulerExecutionFirstTime)
-      , AdaptersContextProp(schedulerExecutionFirstWeekdayProp, settings.schedulerExecutionFirstWeekday)
-      , AdaptersContextProp(schedulerExecutionPeriodInMinProp, settings.schedulerExecutionPeriodInMin)
-      , AdaptersContextProp(importLogEnabledProp, settings.importLogEnabled)
-      , AdaptersContextProp(importLogPathProp, settings.importLogPath)
-      , AdaptersContextProp(profilesReplaceMissingProp, settings.profilesReplaceMissing)
-      , AdaptersContextProp(profilesAllowEmptyValuesProp, settings.profilesAllowEmptyValues)
+      , AdaptersContextProp(jobConfigsProp, settings.jobConfigs.toString)
+      , AdaptersContextProp(processLogEnabledProp, settings.processLogEnabled)
+      , AdaptersContextProp(processLogPathProp, settings.processLogPath)
       , AdaptersContextProp(wsocketHostsAllowedProp, settings.wsocketHostsAllowed)
     )
 }

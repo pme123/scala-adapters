@@ -37,9 +37,9 @@ case class LogService(name: String, initiator: String, sender: Option[ActorRef] 
 
   def writeToFile(): Future[Unit] = {
     val fileName = s"$name-$startDateTime".replaceAll("\\W+", "")
-    val path = Paths.get(importLogPath, s"$fileName.log")
-    Logger.info(s"Write log file to $importLogPath")
-    Files.createDirectories(Paths.get(importLogPath))
+    val path = Paths.get(processLogPath, s"$fileName.log")
+    Logger.info(s"Write log file to $processLogPath")
+    Files.createDirectories(Paths.get(processLogPath))
     Source(logs())
       .map(line => ByteString(line + "\n"))
       .runWith(FileIO.toPath(path))

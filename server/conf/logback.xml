@@ -1,33 +1,76 @@
+<!-- https://www.playframework.com/documentation/latest/SettingsLogger -->
 <configuration>
 
-    <conversionRule conversionWord="coloredLevel" converterClass="play.api.libs.logback.ColoredLevel"/>
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${application.home:-.}/logs/application.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- rollover daily -->
+            <fileNamePattern>${application.home:-.}/logs/application-%d{yyyy-MM-dd}.%i.gz</fileNamePattern>
+            <!-- each file should be at most 100MB, keep 60 days worth of history, but at most 10GB -->
+            <maxFileSize>100MB</maxFileSize>
+            <maxHistory>60</maxHistory>
+            <totalSizeCap>10GB</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%date{ISO8601}[%level] %msg %n</pattern>
+        </encoder>
+    </appender>
 
-    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
-        <file>logs/application.log</file>
+    <appender name="ACCESS_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${application.home:-.}/logs/access.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- rollover daily -->
+            <fileNamePattern>${application.home:-.}/logs/access-%d{yyyy-MM-dd}.%i.gz</fileNamePattern>
+            <!-- each file should be at most 100MB, keep 60 days worth of history, but at most 10GB -->
+            <maxFileSize>100MB</maxFileSize>
+            <maxHistory>60</maxHistory>
+            <totalSizeCap>1GB</totalSizeCap>
+        </rollingPolicy>
         <encoder>
             <pattern>%date [%level] from %logger in %thread - %message%n%xException</pattern>
         </encoder>
     </appender>
 
-    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <appender name="ERROR_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${application.home:-.}/logs/error.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- rollover daily -->
+            <fileNamePattern>${application.home:-.}/logs/error-%d{yyyy-MM-dd}.%i.gz</fileNamePattern>
+            <!-- each file should be at most 100MB, keep 60 days worth of history, but at most 10GB -->
+            <maxFileSize>100MB</maxFileSize>
+            <maxHistory>60</maxHistory>
+            <totalSizeCap>2GB</totalSizeCap>
+        </rollingPolicy>
         <encoder>
-            <pattern>%coloredLevel %logger{15} - [%marker] %message%n%xException{10}</pattern>
+            <pattern>%date [%level] from %logger in %thread - %message%n%xException</pattern>
         </encoder>
     </appender>
 
-    <logger name="play" level="INFO"/>
+    <appender name="ASYNCFILE" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="FILE" />
+    </appender>
 
-    <!-- actors logging -->
-    <logger name="akka" level="DEBUG"/>
 
-    <logger name="actors" level="DEBUG"/>
+    <logger name="play" level="INFO" />
+    <logger name="akka" level="INFO" />
+    <logger name="pme123" level="INFO" />
+    <!-- additivity=false ensures access log data only goes to the access log -->
+    <logger name="access-filter" level="INFO" additivity="false">
+        <appender-ref ref="ACCESS_FILE" />
+    </logger>
 
-    <!-- controllers -->
-    <logger name="controllers" level="DEBUG"/>
+    <logger name="error-filter" level="INFO" additivity="false">
+        <appender-ref ref="ERROR_FILE" />
+    </logger>
 
-    <root level="INFO">
-        <appender-ref ref="STDOUT"/>
-        <appender-ref ref="FILE"/>
+    <!-- Off these ones as they are annoying, and anyway we manage configuration ourselves -->
+    <logger name="com.avaje.ebean.config.PropertyMapLoader" level="OFF" />
+    <logger name="com.avaje.ebeaninternal.server.core.XmlConfigLoader" level="OFF" />
+    <logger name="com.avaje.ebeaninternal.server.lib.BackgroundThread" level="OFF" />
+    <logger name="com.gargoylesoftware.htmlunit.javascript" level="OFF" />
+
+    <root level="WARN">
+        <appender-ref ref="ASYNCFILE" />
     </root>
 
 </configuration>

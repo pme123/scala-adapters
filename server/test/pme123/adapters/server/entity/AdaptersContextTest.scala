@@ -6,7 +6,7 @@ class AdaptersContextTest
     extends UnitTest {
 
   val protocol = "http"
-  val mailLoglevel = "info"
+  val mailLogLevel = "info"
 
   "The ServerConfig" should "have values for defined properties" in {
     assert(adminMailRecipient.trim.nonEmpty)

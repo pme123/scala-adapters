@@ -143,7 +143,7 @@ trait AdapterActor
 
   private def writeLogReportToFile(ls: LogService) = {
     // write the whole report to a file (incl. DEBUG messages)
-    if (importLogEnabled)
+    if (processLogEnabled)
       ls.writeToFile()
     else
       info("Writing LogReport to File is disabled.")

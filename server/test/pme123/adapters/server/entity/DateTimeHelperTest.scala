@@ -3,11 +3,6 @@ package pme123.adapters.server.entity
 import java.time.format.DateTimeParseException
 import java.time.{LocalDate, LocalTime}
 
-
-/**
-  * Created by pascal.mengelt on 09.03.2015.
-  *
-  */
 class DateTimeHelperTest
   extends UnitTest
     with DateTimeHelper {

@@ -6,7 +6,8 @@ import akka.actor.{ActorRef, ActorSystem}
 import akka.stream.{ActorMaterializer, Materializer}
 import akka.testkit.{ImplicitSender, TestActorRef, TestKit}
 import org.scalatest._
-import pme123.adapters.shared.Logger
+import pme123.adapters.server.entity.TestResources
+import pme123.adapters.shared.{JobConfig, Logger}
 
 import scala.concurrent.ExecutionContext
 import scala.concurrent.duration._
@@ -37,9 +38,9 @@ class AdapterSchedulerTest(_system: ActorSystem)
   "A ImportScheduler" must {
     "init correctly" in {
       val executionPeriod = 1.day.toMinutes
-      scheduler.executionPeriod.length should be(executionPeriod * 60)
+      scheduler.intervalDuration.length should be(executionPeriod * 60)
       assert(scheduler.firstExecution isAfter Instant.now)
-      assert((scheduler.firstExecution.toEpochMilli - Instant.now.toEpochMilli) <= scheduler.executionPeriod.toMillis)
+      assert((scheduler.firstExecution.toEpochMilli - Instant.now.toEpochMilli) <= scheduler.intervalDuration.toMillis)
       debug(s"The first import is ${scheduler.firstExecution}")
     }
   }
@@ -57,9 +58,12 @@ class AdapterSchedulerTest(_system: ActorSystem)
 
 case class TestAdapterScheduler(offsetInMin: Int = 0)
                                (implicit val mat: Materializer, val actorSystem: ActorSystem, val ec: ExecutionContext)
-  extends AdapterScheduler {
+  extends AdapterScheduler
+    with TestResources {
   val actorRef = TestActorRef(TestAdapterActor())
   val adapterActor: ActorRef = actorRef
 
+
+  override def jobConfig: JobConfig = jobConfigDefault
 }
 

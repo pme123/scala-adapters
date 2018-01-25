@@ -1,4 +1,8 @@
 language: scala
+script:
+  - sbt ++$TRAVIS_SCALA_VERSION clean sharedJVM/test sharedJS/test server/test 'set scalaJSStage in Global := FullOptStage'
 scala:
    - 2.12.4
+jdk:
+  - oraclejdk8
 
