@@ -5,7 +5,9 @@ import javax.inject._
 import akka.actor._
 import controllers.AssetsFinder
 import play.api.Configuration
+import play.api.libs.json.Json
 import play.api.mvc._
+import pme123.adapters.server.entity.AdaptersContext.settings.jobConfigs
 
 import scala.concurrent.ExecutionContext
 
@@ -36,11 +38,11 @@ class TestController @Inject()(@Named("adapterActor") adapterActor: ActorRef
     * Creates a websocket.  `acceptOrResult` is preferable here because it returns a
     * Future[Flow], which is required internally.
     *
-    * @param adapter is to differentiate different adapters.
+    * @param adapterJob is to differentiate different adapters.
     *                Here we only have one - so it is not needed.
     * @return a fully realized websocket.
     */
-  def ws(adapter: String): WebSocket =
+  def ws(adapterJob: String): WebSocket =
     websocketController.ws(adapterActor)
 
 

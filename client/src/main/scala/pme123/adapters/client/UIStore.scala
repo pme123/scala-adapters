@@ -65,6 +65,16 @@ trait UIStore extends Logger {
     uiState.showAdapterInfo.value = false
   }
 
+  protected def changeJobConfigs(jobConfigs: JobConfigs): Unit = {
+    info(s"UIStore: changeJobConfigs ${jobConfigs.configs.keys.mkString(", ")}")
+    uiState.jobConfigs.value = jobConfigs
+  }
+
+  protected def changeSelectedJobConfig(jobConfig: Option[JobConfig]): Unit = {
+    info(s"UIStore: changeSelectedJobConfig ${jobConfig.map(_.ident)}")
+    uiState.selectedJobConfig.value = jobConfig
+  }
+
   implicit def makeIntellijHappy(x: scala.xml.Elem): Binding[HTMLElement] = ???
 
 }
@@ -77,4 +87,6 @@ case class UIState(logData: Vars[LogEntry] = Vars[LogEntry]()
                    , logEntryDetail: Var[Option[LogEntry]] = Var[Option[LogEntry]](None)
                    , adapterInfo: Var[Option[AdapterInfo]] = Var[Option[AdapterInfo]](None)
                    , showAdapterInfo: Var[Boolean] = Var(false)
+                   , jobConfigs: Var[JobConfigs] = Var(JobConfigs(Map()))
+                   , selectedJobConfig: Var[Option[JobConfig]] = Var(None)
                   )

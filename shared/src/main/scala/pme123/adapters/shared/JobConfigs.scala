@@ -5,10 +5,18 @@ import java.time.Instant
 import julienrf.json.derived
 import play.api.libs.json.OFormat
 
-case class JobConfigs(configs: Map[String, JobConfig])
+case class JobConfigs(configs: Map[String, JobConfig]) {
+
+  def fromIdent(ident: String): Option[JobConfig] =
+    configs
+      .values
+      .find(_.ident == ident)
+
+}
 
 object JobConfigs {
   implicit val jsonFormat: OFormat[JobConfigs] = derived.oformat[JobConfigs]()
+
 
 }
 

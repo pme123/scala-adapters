@@ -5,7 +5,6 @@ import scala.scalajs.js.annotation.JSExportTopLevel
 
 object TestProjectClient {
 
-
   @JSExportTopLevel("client.TestProjectClient.main")
   def main(title: String): Unit = {
     AdapterClient("adapters", title).create()
