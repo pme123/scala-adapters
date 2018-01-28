@@ -7,6 +7,7 @@ import controllers.AssetsFinder
 import play.api.Configuration
 import play.api.libs.json.Json
 import play.api.mvc._
+import pme123.adapters.server.control.actor.TestJobFactory
 import pme123.adapters.server.entity.AdaptersContext.settings.jobConfigs
 
 import scala.concurrent.ExecutionContext
@@ -16,7 +17,7 @@ import scala.concurrent.ExecutionContext
   * Original see here: https://github.com/playframework/play-scala-websocket-example
   */
 @Singleton
-class TestController @Inject()(@Named("adapterActor") adapterActor: ActorRef
+class TestController @Inject()(jobFactory: TestJobFactory
                                , val cc: ControllerComponents
                                , template: views.html.adapters.index
                                , assetsFinder: AssetsFinder
@@ -42,8 +43,10 @@ class TestController @Inject()(@Named("adapterActor") adapterActor: ActorRef
     *                Here we only have one - so it is not needed.
     * @return a fully realized websocket.
     */
-  def ws(adapterJob: String): WebSocket =
-    websocketController.ws(adapterActor)
+  def ws(adapterJob: String): WebSocket = {
+    val actor = jobFactory.jobActorFor(adapterJob)
+    websocketController.ws(actor)
+  }
 
 
 }
