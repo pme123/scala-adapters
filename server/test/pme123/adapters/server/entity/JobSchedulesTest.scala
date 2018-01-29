@@ -2,7 +2,7 @@ package pme123.adapters.server.entity
 
 import java.time.{DayOfWeek, LocalDateTime}
 
-import pme123.adapters.server.control.actor.TestJobFactory._
+import pme123.adapters.server.control.demo.DemoJobFactory._
 import pme123.adapters.server.entity.AdaptersContext.settings.timezoneID
 
 class JobSchedulesTest
@@ -12,16 +12,16 @@ class JobSchedulesTest
 
   private val expectedStartHour = 3 // "03:00"
   private val schedules = JobSchedules()
-  private val jobSchedule = schedules.jobSchedule(testJobIdent)
+  private val jobSchedule = schedules.jobSchedule(demoJobIdent)
 
   "A JobSchedules" should "be init correctly" in {
     schedules.schedules.values.size should be(2)
   }
   it should "return the correct JobSchedule for a JobIdent" in {
-    schedules.jobSchedule(testJobIdent).jobIdent should be(testJobIdent)
+    schedules.jobSchedule(demoJobIdent).jobIdent should be(demoJobIdent)
   }
   it should "throw a BadArgumentException for a JobConfig that has no Schedule" in {
-    intercept[BadArgumentException](schedules.jobSchedule(testJobWithoutSchedulerIdent).jobIdent should be(testJobIdent))
+    intercept[BadArgumentException](schedules.jobSchedule(demoJobWithoutSchedulerIdent).jobIdent should be(demoJobIdent))
   }
   /*
     it should "" in {
