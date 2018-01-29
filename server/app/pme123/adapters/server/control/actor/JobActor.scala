@@ -29,7 +29,7 @@ trait JobActor
 
   protected var logService: Option[LogService] = None
 
-  private var adapterInfo: Option[AdapterInfo] = None
+  private var adapterInfo: Option[ProjectInfo] = None
 
   protected def adapterVersion: String = pme123.adapters.version.BuildInfo.toString
 
@@ -102,7 +102,7 @@ trait JobActor
 
   protected def createInfo(adapterVersion: String
                            , adapterProps: Seq[AdaptersContextProp]) {
-    adapterInfo = Some(AdapterInfo(adapterVersion
+    adapterInfo = Some(ProjectInfo(adapterVersion
       , BuildInfo.version
       , email
       , adapterProps

@@ -3,9 +3,9 @@ package pme123.adapters.client
 import com.thoughtworks.binding.Binding.Constants
 import com.thoughtworks.binding.{Binding, dom}
 import org.scalajs.dom.raw.HTMLElement
-import pme123.adapters.shared.{AdapterInfo, AdaptersContextProp, SchedulerInfo}
+import pme123.adapters.shared.{ProjectInfo, AdaptersContextProp, SchedulerInfo}
 
-private[client] case class AdapterInfoDialog(adapterInfo: AdapterInfo, uiState: UIState)
+private[client] case class ProjectInfoDialog(projectInfo: ProjectInfo, uiState: UIState)
   extends UIStore
     with ClientUtils {
 
@@ -17,8 +17,8 @@ private[client] case class AdapterInfoDialog(adapterInfo: AdapterInfo, uiState: 
       {detailHeader.bind}{//
       infoList.bind}{//
       versionList.bind}{//
-      propTable("Adapter Properties", adapterInfo.adapterProps).bind}{//
-      propTable("Common Properties", adapterInfo.commonProps).bind}
+      propTable("Project Properties", projectInfo.adapterProps).bind}{//
+      propTable("Common Properties", projectInfo.commonProps).bind}
     </div>
 
   // 2. level of abstraction
@@ -26,17 +26,17 @@ private[client] case class AdapterInfoDialog(adapterInfo: AdapterInfo, uiState: 
 
   @dom
   private def detailHeader = <div class="header">
-    Adapter Infos
+    Project Infos
   </div>
 
   private def infoList = {
     propTable("Main Info", Seq(
-      AdaptersContextProp("Notification email", adapterInfo.adminMailRecipient)
-      , AdaptersContextProp("Last execution", adapterInfo.lastExecution
+      AdaptersContextProp("Notification email", projectInfo.adminMailRecipient)
+      , AdaptersContextProp("Last execution", projectInfo.lastExecution
         .map(jsLocalDateTime)
         .getOrElse("Never")
       )) ++
-      adapterInfo.schedulerInfo.map(si =>
+      projectInfo.schedulerInfo.map(si =>
         Seq(AdaptersContextProp("Next execution time", jsLocalDateTime(si.nextExecution))
           , AdaptersContextProp("First day of week", si.firstWeekday)
           , AdaptersContextProp("Execution Period in minutes", si.periodInMin.toString)
@@ -47,8 +47,8 @@ private[client] case class AdapterInfoDialog(adapterInfo: AdapterInfo, uiState: 
 
   private def versionList = {
     propTable("Versions", Seq(
-      AdaptersContextProp("Adapter", adapterInfo.adapterVersion)
-      , AdaptersContextProp("Common Adapter", adapterInfo.commonVersion)
+      AdaptersContextProp("Adapter", projectInfo.adapterVersion)
+      , AdaptersContextProp("Common Adapter", projectInfo.commonVersion)
     ))
   }
 

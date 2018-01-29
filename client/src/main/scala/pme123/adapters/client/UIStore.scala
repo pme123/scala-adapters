@@ -49,7 +49,7 @@ trait UIStore extends Logger {
     hideAdapterInfo()
   }
 
-  protected def changeAdapterInfo(adapterInfo: AdapterInfo) {
+  protected def changeAdapterInfo(adapterInfo: ProjectInfo) {
     info(s"UIStore: change AdapterInfo")
     uiState.adapterInfo.value = Some(adapterInfo)
   }
@@ -85,7 +85,7 @@ case class UIState(logData: Vars[LogEntry] = Vars[LogEntry]()
                    , filterLevel: Var[LogLevel] = Var[LogLevel](LogLevel.INFO)
                    , lastLogLevel: Var[Option[LogLevel]] = Var[Option[LogLevel]](None)
                    , logEntryDetail: Var[Option[LogEntry]] = Var[Option[LogEntry]](None)
-                   , adapterInfo: Var[Option[AdapterInfo]] = Var[Option[AdapterInfo]](None)
+                   , adapterInfo: Var[Option[ProjectInfo]] = Var[Option[ProjectInfo]](None)
                    , showAdapterInfo: Var[Boolean] = Var(false)
                    , jobConfigs: Var[JobConfigs] = Var(JobConfigs(Map()))
                    , selectedJobConfig: Var[Option[JobConfig]] = Var(None)

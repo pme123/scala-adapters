@@ -12,7 +12,7 @@ import scala.language.implicitConversions
 import scala.scalajs.js
 import scala.scalajs.js.timers.setTimeout
 
-case class AdapterClient(project: String, adapter: String)
+case class JobCockpitClient(project: String, adapter: String)
   extends UIStore
     with ClientUtils {
 
@@ -30,7 +30,7 @@ case class AdapterClient(project: String, adapter: String)
   @dom
   private def render: Binding[HTMLElement] = {
     <div>
-      {AdapterClientHeader(project, uiState).showHeader().bind}{//
+      {JobCockpitHeader(project, uiState).showHeader().bind}{//
       ServerServices(uiState).jobConfigs(project).bind}{//
       adapterContainer.bind}{//
       renderDetail.bind}{//
@@ -93,7 +93,7 @@ case class AdapterClient(project: String, adapter: String)
     val adapterInfo = uiState.adapterInfo.bind
     if (show)
       <div>
-        {Constants(adapterInfo.toSeq: _*).map(ai => AdapterInfoDialog(ai, uiState).showDetail().bind)}
+        {Constants(adapterInfo.toSeq: _*).map(ai => ProjectInfoDialog(ai, uiState).showDetail().bind)}
       </div>
     else
       <div></div>

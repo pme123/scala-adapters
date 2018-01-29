@@ -9,7 +9,7 @@ import pme123.adapters.shared.{JobConfig, JobConfigs, LogLevel}
 import scala.scalajs.js.Dynamic.{global => g}
 import scala.scalajs.js.timers.setTimeout
 
-private[client] case class AdapterClientHeader(project: String, uiState: UIState)
+private[client] case class JobCockpitHeader(project: String, uiState: UIState)
   extends UIStore
     with ClientUtils {
 
@@ -42,7 +42,7 @@ private[client] case class AdapterClientHeader(project: String, uiState: UIState
   @dom
   private def title = {
     <div class="ui header item">
-      {s"Adapter: "}
+      {s"Job Cockpit "}
     </div>
   }
 
@@ -97,11 +97,11 @@ private[client] case class AdapterClientHeader(project: String, uiState: UIState
         .map(_.bind)
 
     <div class="ui item">
-      <div class="item"
+      <span
            data:data-tooltip={"Log level last Adapter Process: " + logLevel.getOrElse("Not run!")}
            data:data-position="bottom center">
         {logConstants(levelClass).bind}
-      </div>
+      </span>
     </div>
   }
 

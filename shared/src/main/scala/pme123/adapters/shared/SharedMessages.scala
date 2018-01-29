@@ -41,7 +41,7 @@ case class RunFinished(logReport: LogReport) extends AdapterMsg
 // as with akka-http the web-socket connection will be closed when idle for too long.
 case object KeepAliveMsg extends AdapterMsg
 
-case class AdapterInfo(adapterVersion: String
+case class ProjectInfo(adapterVersion: String
                        , commonVersion: String
                        , adminMailRecipient: String
                        , adapterProps: Seq[AdaptersContextProp]

@@ -45,7 +45,7 @@ case class ClientWebsocket(uiState: UIState, project: String)
             case JsSuccess(RunFinished(logReport), _) =>
               changeIsRunning(false)
               changeLastLogLevel(logReport)
-            case JsSuccess(adapterInfo: AdapterInfo, _) =>
+            case JsSuccess(adapterInfo: ProjectInfo, _) =>
               changeAdapterInfo(adapterInfo)
             case JsSuccess(other, _) =>
               info(s"Other message: $other")
