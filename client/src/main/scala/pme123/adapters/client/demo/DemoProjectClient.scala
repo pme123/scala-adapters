@@ -1,11 +1,13 @@
-package pme123.adapters.client
+package pme123.adapters.client.demo
+
+import pme123.adapters.client.AdapterClient
 
 import scala.language.implicitConversions
 import scala.scalajs.js.annotation.JSExportTopLevel
 
-object TestProjectClient {
+object DemoProjectClient {
 
-  @JSExportTopLevel("client.TestProjectClient.main")
+  @JSExportTopLevel("client.DemoProjectClient.main")
   def main(title: String): Unit = {
     AdapterClient("adapters", title).create()
   }

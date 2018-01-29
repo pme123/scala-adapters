@@ -17,11 +17,11 @@ import scala.concurrent.{ExecutionContext, Future}
   * This actor runs the Adapter Process.
   * During this process it will inform all clients with LogEntries.
   */
-trait AdapterActor
+trait JobActor
   extends Actor
     with Logger {
 
-  import AdapterActor._
+  import JobActor._
 
   implicit def mat: Materializer
 
@@ -150,7 +150,7 @@ trait AdapterActor
   }
 }
 
-object AdapterActor {
+object JobActor {
   type ClientIdent = String
   case class SubscribeAdapter(clientIdent: ClientIdent, wsActor: ActorRef)
 

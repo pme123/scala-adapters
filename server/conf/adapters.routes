@@ -3,10 +3,11 @@
 # ~~~~
 
 # These are common routes that you may want all services to respond to.
-GET        /                             pme123.adapters.server.boundary.TestController.index
-GET        /ws/:adapter                  pme123.adapters.server.boundary.TestController.ws(adapter)
-
-GET        /jobConfigs                   pme123.adapters.server.boundary.AdaptersBoundary.jobConfigs()
+GET        /                             pme123.adapters.server.boundary.demo.DemoController.index
+# Websocket for live updates on Jobs
+GET        /ws/:jobIdent                 pme123.adapters.server.boundary.JobCockpitController.ws(jobIdent)
+# API to get all the Jobs that are provided
+GET        /jobConfigs                   pme123.adapters.server.boundary.JobCockpitController.jobConfigs()
 
 # Map static resources from the /public folder to the /assets URL path
 GET        /assets/*file                 controllers.Assets.at(file)

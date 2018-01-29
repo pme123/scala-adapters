@@ -1,9 +1,9 @@
 package pme123.adapters.server.entity
 
-import java.time.{DayOfWeek, LocalDate, LocalDateTime, ZoneId}
+import java.time.ZoneId
 
 import com.typesafe.config.Config
-import pme123.adapters.shared.{JobConfig, JobSchedule}
+import pme123.adapters.shared.{JobConfig, ScheduleConfig}
 
 case class JobConfigCreator(config: Config, timezone: ZoneId) {
 
@@ -14,7 +14,7 @@ case class JobConfigCreator(config: Config, timezone: ZoneId) {
     ident -> JobConfig(
       ident
       , if (config.hasPath(scheduleProp))
-        Some(JobScheduleCreator(config.getConfig(scheduleProp), timezone).create())
+        Some(ScheduleConfigCreator(config.getConfig(scheduleProp), timezone).create())
       else
         None
     )
@@ -28,9 +28,12 @@ object JobConfigCreator {
 
 }
 
-case class JobScheduleCreator(config: Config, timezone: ZoneId) {
+case class ScheduleConfigCreator(config: Config, timezone: ZoneId) {
 
-  import JobScheduleCreator._
+  import ScheduleConfigCreator._
+
+  private val firstTimeString =
+    if (config.hasPath(firstTimeProp)) config.getString(firstTimeProp) else defaultFirstTime
 
   private val intervalInMin =
     if (config.hasPath(intervalInMinProp)) config.getInt(intervalInMinProp) else defaultIntervalInMin
@@ -39,53 +42,16 @@ case class JobScheduleCreator(config: Config, timezone: ZoneId) {
     if (config.hasPath(firstWeekdayProp)) Some(config.getString(firstWeekdayProp)) else defaultFirstWeekday
 
 
-  def create(): JobSchedule = {
-    JobSchedule(
-      firstTime
+  def create(): ScheduleConfig = {
+    ScheduleConfig(
+      firstTimeString
       , intervalInMin
       ,firstWeekday
     )
   }
-
-  // for testing
-  private[entity] def dayOfWeek: Option[DayOfWeek] = {
-    firstWeekday flatMap {
-      case "monday" => Some(DayOfWeek.MONDAY)
-      case "tuesday" => Some(DayOfWeek.TUESDAY)
-      case "wednesday" => Some(DayOfWeek.WEDNESDAY)
-      case "thursday" => Some(DayOfWeek.THURSDAY)
-      case "friday" => Some(DayOfWeek.FRIDAY)
-      case "saturday" => Some(DayOfWeek.SATURDAY)
-      case "sunday" => Some(DayOfWeek.SUNDAY)
-      case _ => None
-    }
-  }
-
-  // for testing
-  private[entity] def now = LocalDate.now
-
-  private[entity] def firstTime = {
-     val firstTimeStr =
-    if (config.hasPath(firstTimeProp)) config.getString(firstTimeProp) else defaultFirstTime
-
-    val offset = dayOfWeek
-      .map { dow =>
-        val weekDay = dow.getValue
-        val currentDay = now.getDayOfWeek.getValue
-        if (weekDay >= currentDay)
-          weekDay - currentDay
-        else
-          7 - currentDay + weekDay
-      }.getOrElse(0)
-    val ldt = LocalDateTime
-      .of(now, DateTimeHelper.toTime(firstTimeStr))
-      .plusDays(offset)
-    val zo = timezone.getRules.getOffset(ldt)
-    ldt.toInstant(zo)
-  }
 }
 
-object JobScheduleCreator {
+object ScheduleConfigCreator {
   val firstTimeProp = "first.time"
   val firstWeekdayProp = "first.weekday"
   val intervalInMinProp = "interval.minutes"

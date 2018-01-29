@@ -4,6 +4,7 @@ import java.time.Instant
 
 import julienrf.json.derived
 import play.api.libs.json.OFormat
+import pme123.adapters.shared.JobConfig.JobIdent
 
 case class AdaptersContextProp(key: String, value: String)
 
@@ -12,7 +13,8 @@ object AdaptersContextProp {
 
 }
 
-case class SchedulerInfo(nextExecution: Instant
+case class SchedulerInfo(jobIdent: JobIdent
+                         , nextExecution: Instant
                          , firstWeekday: String
                          , periodInMin: Long)
 

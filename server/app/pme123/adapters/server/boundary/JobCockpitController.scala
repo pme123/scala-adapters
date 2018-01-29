@@ -10,8 +10,10 @@ import akka.util.Timeout
 import play.api.Configuration
 import play.api.libs.json._
 import play.api.mvc._
-import pme123.adapters.server.control.actor.UserParentActor
+import pme123.adapters.server.control.actor.{JobActorFactory, UserParentActor}
 import pme123.adapters.server.control.http.SameOriginCheck
+import pme123.adapters.server.entity.AdaptersContext.settings
+import pme123.adapters.shared.JobConfig.JobIdent
 
 import scala.concurrent.duration._
 import scala.concurrent.{ExecutionContext, Future}
@@ -21,18 +23,17 @@ import scala.concurrent.{ExecutionContext, Future}
   * Original see here: https://github.com/playframework/play-scala-websocket-example
   */
 @Singleton
-class WebsocketController @Inject()(@Named("userParentActor") userParentActor: ActorRef
-                                    , cc: ControllerComponents
-                                    , val config: Configuration)
-                                   (implicit ec: ExecutionContext)
-  extends AbstractController(cc) with SameOriginCheck {
+class JobCockpitController @Inject()(jobFactory: JobActorFactory
+                                     , @Named("userParentActor") userParentActor: ActorRef
+                                     , cc: ControllerComponents
+                                     , val config: Configuration)
+                                    (implicit ec: ExecutionContext)
+  extends AbstractController(cc)
+    with SameOriginCheck {
 
-  val logger = play.api.Logger(getClass)
-
-  // Home page that renders template
-  def index = Action { implicit request: Request[AnyContent] =>
-    // uses the AssetsFinder APIs
-    Ok("WebsocketController Test Page")
+  def jobConfigs(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
+    info(s"called jobConfigs: ${settings.jobConfigs}")
+    Ok(Json.toJson(settings.jobConfigs)).as(JSON)
   }
 
   /**
@@ -41,20 +42,21 @@ class WebsocketController @Inject()(@Named("userParentActor") userParentActor: A
     *
     * @return a fully realized websocket.
     */
-  def ws(adapter: ActorRef): WebSocket = WebSocket.acceptOrResult[JsValue, JsValue] {
+  def ws(jobIdent: JobIdent): WebSocket = WebSocket.acceptOrResult[JsValue, JsValue] {
     case rh if sameOriginCheck(rh) =>
-      wsFutureFlow(rh, adapter).map { flow =>
+      val actor = jobFactory.jobActorFor(jobIdent)
+      wsFutureFlow(rh, actor).map { flow =>
         Right(flow)
       }.recover {
         case e: Exception =>
-          logger.error("Cannot create websocket", e)
+          error(e, "Cannot create websocket")
           val jsError = Json.obj("error" -> "Cannot create websocket")
           val result = InternalServerError(jsError)
           Left(result)
       }
 
     case rejected =>
-      logger.error(s"Request $rejected failed same origin check")
+      error(s"Request $rejected failed same origin check")
       Future.successful {
         Left(Forbidden("forbidden"))
       }

@@ -1,12 +1,12 @@
 package pme123.adapters.server.control.http
 
+import play.api.Configuration
 import play.api.mvc.RequestHeader
-import play.api.{Configuration, Logger}
 import pme123.adapters.server.entity.AdaptersContext
+import pme123.adapters.shared.Logger
 
-trait SameOriginCheck {
-
-  def logger: Logger
+trait SameOriginCheck
+  extends Logger{
 
   def config: Configuration
 
@@ -20,15 +20,15 @@ trait SameOriginCheck {
   def sameOriginCheck(rh: RequestHeader): Boolean = {
     rh.headers.get("Origin") match {
       case Some(originValue) if originMatches(originValue) =>
-        logger.debug(s"originCheck: originValue = $originValue")
+        debug(s"originCheck: originValue = $originValue")
         true
 
       case Some(badOrigin) =>
-        logger.error(s"originCheck: rejecting request because Origin header value $badOrigin is not in the same origin")
+        error(s"originCheck: rejecting request because Origin header value $badOrigin is not in the same origin")
         false
 
       case None =>
-        logger.error("originCheck: rejecting request because no Origin header found")
+        error("originCheck: rejecting request because no Origin header found")
         false
     }
   }

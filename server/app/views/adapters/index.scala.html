@@ -3,7 +3,7 @@
 
 @views.html.adapters.mainCommon(assets = assets
     , webJarsUtil = webJarsUtil
-)(title = "Test Adapter"
+)(title = "Demo Adapter"
     , icon = assets.withUrlPrefix("/adapters").path("assets/images/favicon.png")
     , styles = Html("<link rel=\"stylesheet\" type=\"text/css\" href=\"" +assets.withUrlPrefix("/adapters").path("assets/stylesheets/main.css") + "\">")
     , clientScripts = Html("<script src=\"" +assets.withUrlPrefix("/adapters").path("assets/javascripts/versioned.js")+ "\" ></script>")
@@ -13,6 +13,6 @@
         routes.Assets.at(_).toString,
         name => getClass.getResource(s"/public/$name") != null)
 
-    <script>client.TestProjectClient.main("Test Adapter");</script>
+    <script>client.DemoProjectClient.main("Demo Adapter");</script>
 
 }

@@ -10,7 +10,7 @@ import akka.util.Timeout
 import akka.{Done, NotUsed}
 import com.google.inject.assistedinject.Assisted
 import play.api.libs.json._
-import pme123.adapters.server.control.actor.AdapterActor.{SubscribeAdapter, UnSubscribeAdapter}
+import pme123.adapters.server.control.actor.JobActor.{SubscribeAdapter, UnSubscribeAdapter}
 import pme123.adapters.server.control.actor.UserActor.CreateAdapter
 import pme123.adapters.shared.{AdapterMsg, KeepAliveMsg, RunAdapter}
 

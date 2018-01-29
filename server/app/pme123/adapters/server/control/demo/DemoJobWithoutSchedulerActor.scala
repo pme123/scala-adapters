@@ -1,9 +1,10 @@
-package pme123.adapters.server.control.actor
+package pme123.adapters.server.control.demo
 
 import javax.inject.Inject
 
 import akka.stream.Materializer
 import pme123.adapters.server.control.LogService
+import pme123.adapters.server.control.actor.JobActor
 import pme123.adapters.shared.LogLevel._
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -13,9 +14,9 @@ import scala.util.Random
   * This actor runs the Job (Adapter Process).
   * During this process it will inform all clients with LogEntries.
   */
-class TestJobWithoutSchedulerActor @Inject()()(implicit val mat: Materializer, val ec: ExecutionContext)
-  extends AdapterActor {
-  val jobLabel = "Test Job without Scheduler"
+class DemoJobWithoutSchedulerActor @Inject()()(implicit val mat: Materializer, val ec: ExecutionContext)
+  extends JobActor {
+  val jobLabel = "Demo Job without Scheduler"
 
   val createAdapterInfo: Unit =
     createInfo(pme123.adapters.version.BuildInfo.version, Nil)

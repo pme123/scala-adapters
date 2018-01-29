@@ -3,7 +3,7 @@ package pme123.adapters.client
 import com.thoughtworks.binding.Binding.Constants
 import com.thoughtworks.binding.{Binding, dom}
 import org.scalajs.dom.raw.HTMLElement
-import pme123.adapters.shared.{AdapterInfo, AdaptersContextProp}
+import pme123.adapters.shared.{AdapterInfo, AdaptersContextProp, SchedulerInfo}
 
 private[client] case class AdapterInfoDialog(adapterInfo: AdapterInfo, uiState: UIState)
   extends UIStore

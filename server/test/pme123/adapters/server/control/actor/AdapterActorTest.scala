@@ -42,7 +42,7 @@ class AdapterActorTest(_system: ActorSystem) extends TestKit(_system)
 }
 
 case class TestAdapterActor @Inject()()(implicit val mat: Materializer, val ec: ExecutionContext)
-  extends AdapterActor {
+  extends JobActor {
 
   override protected def runAdapter(user: String): Future[Unit] = Future{
     assert("user" == user)
