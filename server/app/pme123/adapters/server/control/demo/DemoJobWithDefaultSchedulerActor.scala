@@ -3,8 +3,7 @@ package pme123.adapters.server.control.demo
 import javax.inject.Inject
 
 import akka.stream.Materializer
-import pme123.adapters.server.control.LogService
-import pme123.adapters.server.control.actor.JobActor
+import pme123.adapters.server.control.{JobActor, LogService}
 import pme123.adapters.shared.LogLevel._
 
 import scala.concurrent.{ExecutionContext, Future}

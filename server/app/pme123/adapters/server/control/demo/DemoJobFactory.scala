@@ -3,7 +3,7 @@ package pme123.adapters.server.control.demo
 import javax.inject.{Inject, Named, Singleton}
 
 import akka.actor.ActorRef
-import pme123.adapters.server.control.actor.JobActorFactory
+import pme123.adapters.server.control.JobActorFactory
 import pme123.adapters.server.entity.ServiceException
 import pme123.adapters.shared.JobConfig.JobIdent
 

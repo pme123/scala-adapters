@@ -11,14 +11,14 @@ import controllers.AssetsFinder
 import play.api.Configuration
 import play.api.libs.json._
 import play.api.mvc._
-import pme123.adapters.server.control.actor.{JobActorFactory, UserParentActor}
 import pme123.adapters.server.control.http.SameOriginCheck
+import pme123.adapters.server.control.{JobActorFactory, UserParentActor}
 import pme123.adapters.server.entity.AdaptersContext.settings
+import pme123.adapters.server.entity.AdaptersContext.settings.httpContext
 import pme123.adapters.shared.JobConfig.JobIdent
 
 import scala.concurrent.duration._
 import scala.concurrent.{ExecutionContext, Future}
-import pme123.adapters.server.entity.AdaptersContext.settings.httpContext
 
 /**
   * This class creates the actions and the websocket needed.
