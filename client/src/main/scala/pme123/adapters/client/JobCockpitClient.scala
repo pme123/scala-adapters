@@ -9,7 +9,6 @@ import pme123.adapters.shared.LogEntry
 import slogging.{ConsoleLoggerFactory, LoggerConfig}
 
 import scala.language.implicitConversions
-import scala.scalajs.js
 import scala.scalajs.js.annotation.JSExportTopLevel
 import scala.scalajs.js.timers.setTimeout
 
@@ -24,8 +23,6 @@ case class JobCockpitClient(context: String)
 
   def create(): Unit = {
     dom.render(document.body, render)
-    import SemanticUI.jq2semantic
-    jQuery(".ui.dropdown").dropdown(js.Dynamic.literal(on = "hover"))
   }
 
   @dom

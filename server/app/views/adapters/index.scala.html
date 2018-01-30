@@ -9,7 +9,7 @@
     , clientScripts = Html("<script src=\"" +assets.withUrlPrefix(context).path("assets/javascripts/versioned.js")+ "\" ></script>")
 ) {
 
-    @scalajs.html.scripts("pme123-adapters-client",
+    @scalajs.html.scripts("scala-adapters-client",
         routes.Assets.at(_).toString,
         name => getClass.getResource(s"/public/$name") != null)
 
