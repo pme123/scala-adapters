@@ -10,6 +10,7 @@ import slogging.{ConsoleLoggerFactory, LoggerConfig}
 
 import scala.language.implicitConversions
 import scala.scalajs.js
+import scala.scalajs.js.annotation.JSExportTopLevel
 import scala.scalajs.js.timers.setTimeout
 
 case class JobCockpitClient(project: String, adapter: String)
@@ -111,4 +112,11 @@ case class JobCockpitClient(project: String, adapter: String)
       <div></div>
   }
 
+}
+
+object JobCockpitClient {
+  @JSExportTopLevel("client.JobCockpitClient.main")
+  def main(title: String): Unit = {
+    JobCockpitClient("adapters", title).create()
+  }
 }
