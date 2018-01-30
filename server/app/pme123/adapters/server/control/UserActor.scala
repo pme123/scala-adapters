@@ -12,7 +12,7 @@ import com.google.inject.assistedinject.Assisted
 import play.api.libs.json._
 import pme123.adapters.server.control.JobActor.{SubscribeAdapter, UnSubscribeAdapter}
 import pme123.adapters.server.control.UserActor.CreateAdapter
-import pme123.adapters.shared.{AdapterMsg, KeepAliveMsg, RunAdapter}
+import pme123.adapters.shared.{AdapterMsg, KeepAliveMsg, RunJob}
 
 import scala.concurrent.duration._
 import scala.concurrent.{ExecutionContext, Future}
@@ -86,7 +86,7 @@ class UserActor @Inject()(@Assisted id: String
   private val jsonSink: Sink[JsValue, Future[Done]] = Sink.foreach { json =>
     // When the initiator runs the Adapter
     json.validate[AdapterMsg] match {
-      case JsSuccess(runAdapter: RunAdapter, _) =>
+      case JsSuccess(runAdapter: RunJob, _) =>
         adapterActor ! runAdapter
       case JsSuccess(other, _) =>
         log.warning(marker, s"Unexpected message from ${sender()}: $other")

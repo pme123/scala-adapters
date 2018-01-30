@@ -5,7 +5,7 @@ import org.scalajs.dom.raw._
 import org.scalajs.dom.{document, window}
 import play.api.libs.json.{JsError, JsSuccess, Json}
 import pme123.adapters.shared.LogReport
-import pme123.adapters.shared.{AdapterMsg, RunAdapter, RunStarted, _}
+import pme123.adapters.shared.{AdapterMsg, RunJob, RunStarted, _}
 
 import scala.scalajs.js.timers.setTimeout
 
@@ -75,7 +75,7 @@ case class ClientWebsocket(uiState: UIState, context: String)
   def runAdapter() {
     info("run Adapter")
     webSocket.value
-      .foreach(_.send(Json.toJson(RunAdapter())
+      .foreach(_.send(Json.toJson(RunJob())
         .toString()))
   }
 

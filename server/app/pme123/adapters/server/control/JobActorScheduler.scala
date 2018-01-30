@@ -5,7 +5,7 @@ import javax.inject.{Inject, Singleton}
 
 import akka.actor.{ActorSystem, Cancellable}
 import akka.stream.Materializer
-import pme123.adapters.server.control.JobActor.RunAdapterFromScheduler
+import pme123.adapters.server.control.JobActor.RunJobFromScheduler
 import pme123.adapters.server.entity.{DateTimeHelper, JobSchedule, JobSchedules}
 import pme123.adapters.shared.{Logger, SchedulerInfo}
 
@@ -70,7 +70,7 @@ class JobActorScheduler @Inject()(jobFactory: JobActorFactory)
 
     actorSystem.scheduler.schedule(
       executionStart, jobSchedule.intervalDuration,
-      jobActor, RunAdapterFromScheduler(initNextExecution(jobSchedule) _))
+      jobActor, RunJobFromScheduler(initNextExecution(jobSchedule) _))
   }
 
 

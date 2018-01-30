@@ -4,6 +4,7 @@ import java.time.Instant
 
 import julienrf.json.derived
 import play.api.libs.json.OFormat
+import pme123.adapters.shared.LogLevel.WARN
 import slogging.LazyLogging
 
 import scala.util.{Failure, Success, Try}
@@ -67,7 +68,11 @@ case class LogEntry(level: LogLevel, msg: String, detail: Option[String] = None,
   }
 
   def log(): LogEntry = {
-    if (level.checkEnabled()) level.log(msgWithDetail)
+    if (level.checkEnabled()) // only if level enabled
+      if (level >= WARN) // only print detail if warning or more
+        level.log(msgWithDetail)
+      else
+        level.log(msg)
     this
   }
 

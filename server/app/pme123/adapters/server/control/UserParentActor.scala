@@ -28,10 +28,10 @@ class UserParentActor @Inject()(childFactory: UserActor.Factory,
   implicit private val timeout: Timeout = Timeout(2.seconds)
 
   override def receive: Receive = LoggingReceive {
-    case Create(id, adapterActor) =>
+    case Create(id, jobActor) =>
       val name = s"userActor-$id"
       log.info(s"Creating initiator actor $name")
-      val child: ActorRef = injectedChild(childFactory(id, adapterActor), name)
+      val child: ActorRef = injectedChild(childFactory(id, jobActor), name)
       val future = (child ? CreateAdapter(id)).mapTo[Flow[JsValue, JsValue, _]]
       pipe(future) to sender()
   }

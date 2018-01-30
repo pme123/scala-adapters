@@ -1,13 +1,16 @@
 package pme123.adapters.server.control
 
-import akka.actor.{Actor, ActorRef}
+import javax.inject.Inject
+
+import akka.actor.{Actor, ActorRef, Props}
 import akka.event.LoggingReceive
 import akka.stream.Materializer
+import com.google.inject.assistedinject.Assisted
 import pme123.adapters.server.control.mail.MailNotifier
 import pme123.adapters.server.entity.AdaptersContext.settings._
-import pme123.adapters.server.entity.{AdaptersContext, AdaptersException}
+import pme123.adapters.server.entity.AdaptersException
+import pme123.adapters.shared.JobConfig.JobIdent
 import pme123.adapters.shared._
-import pme123.adapters.version.BuildInfo
 
 import scala.collection.mutable
 import scala.concurrent.{ExecutionContext, Future}
@@ -16,24 +19,19 @@ import scala.concurrent.{ExecutionContext, Future}
   * This actor runs the Adapter Process.
   * During this process it will inform all clients with LogEntries.
   */
-trait JobActor
+class JobActor @Inject()(@Assisted jobIdent: JobIdent
+                         , @Assisted jobProcess: JobProcess
+                        )(implicit val mat: Materializer, val ec: ExecutionContext)
   extends Actor
     with Logger {
 
   import JobActor._
 
-  implicit def mat: Materializer
-
-  implicit def ec: ExecutionContext
-
   protected var logService: Option[LogService] = None
-
-  private var adapterInfo: Option[ProjectInfo] = None
 
   protected def adapterVersion: String = pme123.adapters.version.BuildInfo.toString
 
-  protected def email: String = adminMailRecipient
-
+  private var projectInfo: ProjectInfo = jobProcess.createInfo()
 
   // a flag that indicates if the process is running
   protected var isRunning = false
@@ -54,7 +52,7 @@ trait JobActor
           AdapterNotRunning(logService.map(_.logReport))
       // inform the user about the actual status
       aRef ! status
-      adapterInfo.foreach(aRef ! _)
+      aRef ! projectInfo
     // Unsubscribe a user(remove from the map)
     // this is called when the connection from a user websocket is closed
     case UnSubscribeAdapter(clientIdent) =>
@@ -62,12 +60,12 @@ trait JobActor
       userActors -= clientIdent
     // called if a user runs the Adapter Process (Button)
     case si:SchedulerInfo =>
-      adapterInfo = adapterInfo.map(_.copy(schedulerInfo = Some(si)))
-      adapterInfo.foreach(sendToSubscriber)
-    case RunAdapter(user) =>
-      doRunAdapter(user)
-    case RunAdapterFromScheduler(nextExecution) =>
-      doRunAdapter("From Scheduler")
+      projectInfo = projectInfo.copy(schedulerInfo = Some(si))
+      sendToSubscriber(projectInfo)
+    case RunJob(user) =>
+      doRunJob(user)
+    case RunJobFromScheduler(nextExecution) =>
+      doRunJob("From Scheduler")
       nextExecution()
     case msg: AdapterMsg =>
       sendToSubscriber(msg)
@@ -75,7 +73,7 @@ trait JobActor
       warn(s"unexpected message: $other")
   }
 
-  private def doRunAdapter(user: String) = {
+  private def doRunJob(user: String) = {
     info(s"called runAdapter: $user")
     if (isRunning) // this should not happen as the button is disabled, if running
       warn("The adapter is running already!")
@@ -83,12 +81,11 @@ trait JobActor
       info(s"run Adapter: $sender")
       isRunning = true
       sendToSubscriber(RunStarted)
-      handleImportResult(runAdapter(user))
+      implicit val logServ: LogService = LogService(s"Run Job: $jobIdent", user, Some(self))
+      logService = Some(logServ)
+      handleImportResult(jobProcess.runJob(user))
     }
   }
-
-  // the process fakes some long taking tasks that logs its progress
-  protected def runAdapter(user: String): Future[Any]
 
 
   protected def sendToSubscriber(logEntry: LogEntry): Unit =
@@ -99,22 +96,11 @@ trait JobActor
     userActors.values
       .foreach(_ ! adapterMsg)
 
-  protected def createInfo(adapterVersion: String
-                           , adapterProps: Seq[AdaptersContextProp]) {
-    adapterInfo = Some(ProjectInfo(adapterVersion
-      , BuildInfo.version
-      , email
-      , adapterProps
-      , AdaptersContext.props
-      , logService.map(_.startDateTime)
-      , None
-    ))
-  }
 
   // helper to finish import and notify the Admin
-  private def handleImportResult(result: Future[Any]) = {
+  private def handleImportResult(result: Future[LogService]) = {
     def logAndNotify() {
-      logService.foreach{ls=>
+      result.foreach{ls=>
         ls.stopLogging()
         isRunning = false
         sendToSubscriber(RunFinished(ls.logReport))
@@ -124,13 +110,10 @@ trait JobActor
       }
     }
 
-    result.map { _ =>
-      adapterInfo =
-        adapterInfo.map { ai =>
-          val newAI = ai.copy(lastExecution = logService.map(_.startDateTime))
-          sendToSubscriber(newAI)
-          newAI
-        }
+    result.map { logServ =>
+      logService = Some(logServ)
+      projectInfo = projectInfo.copy(lastExecution = Some(logServ.startDateTime))
+      sendToSubscriber(projectInfo)
       logAndNotify()
     }.recover {
       case _: AdaptersException => logAndNotify()
@@ -151,10 +134,15 @@ trait JobActor
 
 object JobActor {
   type ClientIdent = String
+
+  def props(jobIdent: JobIdent, jobProcess: JobProcess)
+           (implicit mat: Materializer, ec: ExecutionContext): Props =
+    Props(new JobActor(jobIdent, jobProcess))
+
   case class SubscribeAdapter(clientIdent: ClientIdent, wsActor: ActorRef)
 
   case class UnSubscribeAdapter(clientIdent: ClientIdent)
 
-  case class RunAdapterFromScheduler(schedulerInfo: () => Unit)
+  case class RunJobFromScheduler(schedulerInfo: () => Unit)
 
 }
