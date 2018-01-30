@@ -2,8 +2,8 @@
 # This file defines COMMON application routes (Higher priority routes first)
 # ~~~~
 
-# These are common routes that you may want all services to respond to.
-GET        /                             pme123.adapters.server.boundary.demo.DemoController.index
+# Index file for the JobCockpit.
+GET        /                             pme123.adapters.server.boundary.JobCockpitController.index
 # Websocket for live updates on Jobs
 GET        /ws/:jobIdent                 pme123.adapters.server.boundary.JobCockpitController.ws(jobIdent)
 # API to get all the Jobs that are provided

@@ -15,8 +15,8 @@ import scala.util.{Failure, Success}
 case class ServerServices(uiState: UIState)
   extends UIStore {
 
-  @dom def jobConfigs(project: String): Binding[HTMLElement] = {
-    val apiPath = s"/$project/jobConfigs"
+  @dom def jobConfigs(context: String): Binding[HTMLElement] = {
+    val apiPath = s"$context/jobConfigs"
 
     FutureBinding(Ajax.get(apiPath))
       .bind match {

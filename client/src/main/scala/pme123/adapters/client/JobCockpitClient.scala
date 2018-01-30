@@ -13,7 +13,7 @@ import scala.scalajs.js
 import scala.scalajs.js.annotation.JSExportTopLevel
 import scala.scalajs.js.timers.setTimeout
 
-case class JobCockpitClient(project: String, adapter: String)
+case class JobCockpitClient(context: String)
   extends UIStore
     with ClientUtils {
 
@@ -31,8 +31,8 @@ case class JobCockpitClient(project: String, adapter: String)
   @dom
   private def render: Binding[HTMLElement] = {
     <div>
-      {JobCockpitHeader(project, uiState).showHeader().bind}{//
-      ServerServices(uiState).jobConfigs(project).bind}{//
+      {JobCockpitHeader(context, uiState).showHeader().bind}{//
+      ServerServices(uiState).jobConfigs(context).bind}{//
       adapterContainer.bind}{//
       renderDetail.bind}{//
       renderLogEntryDetail.bind}
@@ -115,8 +115,10 @@ case class JobCockpitClient(project: String, adapter: String)
 }
 
 object JobCockpitClient {
+
   @JSExportTopLevel("client.JobCockpitClient.main")
-  def main(title: String): Unit = {
-    JobCockpitClient("adapters", title).create()
+  def main(context: String): Unit = {
+    println(s"JobCockpitClient $context")
+    JobCockpitClient(context).create()
   }
 }

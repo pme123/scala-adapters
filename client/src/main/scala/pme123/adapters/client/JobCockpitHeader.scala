@@ -9,11 +9,11 @@ import pme123.adapters.shared.{JobConfig, JobConfigs, LogLevel}
 import scala.scalajs.js.Dynamic.{global => g}
 import scala.scalajs.js.timers.setTimeout
 
-private[client] case class JobCockpitHeader(project: String, uiState: UIState)
+private[client] case class JobCockpitHeader(context: String, uiState: UIState)
   extends UIStore
     with ClientUtils {
 
-  private lazy val socket = ClientWebsocket(uiState, project)
+  private lazy val socket = ClientWebsocket(uiState, context)
 
 
   // 1. level of abstraction

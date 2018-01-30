@@ -7,6 +7,7 @@ import akka.actor._
 import akka.pattern.ask
 import akka.stream.scaladsl._
 import akka.util.Timeout
+import controllers.AssetsFinder
 import play.api.Configuration
 import play.api.libs.json._
 import play.api.mvc._
@@ -17,6 +18,7 @@ import pme123.adapters.shared.JobConfig.JobIdent
 
 import scala.concurrent.duration._
 import scala.concurrent.{ExecutionContext, Future}
+import pme123.adapters.server.entity.AdaptersContext.settings.httpContext
 
 /**
   * This class creates the actions and the websocket needed.
@@ -25,11 +27,23 @@ import scala.concurrent.{ExecutionContext, Future}
 @Singleton
 class JobCockpitController @Inject()(jobFactory: JobActorFactory
                                      , @Named("userParentActor") userParentActor: ActorRef
+                                     , template: views.html.adapters.index
+                                     , assetsFinder: AssetsFinder
                                      , cc: ControllerComponents
                                      , val config: Configuration)
                                     (implicit ec: ExecutionContext)
   extends AbstractController(cc)
     with SameOriginCheck {
+
+  // Home page that renders template
+  def index = Action { implicit request: Request[AnyContent] =>
+    val context = if (httpContext.length > 1)
+      httpContext
+    else
+      ""
+    // uses the AssetsFinder API
+    Ok(template(context, assetsFinder))
+  }
 
   def jobConfigs(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
     info(s"called jobConfigs: ${settings.jobConfigs}")

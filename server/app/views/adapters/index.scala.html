@@ -1,18 +1,18 @@
 @this(webJarsUtil: org.webjars.play.WebJarsUtil)
-@(assets: AssetsFinder)(implicit r: Request[_], rh: RequestHeader)
+@(context: String, assets: AssetsFinder)(implicit r: Request[_], rh: RequestHeader)
 
 @views.html.adapters.mainCommon(assets = assets
     , webJarsUtil = webJarsUtil
 )(title = "Demo Adapter"
-    , icon = assets.withUrlPrefix("/adapters").path("assets/images/favicon.png")
-    , styles = Html("<link rel=\"stylesheet\" type=\"text/css\" href=\"" +assets.withUrlPrefix("/adapters").path("assets/stylesheets/main.css") + "\">")
-    , clientScripts = Html("<script src=\"" +assets.withUrlPrefix("/adapters").path("assets/javascripts/versioned.js")+ "\" ></script>")
+    , icon = assets.withUrlPrefix(context).path("assets/images/favicon.png")
+    , styles = Html("<link rel=\"stylesheet\" type=\"text/css\" href=\"" +assets.withUrlPrefix(context).path("assets/stylesheets/main.css") + "\">")
+    , clientScripts = Html("<script src=\"" +assets.withUrlPrefix(context).path("assets/javascripts/versioned.js")+ "\" ></script>")
 ) {
 
     @scalajs.html.scripts("pme123-adapters-client",
         routes.Assets.at(_).toString,
         name => getClass.getResource(s"/public/$name") != null)
 
-    <script>client.DemoProjectClient.main("Demo Adapter");</script>
+    <script>client.JobCockpitClient.main("@context");</script>
 
 }
