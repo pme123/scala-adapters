@@ -1,1 +1,1 @@
-web: target\universal\stage\bin\pme123-adapters-server.bat
+web: server\target\universal\stage\bin\pme123-adapters-server.bat
