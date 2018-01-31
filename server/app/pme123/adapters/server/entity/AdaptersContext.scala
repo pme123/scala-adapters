@@ -14,7 +14,7 @@ import scala.language.implicitConversions
   * See here the explanation: https://github.com/typesafehub/config
   */
 object AdaptersSettings extends Logger {
-  val configPath = "pme123.adapters.server"
+  val configPath = "pme123.adapters"
 
   val httpContextProp = "play.http.context"
   val projectProp = "project"

@@ -4,14 +4,9 @@ import pme123.adapters.server.control.demo.DemoJobFactory
 import pme123.adapters.server.control.{JobActorFactory, JobActorScheduler, UserActor, UserParentActor}
 import slogging.{LoggerConfig, SLF4JLoggerFactory}
 
-class AdaptersModule extends AbstractModule with AkkaGuiceSupport {
+class DemoModule extends AbstractModule with AkkaGuiceSupport {
 
   override def configure(): Unit = {
-    // framework
-    LoggerConfig.factory = SLF4JLoggerFactory()
-    bindActor[UserParentActor]("userParentActor")
-    bindActorFactory[UserActor, UserActor.Factory]
-    bind(classOf[JobActorScheduler]).asEagerSingleton()
-
-  }
+    bind(classOf[JobActorFactory]).to(classOf[DemoJobFactory])
+   }
 }
