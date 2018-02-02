@@ -27,7 +27,7 @@ import scala.concurrent.{ExecutionContext, Future}
 @Singleton
 class JobCockpitController @Inject()(jobFactory: JobActorFactory
                                      , @Named("userParentActor") userParentActor: ActorRef
-                                     , template: views.html.adapters.index
+                                     , template: views.html.adapters.demo
                                      , assetsFinder: AssetsFinder
                                      , cc: ControllerComponents
                                      , val config: Configuration)

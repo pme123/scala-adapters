@@ -1,5 +1,5 @@
-# COMMON Routes
-# This file defines COMMON application routes (Higher priority routes first)
+# ADAPTERS Routes
+# This file defines ADAPTERS application routes (Higher priority routes first)
 # ~~~~
 
 # Index file for the JobCockpit.
