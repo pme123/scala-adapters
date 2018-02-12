@@ -1,7 +1,6 @@
 package pme123.adapters.client
 
 import org.scalajs.jquery.JQuery
-import pme123.adapters.shared.LogLevel
 
 import scala.language.implicitConversions
 import scala.scalajs.js
@@ -15,8 +14,8 @@ object SemanticUI {
   @js.native
   trait SemanticJQuery extends JQuery {
     def dropdown(params: js.Any*): SemanticJQuery = js.native
+    def popup(params: js.Any*): SemanticJQuery = js.native
     def modal(params: js.Any*): SemanticJQuery = js.native
-
   }
 
   // Monkey patching JQuery with implicit conversion

@@ -57,7 +57,6 @@ object Settings {
     , guice
     , filters
     , "org.apache.commons" % "commons-email" % "1.3.1"
-    , "com.github.takezoe" %% "scala-jdbc" % "1.0.5"
     , "biz.enef" %% "slogging-slf4j" % sloggingV
     // scalajs for server
     , "com.vmunier" %% "scalajs-scripts" % "1.1.1"
