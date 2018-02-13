@@ -2,9 +2,9 @@ package pme123.adapters.client
 
 import com.thoughtworks.binding.Binding.Var
 import org.scalajs.dom.raw._
-import org.scalajs.dom.{document, window}
+import org.scalajs.dom.window
 import play.api.libs.json.{JsError, JsSuccess, Json}
-import pme123.adapters.shared.LogReport
+import pme123.adapters.shared.JobConfig.JobIdent
 import pme123.adapters.shared.{AdapterMsg, RunJob, RunStarted, _}
 
 import scala.scalajs.js.timers.setTimeout
@@ -19,10 +19,10 @@ case class ClientWebsocket(uiState: UIState
   private val reconnectWSCode = 3001
 
 
-  def connectWS(selJobConfig: Option[JobConfig]) {
+  def connectWS(selJobIdent: Option[JobIdent]) {
     closeWS()
-    selJobConfig.foreach { jc =>
-      val path = s"$wsURL/${jc.ident}"
+    selJobIdent.foreach { ji =>
+      val path = s"$wsURL/$ji"
       val socket = new WebSocket(path)
       webSocket.value = Some(socket)
       info(s"Connect to Websocket: $path")
@@ -32,15 +32,15 @@ case class ClientWebsocket(uiState: UIState
           message.validate[AdapterMsg] match {
             case JsSuccess(AdapterRunning(logReport), _) =>
               changeIsRunning(true)
-              newLogReport(logReport)
+              addLogReport(logReport)
             case JsSuccess(AdapterNotRunning(logReport), _) =>
               changeIsRunning(false)
               logReport.foreach { lr =>
                 changeLastLogLevel(lr)
-                newLogReport(lr)
+                addLogReport(lr)
               }
             case JsSuccess(LogEntryMsg(le), _) =>
-              newLogEntry(le)
+              addLogEntry(le)
             case JsSuccess(RunStarted, _) =>
               changeIsRunning(true)
             case JsSuccess(RunFinished(logReport), _) =>
@@ -70,7 +70,7 @@ case class ClientWebsocket(uiState: UIState
         info("closed socket" + e.reason)
         if (e.code != reconnectWSCode) {
           setTimeout(1000) {
-            connectWS(selJobConfig) // try to reconnect automatically
+            connectWS(selJobIdent) // try to reconnect automatically
           }
         }
       }
@@ -88,19 +88,4 @@ case class ClientWebsocket(uiState: UIState
     webSocket.value.foreach(_.close(reconnectWSCode, ": Reconnect for different configuration."))
   }
 
-  private def newLogReport(logReport: LogReport) {
-    addLogReport(logReport)
-    scrollDown(logReport.logEntries.size)
-  }
-
-  private def newLogEntry(logEntry: LogEntry) {
-    addLogEntry(logEntry)
-
-    scrollDown()
-  }
-
-  private def scrollDown(count: Int = 1) {
-    val objDiv = document.getElementById("log-panel")
-    objDiv.scrollTop = objDiv.scrollHeight - count * 20
-  }
 }

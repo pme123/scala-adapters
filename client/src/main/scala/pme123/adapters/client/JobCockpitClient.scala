@@ -2,6 +2,7 @@ package pme123.adapters.client
 
 import com.thoughtworks.binding.Binding.Constants
 import com.thoughtworks.binding.{Binding, dom}
+import org.scalajs.dom.document
 import org.scalajs.dom.raw._
 import org.scalajs.jquery.jQuery
 import pme123.adapters.shared.LogEntry
@@ -28,7 +29,7 @@ case class JobCockpitClient(context: String)
 
 
   @dom
-  private def adapterContainer = {
+  private lazy val adapterContainer = {
     val logEntries = uiState.logData.bind
     val text = uiState.filterText.bind
     val level = uiState.filterLevel.bind
@@ -36,12 +37,18 @@ case class JobCockpitClient(context: String)
       logEntries
         .filter(le => le.level >= level)
         .filter(le => le.msg.toLowerCase.contains(text.toLowerCase))
-
     <div class="ui main text container">
       <div id="log-panel" class="ui relaxed divided list">
         {Constants(filteredLE: _*).map(logEntry(_).bind)}
       </div>
     </div>
+  }
+
+  @dom
+  private def scrollDown(count: Int = 1) {
+    adapterContainer.bind
+    val objDiv = document.getElementById("log-panel")
+    objDiv.scrollTop = objDiv.scrollHeight - uiState.logData.value.size * 20
   }
 
   @dom

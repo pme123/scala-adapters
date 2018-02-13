@@ -9,6 +9,7 @@ import pme123.adapters.server.entity.ServiceException
 import pme123.adapters.shared.JobConfig.JobIdent
 
 import scala.concurrent.ExecutionContext
+import pme123.adapters.shared.demo.DemoJobs._
 
 @Singleton
 class DemoJobFactory @Inject()(demoJob: DemoJobProcess
@@ -19,7 +20,6 @@ class DemoJobFactory @Inject()(demoJob: DemoJobProcess
                                 , val ec: ExecutionContext)
   extends JobActorFactory {
 
-  import DemoJobFactory._
 
   private lazy val demoJobRef = system.actorOf(JobActor.props(demoJobIdent, demoJob))
   private lazy val demoJobWithDefaultSchedulerRef = system.actorOf(JobActor.props(demoJobWithDefaultSchedulerIdent, demoJobWithDefaultScheduler))
@@ -34,8 +34,3 @@ class DemoJobFactory @Inject()(demoJob: DemoJobProcess
 
 }
 
-object DemoJobFactory {
-  val demoJobIdent: JobIdent = "demoJob"
-  val demoJobWithDefaultSchedulerIdent: JobIdent = "demoJobWithDefaultScheduler"
-  val demoJobWithoutSchedulerIdent: JobIdent = "demoJobWithoutScheduler"
-}

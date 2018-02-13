@@ -53,7 +53,7 @@ private[client] case class JobCockpitHeader(context: String, uiState: UIState)
   private def jobConfigs = {
     val jobConfigs = uiState.jobConfigs.bind
     val selectedJobConfig = uiState.selectedJobConfig.bind
-    socket.connectWS(selectedJobConfig)
+    socket.connectWS(selectedJobConfig.map(_.ident))
     <div class="ui item">
       <span data:data-tooltip="Choose the adapter job"
             data:data-position="bottom right">
