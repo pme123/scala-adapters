@@ -3,12 +3,12 @@ package pme123.adapters.client
 import com.thoughtworks.binding.Binding.Constants
 import com.thoughtworks.binding.{Binding, dom}
 import org.scalajs.dom.raw.HTMLElement
-import pme123.adapters.shared.ClientConfig
+import play.api.libs.json.JsValue
 import pme123.adapters.shared.JobConfig.JobIdent
 
-private[client] case class ClientConfigDialog(uiState: UIState
-                                              , context: String
-                                              , jobIdent: JobIdent)
+private[client] case class LastResultDialog(uiState: UIState
+                                            , context: String
+                                            , jobIdent: JobIdent)
   extends UIStore {
 
   // 1. level of abstraction
@@ -16,9 +16,8 @@ private[client] case class ClientConfigDialog(uiState: UIState
   @dom
   private[client] def showDetail(): Binding[HTMLElement] =
     <div class="ui modal">
-      {ServerServices(uiState, context).clientConfigs(jobIdent).bind}{//
-      detailHeader.bind}{//
-      clientsTable.bind}
+      {detailHeader.bind}{//
+      resultsTable.bind}
     </div>
 
   // 2. level of abstraction
@@ -26,22 +25,21 @@ private[client] case class ClientConfigDialog(uiState: UIState
 
   @dom
   private def detailHeader = <div class="header">
-    Registered Clients
+    Last Result (as raw JSON)
   </div>
 
   @dom
-  private def clientsTable = {
-    val clients = uiState.allClients.bind
+  private def resultsTable = {
+    val lastResults = uiState.lastResults.bind
     <div class="content">
       <table class="ui padded table">
         <thead>
           <tr>
-            <th>Client Id</th>
-            <th>Info</th>
+            <th>Result as JSON</th>
           </tr>
         </thead>
         <tbody>
-          {Constants(clients.map(propRow): _*)
+          {Constants(lastResults.map(resultRow): _*)
           .map(_.bind)}
         </tbody>
       </table>
@@ -49,13 +47,10 @@ private[client] case class ClientConfigDialog(uiState: UIState
   }
 
   @dom
-  private def propRow(clientConfig: ClientConfig) =
+  private def resultRow(result: JsValue) =
     <tr>
-      <td class="four wide">
-        {clientConfig.requestIdent}
-      </td>
-      <td class="twelve wide">
-        {clientConfig.info}
+      <td class="sixteen wide">
+        {result.toString}
       </td>
     </tr>
 

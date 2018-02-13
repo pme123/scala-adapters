@@ -147,7 +147,7 @@ class JobActor @Inject()(@Assisted jobIdent: JobIdent
   private def registeredClientConfigs() {
     info(s"registeredClientConfigs: ${}")
     val configs = clientActors.keys.map(ClientConfig(_, "-"))
-    sender() ! RegisteredClientConfigs(configs.toSeq)
+    sender() ! ClientConfigs(configs.toSeq)
   }
 }
 
@@ -162,6 +162,6 @@ object JobActor {
 
   case object GetClientConfigs
 
-  case class RegisteredClientConfigs(clientConfigs: Seq[ClientConfig])
+  case class ClientConfigs(clientConfigs: Seq[ClientConfig])
 
 }

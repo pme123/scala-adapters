@@ -69,6 +69,12 @@ trait UIStore extends Logger {
     uiState.showClients.value = true
   }
 
+  protected def showLastResults() {
+    info(s"UIStore: showLastResults")
+    hideAllDialogs()
+    uiState.showLastResults.value = true
+  }
+
   protected def hideAdapterInfo() {
     info(s"UIStore: hide AdapterInfo")
     uiState.showAdapterInfo.value = false
@@ -104,6 +110,7 @@ trait UIStore extends Logger {
   // make sure all are closed
   private def hideAllDialogs(): Unit = {
     uiState.showClients.value = false
+    uiState.showLastResults.value = false
     uiState.showAdapterInfo.value = false
     uiState.logEntryDetail.value = None
   }
@@ -121,6 +128,7 @@ case class UIState(logData: Vars[LogEntry] = Vars[LogEntry]()
                    , adapterInfo: Var[Option[ProjectInfo]] = Var[Option[ProjectInfo]](None)
                    , showAdapterInfo: Var[Boolean] = Var(false)
                    , showClients: Var[Boolean] = Var(false)
+                   , showLastResults: Var[Boolean] = Var(false)
                    , jobConfigs: Var[JobConfigs] = Var(JobConfigs(Map()))
                    , selectedJobConfig: Var[Option[JobConfig]] = Var(None)
                    , lastResults: Vars[JsValue] = Vars()

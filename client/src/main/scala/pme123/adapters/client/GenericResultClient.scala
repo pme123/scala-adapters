@@ -17,7 +17,7 @@ case class GenericResultClient(context: String)
   protected def render: Binding[HTMLElement] = {
     <div>
       {adapterContainer.bind}{//
-      ServerServices(uiState).jobConfigs(context).bind}
+      ServerServices(uiState, context).jobConfigs().bind}
     </div>
   }
 

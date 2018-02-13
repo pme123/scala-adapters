@@ -4,12 +4,11 @@ import javax.inject._
 
 import akka.actor._
 import akka.pattern.ask
-import akka.util.Timeout
 import controllers.AssetsFinder
 import play.api.Configuration
 import play.api.libs.json._
 import play.api.mvc._
-import pme123.adapters.server.control.JobActor.{GetClientConfigs, RegisteredClientConfigs}
+import pme123.adapters.server.control.JobActor.{ClientConfigs, GetClientConfigs}
 import pme123.adapters.server.control.JobActorFactory
 import pme123.adapters.server.entity.AdaptersContext.settings
 import pme123.adapters.shared.ClientConfig
@@ -47,12 +46,14 @@ class JobCockpitController @Inject()(val jobFactory: JobActorFactory
   }
 
   def clientConfigs(jobIdent: JobIdent): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
-    info(s"called clientConfigs: ${settings.jobConfigs}")
+    info(s"called clientConfigs for job $jobIdent")
     (jobFactory.jobActorFor(jobIdent) ? GetClientConfigs)
-      .map(_.asInstanceOf[RegisteredClientConfigs])
+      .map(_.asInstanceOf[ClientConfigs])
       .map(_.clientConfigs)
       .map(clients => Ok(Json.toJson[Seq[ClientConfig]](clients)))
   }
+
+
 
 }
 

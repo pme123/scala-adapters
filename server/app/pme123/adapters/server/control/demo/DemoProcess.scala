@@ -59,6 +59,7 @@ class DemoJobWithoutSchedulerActor @Inject()()(implicit val mat: Materializer, v
              , jobActor: ActorRef): Future[LogService] = {
     Future {
       logService.startLogging()
+      jobActor ! GenericResults(Nil) // reset last result
       for (i <- 0 to 10) {
         Thread.sleep(750)
         val ll = Random.shuffle(List(DEBUG, DEBUG, INFO, INFO, INFO, WARN, WARN, ERROR)).head

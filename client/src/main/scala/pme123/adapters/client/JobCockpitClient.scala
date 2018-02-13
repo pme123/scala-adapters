@@ -17,11 +17,12 @@ case class JobCockpitClient(context: String)
   protected def render: Binding[HTMLElement] = {
     <div>
       {JobCockpitHeader(context, uiState).showHeader().bind}{//
-      ServerServices(uiState).jobConfigs(context).bind}{//
+      ServerServices(uiState, context).jobConfigs().bind}{//
       adapterContainer.bind}{//
       renderDetail.bind}{//
       renderLogEntryDetail.bind}{//
-      renderClientConfigsDetail.bind}
+      renderClientConfigsDetail.bind}{//
+      renderLastResultsDetail.bind}
     </div>
   }
 
@@ -109,7 +110,19 @@ case class JobCockpitClient(context: String)
       </div>
     else
       <div></div>
+  }
 
+  @dom
+  private def renderLastResultsDetail = {
+    val showLastResults = uiState.showLastResults.bind
+    val selectedJobConfig = uiState.selectedJobConfig.bind
+    if (showLastResults && selectedJobConfig.isDefined)
+      <div>
+        {LastResultDialog(uiState, context, selectedJobConfig.get.ident)
+        .showDetail().bind}
+      </div>
+    else
+      <div></div>
   }
 
 }

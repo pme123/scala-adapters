@@ -13,10 +13,10 @@ import scala.util.{Failure, Success}
 /**
   * Created by pascal.mengelt on 16.07.2017.
   */
-case class ServerServices(uiState: UIState)
+case class ServerServices(uiState: UIState, context: String)
   extends UIStore {
 
-  @dom def jobConfigs(context: String): Binding[HTMLElement] = {
+  @dom def jobConfigs(): Binding[HTMLElement] = {
     val apiPath = s"$context/jobConfigs"
 
     FutureBinding(Ajax.get(apiPath))
@@ -51,7 +51,7 @@ case class ServerServices(uiState: UIState)
     }
   }
 
-  @dom def clientConfigs(context: String, jobIdent: JobIdent): Binding[HTMLElement] = {
+  @dom def clientConfigs(jobIdent: JobIdent): Binding[HTMLElement] = {
     val apiPath = s"$context/clientConfigs/$jobIdent"
 
     FutureBinding(Ajax.get(apiPath))

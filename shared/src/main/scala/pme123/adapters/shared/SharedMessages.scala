@@ -53,3 +53,8 @@ case class ProjectInfo(adapterVersion: String
 case class GenericResult(payload: JsValue) extends AdapterMsg
 
 case class GenericResults(payload: Seq[JsValue]) extends AdapterMsg
+
+object GenericResults {
+  implicit val jsonFormat: OFormat[GenericResults] = derived.oformat[GenericResults]()
+
+}

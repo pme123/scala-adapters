@@ -4,6 +4,7 @@ import com.thoughtworks.binding.Binding.Constants
 import com.thoughtworks.binding.{Binding, dom}
 import org.scalajs.dom.raw.{Event, HTMLElement}
 import org.scalajs.jquery.jQuery
+import pme123.adapters.client.SemanticUI.jq2semantic
 import pme123.adapters.shared.{JobConfig, JobConfigs, LogLevel}
 
 import scala.scalajs.js.Dynamic.{global => g}
@@ -31,6 +32,7 @@ private[client] case class JobCockpitHeader(context: String, uiState: UIState)
       levelFilter.bind}{//
       runAdapterButton.bind}{//
       clientsButton.bind}{//
+      jsonButton.bind}{//
       clearButton.bind}{//
       infoButton.bind}
     </div>
@@ -168,12 +170,27 @@ private[client] case class JobCockpitHeader(context: String, uiState: UIState)
               onclick={_: Event =>
                 showClients()
                 setTimeout(200) {
-                  import SemanticUI.jq2semantic
                   jQuery(".ui.modal").modal("show")
                 }}
               data:data-tooltip="Show the registered Clients"
               data:data-position="bottom right">
         <i class="list icon large"></i>
+      </button>
+    </div>
+  }
+
+  @dom
+  private def jsonButton = {
+    <div class="ui item">
+      <button class="ui basic icon button"
+              onclick={_: Event =>
+                showLastResults()
+                setTimeout(200) {
+                  jQuery(".ui.modal").modal("show")
+                }}
+              data:data-tooltip="Show the last JSON from the server"
+              data:data-position="bottom right">
+        <i class="file code outline icon large"></i>
       </button>
     </div>
   }
@@ -197,7 +214,6 @@ private[client] case class JobCockpitHeader(context: String, uiState: UIState)
               onclick={_: Event =>
                 showAdapterInfo()
                 setTimeout(200) {
-                  import SemanticUI.jq2semantic
                   jQuery(".ui.modal").modal("show")
                 }}
               data:data-tooltip="Get infos of the adapter"
