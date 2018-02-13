@@ -3,7 +3,10 @@ package pme123.adapters.client
 import com.thoughtworks.binding.Binding
 import com.thoughtworks.binding.Binding.{Var, Vars}
 import org.scalajs.dom.raw.HTMLElement
+import play.api.libs.json.JsValue
 import pme123.adapters.shared._
+
+import scala.language.implicitConversions
 
 trait UIStore extends Logger {
   protected def uiState: UIState
@@ -45,8 +48,8 @@ trait UIStore extends Logger {
 
   protected def changeLogEntryDetail(detail: Option[LogEntry] = None) {
     info(s"UIStore: changeLogEntryDetail ${detail.map(_.msg)}")
+    hideAllDialogs()
     uiState.logEntryDetail.value = detail
-    hideAdapterInfo()
   }
 
   protected def changeAdapterInfo(adapterInfo: ProjectInfo) {
@@ -56,8 +59,14 @@ trait UIStore extends Logger {
 
   protected def showAdapterInfo() {
     info(s"UIStore: show AdapterInfo")
+    hideAllDialogs()
     uiState.showAdapterInfo.value = true
-    uiState.logEntryDetail.value = None
+  }
+
+  protected def showClients() {
+    info(s"UIStore: showClients")
+    hideAllDialogs()
+    uiState.showClients.value = true
   }
 
   protected def hideAdapterInfo() {
@@ -75,6 +84,30 @@ trait UIStore extends Logger {
     uiState.selectedJobConfig.value = jobConfig
   }
 
+  protected def replaceLastResults(lastResults: Seq[JsValue]) {
+    info(s"UIStore: replaceLastResults")
+    uiState.lastResults.value.clear()
+    uiState.lastResults.value ++= lastResults
+  }
+
+  protected def addLastResult(lastResult: JsValue) {
+    info(s"UIStore: addLastResult: $lastResult")
+    uiState.lastResults.value += lastResult
+  }
+
+  protected def replaceAllClients(clientConfigs: Seq[ClientConfig]) {
+    info(s"UIStore: replaceAllClients")
+    uiState.allClients.value.clear()
+    uiState.allClients.value ++= clientConfigs
+  }
+
+  // make sure all are closed
+  private def hideAllDialogs(): Unit = {
+    uiState.showClients.value = false
+    uiState.showAdapterInfo.value = false
+    uiState.logEntryDetail.value = None
+  }
+
   implicit def makeIntellijHappy(x: scala.xml.Elem): Binding[HTMLElement] = ???
 
 }
@@ -87,6 +120,10 @@ case class UIState(logData: Vars[LogEntry] = Vars[LogEntry]()
                    , logEntryDetail: Var[Option[LogEntry]] = Var[Option[LogEntry]](None)
                    , adapterInfo: Var[Option[ProjectInfo]] = Var[Option[ProjectInfo]](None)
                    , showAdapterInfo: Var[Boolean] = Var(false)
+                   , showClients: Var[Boolean] = Var(false)
                    , jobConfigs: Var[JobConfigs] = Var(JobConfigs(Map()))
                    , selectedJobConfig: Var[Option[JobConfig]] = Var(None)
+                   , lastResults: Vars[JsValue] = Vars()
+                   , allClients: Vars[ClientConfig] = Vars()
+
                   )

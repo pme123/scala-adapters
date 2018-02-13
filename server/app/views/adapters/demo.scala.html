@@ -1,5 +1,9 @@
+@import pme123.adapters.server.boundary.{ClientType, JOB_CLIENT}
+
 @this(webJarsUtil: org.webjars.play.WebJarsUtil)
-@(context: String, assets: AssetsFinder)(implicit r: Request[_], rh: RequestHeader)
+@(context: String
+        , clientType: ClientType
+        , assets: AssetsFinder)(implicit r: Request[_], rh: RequestHeader)
 
 @views.html.adapters.mainDemo(assets = assets
     , webJarsUtil = webJarsUtil
@@ -13,6 +17,10 @@
         routes.Assets.at(_).toString,
         name => getClass.getResource(s"/public/$name") != null)
 
-    <script>client.JobCockpitClient.main("@context");</script>
+    @if(clientType == JOB_CLIENT) {
+        <script>client.JobCockpitClient.main("@context");</script>
+    } else {
+        <script>client.GenericResultClient.main("@context");</script>
+    }
 
 }

@@ -17,7 +17,9 @@ trait JobProcess {
 
   def email: String = adminMailRecipient
 
-  def runJob(user: String)(implicit logService: LogService): Future[LogService]
+  def runJob(user: String)
+            (implicit logService: LogService
+             , jobActor: ActorRef): Future[LogService]
 
   def createInfo(): ProjectInfo
 

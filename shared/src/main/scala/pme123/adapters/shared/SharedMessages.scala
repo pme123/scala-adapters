@@ -3,7 +3,7 @@ package pme123.adapters.shared
 import java.time.Instant
 
 import julienrf.json.derived
-import play.api.libs.json.OFormat
+import play.api.libs.json.{JsValue, OFormat}
 
 // trait for all messages
 sealed trait AdapterMsg
@@ -49,3 +49,7 @@ case class ProjectInfo(adapterVersion: String
                        , lastExecution: Option[Instant] = None
                        , schedulerInfo: Option[SchedulerInfo] = None
                       ) extends AdapterMsg
+
+case class GenericResult(payload: JsValue) extends AdapterMsg
+
+case class GenericResults(payload: Seq[JsValue]) extends AdapterMsg

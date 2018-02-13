@@ -2,37 +2,26 @@ package pme123.adapters.client
 
 import com.thoughtworks.binding.Binding.Constants
 import com.thoughtworks.binding.{Binding, dom}
-import org.scalajs.dom.document
 import org.scalajs.dom.raw._
 import org.scalajs.jquery.jQuery
 import pme123.adapters.shared.LogEntry
-import slogging.{ConsoleLoggerFactory, LoggerConfig}
 
 import scala.language.implicitConversions
 import scala.scalajs.js.annotation.JSExportTopLevel
 import scala.scalajs.js.timers.setTimeout
 
 case class JobCockpitClient(context: String)
-  extends UIStore
-    with ClientUtils {
-
-  LoggerConfig.factory = ConsoleLoggerFactory()
-
-  val uiState = UIState()
-
-
-  def create(): Unit = {
-    dom.render(document.body, render)
-  }
+  extends AdaptersClient {
 
   @dom
-  private def render: Binding[HTMLElement] = {
+  protected def render: Binding[HTMLElement] = {
     <div>
       {JobCockpitHeader(context, uiState).showHeader().bind}{//
       ServerServices(uiState).jobConfigs(context).bind}{//
       adapterContainer.bind}{//
       renderDetail.bind}{//
-      renderLogEntryDetail.bind}
+      renderLogEntryDetail.bind}{//
+      renderClientConfigsDetail.bind}
     </div>
   }
 
@@ -107,6 +96,20 @@ case class JobCockpitClient(context: String)
       </div>
     else
       <div></div>
+  }
+
+  @dom
+  private def renderClientConfigsDetail = {
+    val showClients = uiState.showClients.bind
+    val selectedJobConfig = uiState.selectedJobConfig.bind
+    if (showClients && selectedJobConfig.isDefined)
+      <div>
+        {ClientConfigDialog(uiState, context, selectedJobConfig.get.ident)
+        .showDetail().bind}
+      </div>
+    else
+      <div></div>
+
   }
 
 }

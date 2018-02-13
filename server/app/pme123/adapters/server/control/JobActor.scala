@@ -7,6 +7,7 @@ import akka.event.LoggingReceive
 import akka.stream.Materializer
 import com.google.inject.assistedinject.Assisted
 import pme123.adapters.server.control.mail.MailNotifier
+import pme123.adapters.server.entity.ActorMessages.{SubscribeClient, UnSubscribeClient}
 import pme123.adapters.server.entity.AdaptersContext.settings._
 import pme123.adapters.server.entity.AdaptersException
 import pme123.adapters.shared.JobConfig.JobIdent
@@ -37,29 +38,14 @@ class JobActor @Inject()(@Assisted jobIdent: JobIdent
   protected var isRunning = false
 
   // a map with all clients (Websocket-Actor) that needs the status about the process
-  private val userActors: mutable.Map[String, ActorRef] = mutable.Map()
+  private val clientActors: mutable.Map[String, ActorRef] = mutable.Map()
 
+  // 1. level of abstraction
+  // **************************
   def receive = LoggingReceive {
-    // subscribe a user with its id and its websocket-Actor
-    // this is called when the websocket for a user is created
-    case SubscribeAdapter(clientIdent, wsActor) =>
-      info(s"Subscribed User: $clientIdent: $wsActor")
-      val aRef = userActors.getOrElseUpdate(clientIdent, wsActor)
-      val status =
-        if (isRunning)
-          AdapterRunning(logService.get.logReport)
-        else
-          AdapterNotRunning(logService.map(_.logReport))
-      // inform the user about the actual status
-      aRef ! status
-      aRef ! projectInfo
-    // Unsubscribe a user(remove from the map)
-    // this is called when the connection from a user websocket is closed
-    case UnSubscribeAdapter(clientIdent) =>
-      info(s"Unsubscribe User: $clientIdent")
-      userActors -= clientIdent
-    // called if a user runs the Adapter Process (Button)
-    case si:SchedulerInfo =>
+    case SubscribeClient(clientIdent, wsActor) => subscribeClient(clientIdent, wsActor)
+    case UnSubscribeClient(clientIdent) => unsubscribeClient(clientIdent)
+    case si: SchedulerInfo =>
       projectInfo = projectInfo.copy(schedulerInfo = Some(si))
       sendToSubscriber(projectInfo)
     case RunJob(user) =>
@@ -67,12 +53,39 @@ class JobActor @Inject()(@Assisted jobIdent: JobIdent
     case RunJobFromScheduler(nextExecution) =>
       doRunJob("From Scheduler")
       nextExecution()
+    case GetClientConfigs => registeredClientConfigs()
     case msg: AdapterMsg =>
       sendToSubscriber(msg)
     case other =>
       warn(s"unexpected message: $other")
   }
 
+  // 2. level of abstraction
+  // **************************
+
+  // subscribe a user with its id and its websocket-Actor
+  // this is called when the websocket for a user is created
+  private def subscribeClient(clientIdent: ClientIdent, wsActor: ActorRef) {
+    info(s"Subscribed User: $clientIdent: $wsActor")
+    val aRef = clientActors.getOrElseUpdate(clientIdent, wsActor)
+    val status =
+      if (isRunning)
+        AdapterRunning(logService.get.logReport)
+      else
+        AdapterNotRunning(logService.map(_.logReport))
+    // inform the user about the actual status
+    aRef ! status
+    aRef ! projectInfo
+  }
+
+  // Unsubscribe a user(remove from the map)
+  // this is called when the connection from a user websocket is closed
+  private def unsubscribeClient(clientIdent: ClientIdent) = {
+    info(s"Unsubscribe User: $clientIdent")
+    clientActors -= clientIdent
+  }
+
+  // called if a user runs the Adapter Process (Button)
   private def doRunJob(user: String) = {
     info(s"called runAdapter: $user")
     if (isRunning) // this should not happen as the button is disabled, if running
@@ -93,7 +106,7 @@ class JobActor @Inject()(@Assisted jobIdent: JobIdent
 
   // sends an AdapterMsg to all subscribed users
   protected def sendToSubscriber(adapterMsg: AdapterMsg): Unit =
-    userActors.values
+    clientActors.values
       .foreach(_ ! adapterMsg)
 
 
@@ -130,6 +143,12 @@ class JobActor @Inject()(@Assisted jobIdent: JobIdent
     else
       info("Writing LogReport to File is disabled.")
   }
+
+  private def registeredClientConfigs() {
+    info(s"registeredClientConfigs: ${}")
+    val configs = clientActors.keys.map(ClientConfig(_, "-"))
+    sender() ! RegisteredClientConfigs(configs.toSeq)
+  }
 }
 
 object JobActor {
@@ -139,10 +158,10 @@ object JobActor {
            (implicit mat: Materializer, ec: ExecutionContext): Props =
     Props(new JobActor(jobIdent, jobProcess))
 
-  case class SubscribeAdapter(clientIdent: ClientIdent, wsActor: ActorRef)
-
-  case class UnSubscribeAdapter(clientIdent: ClientIdent)
-
   case class RunJobFromScheduler(schedulerInfo: () => Unit)
+
+  case object GetClientConfigs
+
+  case class RegisteredClientConfigs(clientConfigs: Seq[ClientConfig])
 
 }

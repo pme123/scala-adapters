@@ -3,14 +3,17 @@
 # ~~~~
 
 # Index file for the JobCockpit.
-GET        /                             pme123.adapters.server.boundary.JobCockpitController.index
-# Websocket for live updates on Jobs
-GET        /ws/:jobIdent                 pme123.adapters.server.boundary.JobCockpitController.ws(jobIdent)
+GET        /                               pme123.adapters.server.boundary.JobCockpitController.index
+# Index file for the GenericResult.
+GET        /result                         pme123.adapters.server.boundary.GenericResultController.index
+# Websocket for live updates (LogEntries) on Jobs
+GET        /ws/:jobIdent                   pme123.adapters.server.boundary.JobCockpitController.ws(jobIdent)
 # API to get all the Jobs that are provided
-GET        /jobConfigs                   pme123.adapters.server.boundary.JobCockpitController.jobConfigs()
-
+GET        /jobConfigs                     pme123.adapters.server.boundary.JobCockpitController.jobConfigs()
+# API to get all the Client Configs that are registered for a jobConfig
+GET        /clientConfigs/:jobIdent        pme123.adapters.server.boundary.JobCockpitController.clientConfigs(jobIdent)
 # Map static resources from the /public folder to the /assets URL path
-GET        /assets/*file                 controllers.Assets.at(file)
-GET        /versionedAssets/*file        controllers.Assets.versioned(file)
+GET        /assets/*file                   controllers.Assets.at(file)
+GET        /versionedAssets/*file          controllers.Assets.versioned(file)
 
-->         /webjars                      webjars.Routes
+->         /webjars                        webjars.Routes

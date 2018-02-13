@@ -30,6 +30,7 @@ private[client] case class JobCockpitHeader(context: String, uiState: UIState)
       textFilter.bind}{//
       levelFilter.bind}{//
       runAdapterButton.bind}{//
+      clientsButton.bind}{//
       clearButton.bind}{//
       infoButton.bind}
     </div>
@@ -156,6 +157,23 @@ private[client] case class JobCockpitHeader(context: String, uiState: UIState)
               data:data-tooltip="Run the Adapter"
               data:data-position="bottom right">
         <i class="toggle right icon large"></i>
+      </button>
+    </div>
+  }
+
+  @dom
+  private def clientsButton = {
+    <div class="ui item">
+      <button class="ui basic icon button"
+              onclick={_: Event =>
+                showClients()
+                setTimeout(200) {
+                  import SemanticUI.jq2semantic
+                  jQuery(".ui.modal").modal("show")
+                }}
+              data:data-tooltip="Show the registered Clients"
+              data:data-position="bottom right">
+        <i class="list icon large"></i>
       </button>
     </div>
   }

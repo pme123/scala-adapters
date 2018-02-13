@@ -10,7 +10,6 @@ import akka.util.Timeout
 import play.api.Configuration
 import play.api.libs.concurrent.InjectedActorSupport
 import play.api.libs.json.JsValue
-import pme123.adapters.server.control.UserActor.CreateAdapter
 
 import scala.concurrent.ExecutionContext
 import scala.concurrent.duration._
@@ -23,7 +22,7 @@ class UserParentActor @Inject()(childFactory: UserActor.Factory,
                                (implicit ec: ExecutionContext)
   extends Actor with InjectedActorSupport with ActorLogging {
 
-  import UserParentActor._
+  import pme123.adapters.server.entity.ActorMessages._
 
   implicit private val timeout: Timeout = Timeout(2.seconds)
 
@@ -32,11 +31,8 @@ class UserParentActor @Inject()(childFactory: UserActor.Factory,
       val name = s"userActor-$id"
       log.info(s"Creating initiator actor $name")
       val child: ActorRef = injectedChild(childFactory(id, jobActor), name)
-      val future = (child ? CreateAdapter(id)).mapTo[Flow[JsValue, JsValue, _]]
+      val future = (child ? InitActor).mapTo[Flow[JsValue, JsValue, _]]
       pipe(future) to sender()
   }
 }
 
-object UserParentActor {
-  case class Create(id: String, adapterActor: ActorRef)
-}

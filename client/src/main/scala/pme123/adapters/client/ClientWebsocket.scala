@@ -9,7 +9,8 @@ import pme123.adapters.shared.{AdapterMsg, RunJob, RunStarted, _}
 
 import scala.scalajs.js.timers.setTimeout
 
-case class ClientWebsocket(uiState: UIState, context: String)
+case class ClientWebsocket(uiState: UIState
+                           , context: String)
   extends UIStore {
 
   private lazy val wsURL = s"${window.location.protocol.replace("http", "ws")}//${window.location.host}$context/ws"
@@ -47,6 +48,10 @@ case class ClientWebsocket(uiState: UIState, context: String)
               changeLastLogLevel(logReport)
             case JsSuccess(adapterInfo: ProjectInfo, _) =>
               changeAdapterInfo(adapterInfo)
+            case JsSuccess(GenericResult(payload), _) =>
+              addLastResult(payload)
+            case JsSuccess(GenericResults(payload), _) =>
+              replaceLastResults(payload)
             case JsSuccess(other, _) =>
               info(s"Other message: $other")
             case JsError(errors) =>
