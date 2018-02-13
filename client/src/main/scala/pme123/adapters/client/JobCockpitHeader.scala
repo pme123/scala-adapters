@@ -188,7 +188,7 @@ private[client] case class JobCockpitHeader(context: String, uiState: UIState)
                 setTimeout(200) {
                   jQuery(".ui.modal").modal("show")
                 }}
-              data:data-tooltip="Show the last JSON from the server"
+              data:data-tooltip="Show the last Result as JSON-Objects"
               data:data-position="bottom right">
         <i class="file code outline icon large"></i>
       </button>
