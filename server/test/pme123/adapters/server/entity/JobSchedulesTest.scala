@@ -2,7 +2,7 @@ package pme123.adapters.server.entity
 
 import java.time.{DayOfWeek, LocalDateTime}
 
-import pme123.adapters.server.control.demo.DemoJobFactory._
+import pme123.adapters.shared.demo.DemoJobs._
 import pme123.adapters.server.entity.AdaptersContext.settings.timezoneID
 
 class JobSchedulesTest
