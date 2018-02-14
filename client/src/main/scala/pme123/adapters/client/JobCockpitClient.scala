@@ -37,18 +37,12 @@ case class JobCockpitClient(context: String)
       logEntries
         .filter(le => le.level >= level)
         .filter(le => le.msg.toLowerCase.contains(text.toLowerCase))
+    scrollDown()
     <div class="ui main text container">
       <div id="log-panel" class="ui relaxed divided list">
         {Constants(filteredLE: _*).map(logEntry(_).bind)}
       </div>
     </div>
-  }
-
-  @dom
-  private def scrollDown(count: Int = 1) {
-    adapterContainer.bind
-    val objDiv = document.getElementById("log-panel")
-    objDiv.scrollTop = objDiv.scrollHeight - uiState.logData.value.size * 20
   }
 
   @dom
