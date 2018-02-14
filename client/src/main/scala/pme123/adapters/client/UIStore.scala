@@ -1,9 +1,7 @@
 package pme123.adapters.client
 
-import com.thoughtworks.binding.Binding
 import com.thoughtworks.binding.Binding.{Var, Vars}
-import org.scalajs.dom.raw.HTMLElement
-import play.api.libs.json.JsValue
+import play.api.libs.json._
 import pme123.adapters.shared._
 
 import scala.language.implicitConversions
@@ -114,9 +112,6 @@ trait UIStore extends Logger {
     uiState.showAdapterInfo.value = false
     uiState.logEntryDetail.value = None
   }
-
-  implicit def makeIntellijHappy(x: scala.xml.Elem): Binding[HTMLElement] = ???
-
 }
 
 case class UIState(logData: Vars[LogEntry] = Vars[LogEntry]()
@@ -133,5 +128,44 @@ case class UIState(logData: Vars[LogEntry] = Vars[LogEntry]()
                    , selectedJobConfig: Var[Option[JobConfig]] = Var(None)
                    , lastResults: Vars[JsValue] = Vars()
                    , allClients: Vars[ClientConfig] = Vars()
-
                   )
+
+object ToConcreteResults
+  extends Logger {
+
+  // type class
+  trait ConcreteResult[A] {
+    def fromJson(jsValue: JsValue): JsResult[A]
+  }
+
+  def toConcreteResults[A: ConcreteResult](concreteResults: Vars[A]
+                                           , lastResults: Seq[JsValue])
+                                          (implicit aConcreteResult: ConcreteResult[A]): Seq[A] = {
+
+    // use the ConcreteResult.fromJson to get the concrete result entity
+    def toConcreteResult(lastResult: JsValue): List[A] =
+      aConcreteResult.fromJson(lastResult) match {
+        case JsSuccess(cResult: A, _) =>
+          List(cResult)
+        case JsError(errors) =>
+          error(s"Problem parsing DemoResult: ${errors.map(e => s"${e._1} -> ${e._2}")}")
+          Nil
+      }
+
+    if (lastResults.isEmpty) {
+      concreteResults.value.clear()
+    }
+    else if (lastResults.size - concreteResults.value.size == 1) {
+      val iElem = toConcreteResult(lastResults.last)
+      info(s"added another ImageElem: $iElem")
+      concreteResults.value ++= iElem
+    }
+    else {
+      info("update all last results")
+      concreteResults.value ++= lastResults.flatMap(lr => toConcreteResult(lr))
+    }
+    concreteResults.value
+  }
+}
+
+
