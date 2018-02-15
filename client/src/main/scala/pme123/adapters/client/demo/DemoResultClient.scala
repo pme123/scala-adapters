@@ -30,8 +30,6 @@ case class DemoResultClient(context: String)
   @dom
   private def imageContainer = {
     val demoResults = uiState.lastResults.bind
-    info(s"demoResults adjusted ${demoResults.size}")
-
     <div>
       {Constants(updateImageElems(demoResults): _*)
       .map(_.imageElement.bind)}

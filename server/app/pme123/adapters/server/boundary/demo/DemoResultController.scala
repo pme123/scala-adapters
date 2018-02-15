@@ -6,8 +6,9 @@ import akka.actor._
 import controllers.AssetsFinder
 import play.api.Configuration
 import play.api.mvc._
-import pme123.adapters.server.boundary.{RESULT_CLIENT, WebsocketController}
+import pme123.adapters.server.boundary.AdaptersController
 import pme123.adapters.server.control.JobActorFactory
+import pme123.adapters.server.entity.RESULT_CLIENT
 
 import scala.concurrent.ExecutionContext
 
@@ -25,7 +26,7 @@ class DemoResultController @Inject()(val jobFactory: JobActorFactory
                                         , val config: Configuration)
                                        (implicit val ec: ExecutionContext)
   extends AbstractController(cc)
-    with WebsocketController {
+    with AdaptersController {
 
   // Home page that renders template
   def demoResults = Action { implicit request: Request[AnyContent] =>

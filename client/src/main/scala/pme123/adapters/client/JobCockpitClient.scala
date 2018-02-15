@@ -2,7 +2,6 @@ package pme123.adapters.client
 
 import com.thoughtworks.binding.Binding.Constants
 import com.thoughtworks.binding.{Binding, dom}
-import org.scalajs.dom.document
 import org.scalajs.dom.raw._
 import org.scalajs.jquery.jQuery
 import pme123.adapters.shared.LogEntry

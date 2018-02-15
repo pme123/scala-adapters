@@ -9,7 +9,8 @@ import pme123.adapters.shared.JobConfig.JobIdent
 private[client] case class ClientConfigDialog(uiState: UIState
                                               , context: String
                                               , jobIdent: JobIdent)
-  extends UIStore {
+  extends UIStore
+    with IntellijImplicits {
 
   // 1. level of abstraction
   // **************************

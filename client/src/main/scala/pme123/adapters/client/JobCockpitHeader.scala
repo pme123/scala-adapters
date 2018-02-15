@@ -7,6 +7,7 @@ import org.scalajs.jquery.jQuery
 import pme123.adapters.client.SemanticUI.jq2semantic
 import pme123.adapters.shared.{JobConfig, JobConfigs, LogLevel}
 
+import scala.language.implicitConversions
 import scala.scalajs.js.Dynamic.{global => g}
 import scala.scalajs.js.timers.setTimeout
 
