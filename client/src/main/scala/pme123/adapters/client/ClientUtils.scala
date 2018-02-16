@@ -25,5 +25,6 @@ trait ClientUtils
 }
 
 trait IntellijImplicits {
+  //noinspection NotImplementedCode
   implicit def makeIntellijHappy(x: scala.xml.Elem): Binding[HTMLElement] = ???
 }

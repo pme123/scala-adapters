@@ -1,19 +1,18 @@
 package pme123.adapters.server.control
 
 import akka.NotUsed
-import akka.actor.ActorSystem
 import akka.stream.scaladsl.{Flow, Framing}
-import akka.stream.{ActorAttributes, ActorMaterializer, Attributes, Supervision}
+import akka.stream.{ActorAttributes, Attributes, Supervision}
 import akka.util.ByteString
 import play.api.libs.json._
 import play.api.libs.ws.WSResponse
 import play.mvc.Http.Status
 import pme123.adapters.server.control.http.{WebAccessForbiddenException, WebBadStatusException, WebNotAcceptableException, WebNotFoundException}
-import pme123.adapters.server.entity.{JsonParseException, ObjectExpectedException, AdaptersException}
+import pme123.adapters.server.entity.{AdaptersException, JsonParseException, ObjectExpectedException}
 import pme123.adapters.shared.LogLevel.DEBUG
 import pme123.adapters.shared.{LogLevel, Logger}
 
-import scala.concurrent.{ExecutionContextExecutor, Future}
+import scala.concurrent.{ExecutionContext, Future}
 import scala.util.{Failure, Success, Try}
 
 /**
@@ -25,9 +24,7 @@ trait StreamsHelper
   val nrOfWorker = 10
   val maximumFrameLength = 10000
 
-  implicit val actorSystem: ActorSystem = ActorSystem("pme123-adapters-actors")
-  implicit val materializer: ActorMaterializer = ActorMaterializer()
-  implicit val executionService: ExecutionContextExecutor = actorSystem.dispatcher
+  implicit def ec: ExecutionContext
 
   protected lazy val unmarshalToString: Flow[ByteString, String, NotUsed] = {
     Flow[ByteString]

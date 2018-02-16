@@ -12,6 +12,6 @@ object AdaptersExtensions {
       Option(str).exists(_.trim.nonEmpty)
   }
 
-  implicit def isBlank(input: String): StringEx = new StringEx(input)
+  implicit def toStringEx(input: String): StringEx = new StringEx(input)
 
 }
