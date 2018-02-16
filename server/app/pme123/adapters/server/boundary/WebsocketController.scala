@@ -11,6 +11,7 @@ import controllers.AssetsFinder
 import play.api.Configuration
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc._
+import pme123.adapters.server.control.JobActor.JobDescr
 import pme123.adapters.server.control.JobActorFactory
 import pme123.adapters.server.control.http.SameOriginCheck
 import pme123.adapters.server.entity.ActorMessages.Create
@@ -44,7 +45,7 @@ class WebsocketController @Inject()(jobFactory: JobActorFactory
   def websocket(jobIdent: JobIdent, params: Map[String, ClientConfig.ClientProperty] = Map()): WebSocket = WebSocket.acceptOrResult[JsValue, JsValue] {
     case rh if sameOriginCheck(rh) =>
       val config = ClientConfig(rh.id.toString, jobIdent, params)
-      val actor = jobFactory.jobActorFor(jobIdent)
+      val actor = jobFactory.jobActorFor(JobDescr(jobIdent, params))
       wsFutureFlow(config, actor).map { flow =>
         Right(flow)
       }.recover {

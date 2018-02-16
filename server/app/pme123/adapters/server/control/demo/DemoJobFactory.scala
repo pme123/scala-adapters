@@ -31,9 +31,9 @@ class DemoJobFactory @Inject()(demoJob: DemoJobProcess
 
   def jobActorFor(jobDescr: JobDescr): ActorRef = jobActorFor(jobDescr.jobIdent)
 
-  def jobActorsForAll(jobIdent: JobIdent): Seq[ActorRef] = Seq(jobActorFor(jobIdent))
+  def allJobActorsFor(jobIdent: JobIdent): Seq[ActorRef] = Seq(jobActorFor(jobIdent))
 
-  def jobActorFor(jobIdent: JobIdent): ActorRef = {
+  private def jobActorFor(jobIdent: JobIdent): ActorRef = {
     jobIdent match {
       case "demoJob" => demoJobRef
       case "demoJobWithDefaultScheduler" => demoJobWithDefaultSchedulerRef

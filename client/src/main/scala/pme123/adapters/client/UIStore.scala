@@ -5,6 +5,7 @@ import play.api.libs.json._
 import pme123.adapters.shared._
 
 import scala.language.implicitConversions
+import scala.reflect.ClassTag
 
 trait UIStore extends Logger {
   protected def uiState: UIState
@@ -138,18 +139,21 @@ object ToConcreteResults
     def fromJson(jsValue: JsValue): JsResult[A]
   }
 
-  def toConcreteResults[A: ConcreteResult](concreteResults: Vars[A]
+  def toConcreteResults[A: ConcreteResult: ClassTag](concreteResults: Vars[A]
                                            , lastResults: Seq[JsValue])
                                           (implicit aConcreteResult: ConcreteResult[A]): Seq[A] = {
 
     // use the ConcreteResult.fromJson to get the concrete result entity
     def toConcreteResult(lastResult: JsValue): List[A] =
-      aConcreteResult.fromJson(lastResult) match {
-        case JsSuccess(cResult: A, _) =>
-          List(cResult)
-        case JsError(errors) =>
-          error(s"Problem parsing DemoResult: ${errors.map(e => s"${e._1} -> ${e._2}")}")
-          Nil
+      {
+        val clazz = implicitly[ClassTag[A]].runtimeClass
+        aConcreteResult.fromJson(lastResult) match {
+          case JsSuccess(cResult: A, _) if clazz.isInstance(cResult) =>
+            List(cResult)
+          case JsError(errors) =>
+            error(s"Problem parsing DemoResult: ${errors.map(e => s"${e._1} -> ${e._2}")}")
+            Nil
+        }
       }
 
     if (lastResults.isEmpty) {

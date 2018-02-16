@@ -44,18 +44,11 @@ class JobCockpitController @Inject()(val jobFactory: JobActorFactory
   def clientConfigs(jobIdent: JobIdent): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
     info(s"called clientConfigs for job $jobIdent")
     Future.sequence(
-      jobFactory.jobActorsForAll(jobIdent)
-        .map { job =>
-          (job ? GetClientConfigs).map { a =>
-            info(s"registered clients: $a")
-            a
-          }
-        }
-
-    ).map { a =>
-      info(s"registered clients2: $a")
-      a
-    }.map(_.asInstanceOf[List[ClientConfigs]])
+      jobFactory.allJobActorsFor(jobIdent)
+        .map (job =>
+          job ? GetClientConfigs
+        )
+    ).map(_.asInstanceOf[List[ClientConfigs]])
       .map(cc => cc.flatMap(_.clientConfigs))
       .map(clients => Ok(Json.toJson[Seq[ClientConfig]](clients)))
   }

@@ -8,8 +8,6 @@ trait JobActorFactory {
 
   def jobActorFor(jobDescr: JobDescr): ActorRef
 
-  def jobActorFor(jobIdent: JobIdent): ActorRef
-
-  def jobActorsForAll(jobIdent: JobIdent): Seq[ActorRef]
+  def allJobActorsFor(jobIdent: JobIdent): Seq[ActorRef]
 }
 

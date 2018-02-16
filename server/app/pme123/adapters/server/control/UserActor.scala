@@ -57,7 +57,7 @@ object UserActor {
 
   // used to inject the UserActors as childs of the UserParentActor
   trait Factory {
-    def apply(clientConfig: ClientConfig, adapterActor: ActorRef): Actor
+    def apply(clientConfig: ClientConfig, jobActor: ActorRef): Actor
   }
 
 }
