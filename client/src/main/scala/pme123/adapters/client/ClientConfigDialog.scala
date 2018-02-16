@@ -38,7 +38,8 @@ private[client] case class ClientConfigDialog(uiState: UIState
         <thead>
           <tr>
             <th>Client Id</th>
-            <th>Info</th>
+            <th>Job Ident</th>
+            <th>Job Parameters</th>
           </tr>
         </thead>
         <tbody>
@@ -52,12 +53,21 @@ private[client] case class ClientConfigDialog(uiState: UIState
   @dom
   private def propRow(clientConfig: ClientConfig) =
     <tr>
-      <td class="four wide">
+      <td class="three wide">
         {clientConfig.requestIdent}
       </td>
-      <td class="twelve wide">
-        {clientConfig.info}
+      <td class="three wide">
+        {clientConfig.jobIdent}
+      </td>
+      <td class="ten wide">
+        {Constants(clientConfig.clientParams.map{case (k, v) => param(s"$k=$v")}.toSeq:_*).map(_.bind)}
       </td>
     </tr>
+
+  @dom
+  private def param(param: String) =
+    <p>
+      {param}
+    </p>
 
 }

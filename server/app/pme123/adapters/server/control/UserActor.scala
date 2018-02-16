@@ -7,7 +7,7 @@ import akka.stream._
 import akka.util.Timeout
 import com.google.inject.assistedinject.Assisted
 import pme123.adapters.server.entity.ActorMessages.{InitActor, SubscribeClient, UnSubscribeClient}
-import pme123.adapters.shared.ClientConfig.RequestIdent
+import pme123.adapters.shared.ClientConfig
 
 import scala.concurrent.ExecutionContext
 import scala.concurrent.duration._
@@ -22,7 +22,7 @@ import scala.concurrent.duration._
   * @param jobActor the actor responsible for the Adapter process
   * @param ec       implicit CPU bound execution context.
   */
-class UserActor @Inject()(@Assisted requestIdent: RequestIdent
+class UserActor @Inject()(@Assisted clientConfig: ClientConfig
                           , @Assisted jobActor: ActorRef)
                          (implicit val mat: Materializer, val ec: ExecutionContext)
   extends UserWebsocket {
@@ -35,8 +35,8 @@ class UserActor @Inject()(@Assisted requestIdent: RequestIdent
     */
   override def receive: Receive = {
     case InitActor =>
-      info(s"Create Websocket for Client: $requestIdent")
-      jobActor ! SubscribeClient(requestIdent, wsActor)
+      info(s"Create Websocket for Client: $clientConfig")
+      jobActor ! SubscribeClient(clientConfig, wsActor)
       sender() ! websocketFlow(jobActor)
     case other =>
       info(s"Unexpected message from ${sender()}: $other")
@@ -47,8 +47,8 @@ class UserActor @Inject()(@Assisted requestIdent: RequestIdent
     * In our case unsubscribe the client in the AdapterActor
     */
   override def postStop(): Unit = {
-    info(s"Stopping $requestIdent: actor $self")
-    jobActor ! UnSubscribeClient(requestIdent)
+    info(s"Stopping $clientConfig: actor $self")
+    jobActor ! UnSubscribeClient(clientConfig)
   }
 
 }
@@ -57,7 +57,7 @@ object UserActor {
 
   // used to inject the UserActors as childs of the UserParentActor
   trait Factory {
-    def apply(requestIdent: RequestIdent, adapterActor: ActorRef): Actor
+    def apply(clientConfig: ClientConfig, adapterActor: ActorRef): Actor
   }
 
 }

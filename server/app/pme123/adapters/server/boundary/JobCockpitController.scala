@@ -14,7 +14,7 @@ import pme123.adapters.server.entity.JOB_CLIENT
 import pme123.adapters.shared.ClientConfig
 import pme123.adapters.shared.JobConfig.JobIdent
 
-import scala.concurrent.ExecutionContext
+import scala.concurrent.{ExecutionContext, Future}
 
 /**
   * This class creates the actions and the websocket needed.
@@ -43,9 +43,20 @@ class JobCockpitController @Inject()(val jobFactory: JobActorFactory
 
   def clientConfigs(jobIdent: JobIdent): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
     info(s"called clientConfigs for job $jobIdent")
-    (jobFactory.jobActorFor(jobIdent) ? GetClientConfigs)
-      .map(_.asInstanceOf[ClientConfigs])
-      .map(_.clientConfigs)
+    Future.sequence(
+      jobFactory.jobActorsForAll(jobIdent)
+        .map { job =>
+          (job ? GetClientConfigs).map { a =>
+            info(s"registered clients: $a")
+            a
+          }
+        }
+
+    ).map { a =>
+      info(s"registered clients2: $a")
+      a
+    }.map(_.asInstanceOf[List[ClientConfigs]])
+      .map(cc => cc.flatMap(_.clientConfigs))
       .map(clients => Ok(Json.toJson[Seq[ClientConfig]](clients)))
   }
 

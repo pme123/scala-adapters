@@ -38,13 +38,13 @@ class JobActor @Inject()(@Assisted jobIdent: JobIdent
   protected var isRunning = false
 
   // a map with all clients (Websocket-Actor) that needs the status about the process
-  private val clientActors: mutable.Map[String, ActorRef] = mutable.Map()
+  private val clientActors: mutable.Map[ClientConfig, ActorRef] = mutable.Map()
 
   // 1. level of abstraction
   // **************************
   def receive = LoggingReceive {
-    case SubscribeClient(clientIdent, wsActor) => subscribeClient(clientIdent, wsActor)
-    case UnSubscribeClient(clientIdent) => unsubscribeClient(clientIdent)
+    case SubscribeClient(clientConfig, wsActor) => subscribeClient(clientConfig, wsActor)
+    case UnSubscribeClient(clientConfig) => unsubscribeClient(clientConfig)
     case si: SchedulerInfo =>
       projectInfo = projectInfo.copy(schedulerInfo = Some(si))
       sendToSubscriber(projectInfo)
@@ -65,9 +65,9 @@ class JobActor @Inject()(@Assisted jobIdent: JobIdent
 
   // subscribe a user with its id and its websocket-Actor
   // this is called when the websocket for a user is created
-  private def subscribeClient(clientIdent: ClientIdent, wsActor: ActorRef) {
-    info(s"Subscribed User: $clientIdent: $wsActor")
-    val aRef = clientActors.getOrElseUpdate(clientIdent, wsActor)
+  private def subscribeClient(clientConfig: ClientConfig, wsActor: ActorRef) {
+    info(s"Subscribed User: $clientConfig: $wsActor")
+    val aRef = clientActors.getOrElseUpdate(clientConfig, wsActor)
     val status =
       if (isRunning)
         AdapterRunning(logService.get.logReport)
@@ -80,9 +80,9 @@ class JobActor @Inject()(@Assisted jobIdent: JobIdent
 
   // Unsubscribe a user(remove from the map)
   // this is called when the connection from a user websocket is closed
-  private def unsubscribeClient(clientIdent: ClientIdent) = {
-    info(s"Unsubscribe User: $clientIdent")
-    clientActors -= clientIdent
+  private def unsubscribeClient(clientConfig: ClientConfig) = {
+    info(s"Unsubscribe User: $clientConfig")
+    clientActors -= clientConfig
   }
 
   // called if a user runs the Adapter Process (Button)
@@ -146,8 +146,7 @@ class JobActor @Inject()(@Assisted jobIdent: JobIdent
 
   private def registeredClientConfigs() {
     info(s"registeredClientConfigs: ${}")
-    val configs = clientActors.keys.map(ClientConfig(_, "-"))
-    sender() ! ClientConfigs(configs.toSeq)
+    sender() ! ClientConfigs(clientActors.keys.toSeq)
   }
 }
 
@@ -163,5 +162,7 @@ object JobActor {
   case object GetClientConfigs
 
   case class ClientConfigs(clientConfigs: Seq[ClientConfig])
+
+  case class JobDescr(jobIdent: JobIdent, jobParams: Map[String, ClientConfig.ClientProperty] = Map())
 
 }
