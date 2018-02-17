@@ -33,8 +33,8 @@ case class ServerServices(uiState: UIState, context: String)
     callService(apiPath, toJobConfigs)
   }
 
-  def clientConfigs(jobIdent: JobIdent): Binding[HTMLElement] = {
-    val apiPath = s"$context/clientConfigs/$jobIdent"
+  def clientConfigs(): Binding[HTMLElement] = {
+    val apiPath = s"$context/clientConfigs"
 
     def toClientConfigs(jsValue: JsValue) = jsValue.validate[List[ClientConfig]] match {
       case JsSuccess(u, _) =>

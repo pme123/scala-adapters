@@ -11,19 +11,16 @@ import controllers.AssetsFinder
 import play.api.Configuration
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc._
-import pme123.adapters.server.control.JobActor.JobDescr
-import pme123.adapters.server.control.JobActorFactory
+import pme123.adapters.server.control.ClientParentActor.RegisterClient
 import pme123.adapters.server.control.http.SameOriginCheck
-import pme123.adapters.server.entity.ActorMessages.Create
 import pme123.adapters.shared.JobConfig.JobIdent
 import pme123.adapters.shared.{ClientConfig, Logger}
 
 import scala.concurrent.duration._
 import scala.concurrent.{ExecutionContext, Future}
 
-class WebsocketController @Inject()(jobFactory: JobActorFactory
-                                    , @Named("userParentActor")
-                                    userParentActor: ActorRef
+class WebsocketController @Inject()(@Named("clientParentActor")
+                                    clientParentActor: ActorRef
                                     , assetsFinder: AssetsFinder
                                     , cc: ControllerComponents
                                     , val config: Configuration)
@@ -45,8 +42,7 @@ class WebsocketController @Inject()(jobFactory: JobActorFactory
   def websocket(jobIdent: JobIdent, params: Map[String, ClientConfig.ClientProperty] = Map()): WebSocket = WebSocket.acceptOrResult[JsValue, JsValue] {
     case rh if sameOriginCheck(rh) =>
       val config = ClientConfig(rh.id.toString, jobIdent, params)
-      val actor = jobFactory.jobActorFor(JobDescr(jobIdent, params))
-      wsFutureFlow(config, actor).map { flow =>
+      wsFutureFlow(config).map { flow =>
         Right(flow)
       }.recover {
         case e: Exception =>
@@ -55,7 +51,6 @@ class WebsocketController @Inject()(jobFactory: JobActorFactory
           val result = InternalServerError(jsError)
           Left(result)
       }
-
     case rejected =>
       error(s"Request $rejected failed same origin check")
       Future.successful {
@@ -66,9 +61,9 @@ class WebsocketController @Inject()(jobFactory: JobActorFactory
   /**
     * Creates a Future containing a Flow of JsValue in and out.
     */
-  private def wsFutureFlow(clientConfig: ClientConfig, jobActor: ActorRef): Future[Flow[JsValue, JsValue, NotUsed]] = {
+  private def   wsFutureFlow(clientConfig: ClientConfig): Future[Flow[JsValue, JsValue, NotUsed]] = {
     // Use guice assisted injection to instantiate and configure the child actor.
-    val future: Future[Any] = userParentActor ? Create(clientConfig, jobActor)
+    val future: Future[Any] = clientParentActor ? RegisterClient(clientConfig)
     val futureFlow: Future[Flow[JsValue, JsValue, NotUsed]] = future.mapTo[Flow[JsValue, JsValue, NotUsed]]
     futureFlow
   }

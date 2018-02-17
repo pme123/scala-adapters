@@ -53,7 +53,6 @@ class JobActor @Inject()(@Assisted jobIdent: JobIdent
     case RunJobFromScheduler(nextExecution) =>
       doRunJob("From Scheduler")
       nextExecution()
-    case GetClientConfigs => registeredClientConfigs()
     case msg: AdapterMsg =>
       sendToSubscriber(msg)
     case other =>
@@ -144,10 +143,6 @@ class JobActor @Inject()(@Assisted jobIdent: JobIdent
       info("Writing LogReport to File is disabled.")
   }
 
-  private def registeredClientConfigs() {
-    info(s"registeredClientConfigs: ${}")
-    sender() ! ClientConfigs(clientActors.keys.toSeq)
-  }
 }
 
 object JobActor {
@@ -159,10 +154,14 @@ object JobActor {
 
   case class RunJobFromScheduler(schedulerInfo: () => Unit)
 
-  case object GetClientConfigs
-
   case class ClientConfigs(clientConfigs: Seq[ClientConfig])
 
-  case class JobDescr(jobIdent: JobIdent, jobParams: Map[String, ClientConfig.ClientProperty] = Map())
+  case class JobDescr(jobIdent: JobIdent, jobParams: Map[String, ClientConfig.ClientProperty] = Map()) {
+    def asString: String = jobIdent + jobParams.map{case (k,v) => s"$k -> $v"}.mkString("[","; ", "]")
+  }
 
+  // used to inject the JobActors as childs of the JobActorFactory
+  trait Factory {
+    def apply(jobIdent: JobIdent, jobProcess: JobProcess): Actor
+  }
 }

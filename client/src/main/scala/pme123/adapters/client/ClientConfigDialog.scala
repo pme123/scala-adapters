@@ -17,7 +17,7 @@ private[client] case class ClientConfigDialog(uiState: UIState
   @dom
   private[client] def showDetail(): Binding[HTMLElement] =
     <div class="ui modal">
-      {ServerServices(uiState, context).clientConfigs(jobIdent).bind}{//
+      {ServerServices(uiState, context).clientConfigs().bind}{//
       detailHeader.bind}{//
       clientsTable.bind}
     </div>

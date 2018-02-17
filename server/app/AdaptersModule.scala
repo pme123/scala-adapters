@@ -8,10 +8,15 @@ class AdaptersModule extends AbstractModule with AkkaGuiceSupport {
   override def configure(): Unit = {
     // framework
     LoggerConfig.factory = SLF4JLoggerFactory()
-    bindActor[UserParentActor]("userParentActor")
-    bindActorFactory[UserActor, UserActor.Factory]
+
+    bindActor[ClientParentActor]("clientParentActor")
+    bindActorFactory[ClientActor, ClientActor.Factory]
 
     bindActor[JobActorSchedulers]("actorSchedulers")
+    bindActor[JobParentActor]("jobParentActor")
+    bindActorFactory[JobActor, JobActor.Factory]
 
+    bind(classOf[ApplicationInitializer])
+      .asEagerSingleton()
   }
 }

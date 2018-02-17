@@ -2,26 +2,27 @@ package pme123.adapters.server.boundary
 
 import javax.inject._
 
+import akka.actor.ActorRef
 import akka.pattern.ask
 import controllers.AssetsFinder
 import play.api.Configuration
 import play.api.libs.json._
 import play.api.mvc._
-import pme123.adapters.server.control.JobActor.{ClientConfigs, GetClientConfigs}
-import pme123.adapters.server.control.JobActorFactory
+import pme123.adapters.server.control.ClientParentActor.GetClientConfigs
+import pme123.adapters.server.control.JobActor.ClientConfigs
 import pme123.adapters.server.entity.AdaptersContext.settings
 import pme123.adapters.server.entity.JOB_CLIENT
 import pme123.adapters.shared.ClientConfig
-import pme123.adapters.shared.JobConfig.JobIdent
 
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.ExecutionContext
 
 /**
   * This class creates the actions and the websocket needed.
   * Original see here: https://github.com/playframework/play-scala-websocket-example
   */
 @Singleton
-class JobCockpitController @Inject()(val jobFactory: JobActorFactory
+class JobCockpitController @Inject()(@Named("clientParentActor")
+                                     val clientParentActor: ActorRef
                                      , template: views.html.adapters.demo
                                      , assetsFinder: AssetsFinder
                                      , cc: ControllerComponents
@@ -41,15 +42,9 @@ class JobCockpitController @Inject()(val jobFactory: JobActorFactory
     Ok(Json.toJson(settings.jobConfigs)).as(JSON)
   }
 
-  def clientConfigs(jobIdent: JobIdent): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
-    info(s"called clientConfigs for job $jobIdent")
-    Future.sequence(
-      jobFactory.allJobActorsFor(jobIdent)
-        .map (job =>
-          job ? GetClientConfigs
-        )
-    ).map(_.asInstanceOf[List[ClientConfigs]])
-      .map(cc => cc.flatMap(_.clientConfigs))
+  def clientConfigs(): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
+    (clientParentActor ? GetClientConfigs)
+      .map(_.asInstanceOf[Seq[ClientConfig]])
       .map(clients => Ok(Json.toJson[Seq[ClientConfig]](clients)))
   }
 

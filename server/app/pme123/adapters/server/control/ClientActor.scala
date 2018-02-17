@@ -22,22 +22,23 @@ import scala.concurrent.duration._
   * @param jobActor the actor responsible for the Adapter process
   * @param ec       implicit CPU bound execution context.
   */
-class UserActor @Inject()(@Assisted clientConfig: ClientConfig
-                          , @Assisted jobActor: ActorRef)
-                         (implicit val mat: Materializer, val ec: ExecutionContext)
+class ClientActor @Inject()(@Assisted clientConfig: ClientConfig
+                            , @Assisted jobActor: ActorRef)
+                           (implicit val mat: Materializer, val ec: ExecutionContext)
   extends UserWebsocket {
 
+  import ClientActor._
   implicit private val timeout: Timeout = Timeout(50.millis)
 
-  /**
-    * The receive block, useful if other actors want to manipulate the flow.
-    * This is used by the UserParentActor to initiate the Websocket for a client.
-    */
+
+  // 1. level of abstraction
+  // **************************
+
   override def receive: Receive = {
-    case InitActor =>
-      info(s"Create Websocket for Client: $clientConfig")
-      jobActor ! SubscribeClient(clientConfig, wsActor)
-      sender() ! websocketFlow(jobActor)
+    case InitActor => init()
+    case GetClientConfig =>
+      info(s"GetClientConfig: $clientConfig")
+      sender() ! clientConfig
     case other =>
       info(s"Unexpected message from ${sender()}: $other")
   }
@@ -51,14 +52,24 @@ class UserActor @Inject()(@Assisted clientConfig: ClientConfig
     jobActor ! UnSubscribeClient(clientConfig)
   }
 
+  // 2. level of abstraction
+  // **************************
+  private def init() = {
+    info(s"Create Websocket for Client: $clientConfig")
+    jobActor ! SubscribeClient(clientConfig, wsActor)
+    sender() ! websocketFlow(jobActor)
+  }
+
 }
 
-object UserActor {
+object ClientActor {
 
   // used to inject the UserActors as childs of the UserParentActor
   trait Factory {
     def apply(clientConfig: ClientConfig, jobActor: ActorRef): Actor
   }
+
+  case object GetClientConfig
 
 }
 
