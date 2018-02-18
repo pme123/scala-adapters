@@ -110,10 +110,13 @@ class JobActor @Inject()(@Assisted jobConfig: JobConfig
           val newResult = filterConcreteResult(clientConfig, result)
           if (newResult.nonEmpty) {
             clientActor ! GenericResult(newResult.map(_.toJson).get, append = false)
-            1
+            Some(clientConfig)
           } else
-            0
-      }.sum)
+            None
+      }.filter(_.nonEmpty)
+        .map(_.get)
+        .toSeq
+    )
     lastResult = Some(result)
   }
 
@@ -176,7 +179,7 @@ object JobActor {
 
   case class ClientConfigs(clientConfigs: Seq[ClientConfig])
 
-  case class ClientsChange(count: Int)
+  case class ClientsChange(clientConfigs: Seq[ClientConfig])
 
   case class LastResult(payload: AConcreteResult)
 

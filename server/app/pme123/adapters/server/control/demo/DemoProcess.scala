@@ -32,8 +32,8 @@ trait DemoProcess extends JobProcess {
           .foreach(doSomeWork)
       (jobActor ? LastResult(DemoResults(DemoService.results)))
         .map{
-          case ClientsChange(count) =>
-            logService.info(s"The results of $count Clients have changed.")
+          case ClientsChange(clientConfigs) =>
+            logService.info(s"The results of ${clientConfigs.size} Clients have changed: ${clientConfigs.map(_.requestIdent).mkString("(", ", ", ")")}.")
         }
       logService
     }
