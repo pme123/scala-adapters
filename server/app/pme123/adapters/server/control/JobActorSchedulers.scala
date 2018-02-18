@@ -6,7 +6,7 @@ import javax.inject.{Inject, Singleton}
 import akka.actor.{Actor, ActorRef, ActorSystem, Cancellable}
 import akka.event.LoggingReceive
 import akka.stream.Materializer
-import pme123.adapters.server.control.JobActor.{JobDescr, RunJobFromScheduler}
+import pme123.adapters.server.control.JobActor.{JobConfig, RunJobFromScheduler}
 import pme123.adapters.server.entity.{DateTimeHelper, JobSchedule}
 import pme123.adapters.shared._
 
@@ -40,14 +40,14 @@ class JobActorSchedulers @Inject()()
   import JobActorSchedulers._
 
 
-  private val schedulerJobs: mutable.Map[JobDescr, Cancellable] = mutable.Map()
-  private val jobActors: mutable.Map[JobDescr, ActorRef] = mutable.Map()
+  private val schedulerJobs: mutable.Map[JobConfig, Cancellable] = mutable.Map()
+  private val jobActors: mutable.Map[JobConfig, ActorRef] = mutable.Map()
 
   // 1. level of abstraction
   // **************************
   def receive = LoggingReceive {
     case reg: RegisterSchedule => startJobSchedule(reg)
-    case unreg: SchedulerUnregister => stopJobSchedule(unreg.jobDescr)
+    case unreg: SchedulerUnregister => stopJobSchedule(unreg.jobConfig)
     case other =>
       warn(s"unexpected message: $other")
   }
@@ -59,7 +59,7 @@ class JobActorSchedulers @Inject()()
   //noinspection ConvertibleToMethodValue
   // (initNextExecution _) _ is needed - see https://stackoverflow.com/questions/45657747/deprecation-warning-when-compiling-eta-expansion-of-zero-argument-method
   private def startJobSchedule(schReg: RegisterSchedule): Cancellable = {
-    stopJobSchedule(schReg.jobDescr) // make sure there is no schedulerjob for this Job description
+    stopJobSchedule(schReg.jobConfig) // make sure there is no schedulerjob for this Job description
     info(s"Initialized JobSchedule for ${schReg.jobSchedule}")
 
     def initNextExecution(jobSchedule: JobSchedule)(): Instant = {
@@ -95,19 +95,19 @@ class JobActorSchedulers @Inject()()
     cancellable
   }
 
-  private def stopJobSchedule(jobDescr: JobDescr) {
-    schedulerJobs.find(_._1 == jobDescr)
+  private def stopJobSchedule(jobConfig: JobConfig) {
+    schedulerJobs.find(_._1 == jobConfig)
       .map(_._2.cancel())
-    schedulerJobs.remove(jobDescr)
-    jobActors.remove(jobDescr)
+    schedulerJobs.remove(jobConfig)
+    jobActors.remove(jobConfig)
   }
 
 }
 
 object JobActorSchedulers {
 
-  case class RegisterSchedule(jobDescr: JobDescr, jobSchedule: JobSchedule, jobActor: ActorRef)
+  case class RegisterSchedule(jobConfig: JobConfig, jobSchedule: JobSchedule, jobActor: ActorRef)
 
-  case class SchedulerUnregister(jobDescr: JobDescr, jobSchedule: JobSchedule, jobActor: ActorRef)
+  case class SchedulerUnregister(jobConfig: JobConfig, jobSchedule: JobSchedule, jobActor: ActorRef)
 }
 

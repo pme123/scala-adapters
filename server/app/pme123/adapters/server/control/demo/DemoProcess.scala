@@ -5,10 +5,11 @@ import javax.inject.Inject
 import akka.actor.ActorRef
 import akka.stream.Materializer
 import play.api.libs.json.Json
+import pme123.adapters.server.control.JobActor.LastResults
 import pme123.adapters.server.control.{JobProcess, LogService}
 import pme123.adapters.shared.LogLevel.{DEBUG, ERROR, INFO, WARN}
+import pme123.adapters.shared._
 import pme123.adapters.shared.demo.DemoResult
-import pme123.adapters.shared.{GenericResult, GenericResults, LogEntry, ProjectInfo}
 
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.Random
@@ -28,7 +29,7 @@ trait DemoProcess extends JobProcess {
       logService.startLogging()
      DemoService.results
           .foreach(doSomeWork)
-      jobActor ! GenericResults(DemoService.results.map(dr => Json.toJson(dr)))
+      jobActor ! LastResults(DemoService.results)
       logService
     }
   }

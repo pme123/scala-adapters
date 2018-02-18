@@ -6,8 +6,8 @@ import akka.actor.{Actor, ActorRef, ActorSystem}
 import akka.event.LoggingReceive
 import akka.stream.Materializer
 import play.api.libs.concurrent.InjectedActorSupport
-import pme123.adapters.server.control.JobActor.JobDescr
-import pme123.adapters.shared.JobConfig.JobIdent
+import pme123.adapters.server.control.JobActor.JobConfig
+import pme123.adapters.shared.JobConfigTempl.JobIdent
 import pme123.adapters.shared._
 
 import scala.collection.mutable
@@ -24,15 +24,15 @@ class JobParentActor @Inject()(jobCreation: JobCreation
 
   import JobParentActor._
 
-  private lazy val jobActors: mutable.Map[JobDescr, ActorRef] =
+  private lazy val jobActors: mutable.Map[JobConfig, ActorRef] =
     mutable.Map(jobCreation.createJobActorsOnStartUp().toSeq: _*)
 
   // 1. level of abstraction
   // **************************
   def receive = LoggingReceive {
     case InitJobParentActor => init()
-    case CreateJobActor(jobDescr) => sender() ! getOrCreateJobActor(jobDescr)
-    case RemoveJobActor(jobDescr) => //TODO
+    case CreateJobActor(jobConfig) => sender() ! getOrCreateJobActor(jobConfig)
+    case RemoveJobActor(jobConfig) => //TODO
     case GetAllJobActors(jobIdent) => allJobActorsFor(jobIdent)
     case other => warn(s"unexpected message: $other")
   }
@@ -45,10 +45,10 @@ class JobParentActor @Inject()(jobCreation: JobCreation
     jobActors.keys.foreach(jd => s"- ${jd.asString}")
   }
 
-  private def getOrCreateJobActor(jobDescr: JobDescr) =
-    jobActors.getOrElse(jobDescr, {
-      val jobActor = jobCreation.createJobActor(jobDescr)
-      jobActors.put(jobDescr, jobActor)
+  private def getOrCreateJobActor(jobConfig: JobConfig) =
+    jobActors.getOrElse(jobConfig, {
+      val jobActor = jobCreation.createJobActor(jobConfig)
+      jobActors.put(jobConfig, jobActor)
       jobActor
     })
 
@@ -64,9 +64,9 @@ object JobParentActor {
 
   case object InitJobParentActor
 
-  case class CreateJobActor(jobDescr: JobDescr)
+  case class CreateJobActor(jobConfig: JobConfig)
 
-  case class RemoveJobActor(jobDescr: JobDescr)
+  case class RemoveJobActor(jobConfig: JobConfig)
 
   case class GetAllJobActors(jobIdent: JobIdent)
 

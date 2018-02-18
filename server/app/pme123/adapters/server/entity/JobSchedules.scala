@@ -2,8 +2,8 @@ package pme123.adapters.server.entity
 
 import java.time.{DayOfWeek, Instant, LocalDate, LocalDateTime}
 
-import pme123.adapters.server.entity.AdaptersContext.settings.{jobConfigs, timezoneID}
-import pme123.adapters.shared.JobConfig.JobIdent
+import pme123.adapters.server.entity.AdaptersContext.settings.{jobConfigTempls, timezoneID}
+import pme123.adapters.shared.JobConfigTempl.JobIdent
 import pme123.adapters.shared.ScheduleConfig
 
 import scala.concurrent.duration._
@@ -16,7 +16,7 @@ case class JobSchedules(schedules: Map[JobIdent, JobSchedule]) {
 
 object JobSchedules {
   def apply(): JobSchedules = new JobSchedules(
-    jobConfigs.configs
+    jobConfigTempls.configs
       .filter(entry => entry._2.jobSchedule.nonEmpty)
       .map(entry => entry._1 -> JobSchedule(entry._1, entry._2.jobSchedule.get))
   )

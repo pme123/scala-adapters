@@ -5,7 +5,7 @@ import com.thoughtworks.binding.{Binding, dom}
 import org.scalajs.dom.raw.{Event, HTMLElement}
 import org.scalajs.jquery.jQuery
 import pme123.adapters.client.SemanticUI.jq2semantic
-import pme123.adapters.shared.{JobConfig, JobConfigs, LogLevel}
+import pme123.adapters.shared.{JobConfigTempl, JobConfigTempls, LogLevel}
 
 import scala.language.implicitConversions
 import scala.scalajs.js.Dynamic.{global => g}
@@ -26,7 +26,7 @@ private[client] case class JobCockpitHeader(context: String, uiState: UIState)
       <div class="ui item">
         <img src={"" + g.jsRoutes.controllers.Assets.versioned("images/favicon.png").url}></img>
       </div>{title.bind}{//
-      jobConfigs.bind //
+      jobConfigTempls.bind //
       }<div class="right menu">
       {lastLevel.bind}{//
       textFilter.bind}{//
@@ -51,35 +51,35 @@ private[client] case class JobCockpitHeader(context: String, uiState: UIState)
   }
 
   @dom
-  private def jobConfigs = {
-    val jobConfigs = uiState.jobConfigs.bind
+  private def jobConfigTempls = {
+    val jobConfigTempls = uiState.jobConfigTempls.bind
     val selectedJobConfig = uiState.selectedJobConfig.bind
     socket.connectWS(selectedJobConfig.map(_.ident))
     <div class="ui item">
       <span data:data-tooltip="Choose the adapter job"
             data:data-position="bottom right">
-        {selJobConfigSelect(jobConfigs).bind}
+        {selJobConfigSelect(jobConfigTempls).bind}
       </span>
     </div>
   }
 
   @dom
-  private def selJobConfigSelect(jobConfigs: JobConfigs) = {
-    <select id="jobConfigSelect"
+  private def selJobConfigSelect(jobConfigTempls: JobConfigTempls) = {
+    <select id="jobConfigTemplSelect"
             class="ui compact dropdown"
             onchange={_: Event =>
-              changeSelectedJobConfig(jobConfigs.fromIdent(s"${jobConfigSelect.value}"))}>
-      {Constants(jobConfigs.configs.values.map(selJobConfigOption).toSeq: _*)
+              changeSelectedJobConfig(jobConfigTempls.fromIdent(s"${jobConfigTemplSelect.value}"))}>
+      {Constants(jobConfigTempls.configs.values.map(selJobConfigOption).toSeq: _*)
       .map(_.bind)}
     </select>
   }
 
   @dom
-  private def selJobConfigOption(jobConfig: JobConfig) = {
+  private def selJobConfigOption(jobConfigTempl: JobConfigTempl) = {
     val selectedJC = uiState.selectedJobConfig.bind
-    val isSelected = selectedJC.forall(_.ident == jobConfig.ident)
-    <option value={jobConfig.ident} selected={isSelected}>
-      {jobConfig.ident}
+    val isSelected = selectedJC.forall(_.ident == jobConfigTempl.ident)
+    <option value={jobConfigTempl.ident} selected={isSelected}>
+      {jobConfigTempl.ident}
     </option>
   }
 

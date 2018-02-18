@@ -4,7 +4,7 @@ import com.thoughtworks.binding.Binding.Var
 import org.scalajs.dom.raw._
 import org.scalajs.dom.window
 import play.api.libs.json.{JsError, JsSuccess, Json}
-import pme123.adapters.shared.JobConfig.JobIdent
+import pme123.adapters.shared.JobConfigTempl.JobIdent
 import pme123.adapters.shared.{AdapterMsg, RunJob, RunStarted, _}
 
 import scala.scalajs.js.timers.setTimeout

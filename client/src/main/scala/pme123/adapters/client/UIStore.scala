@@ -79,14 +79,14 @@ trait UIStore extends Logger {
     uiState.showAdapterInfo.value = false
   }
 
-  protected def changeJobConfigs(jobConfigs: JobConfigs): Unit = {
-    info(s"UIStore: changeJobConfigs ${jobConfigs.configs.keys.mkString(", ")}")
-    uiState.jobConfigs.value = jobConfigs
+  protected def changeJobConfigs(jobConfigTempls: JobConfigTempls): Unit = {
+    info(s"UIStore: changeJobConfigs ${jobConfigTempls.configs.keys.mkString(", ")}")
+    uiState.jobConfigTempls.value = jobConfigTempls
   }
 
-  protected def changeSelectedJobConfig(jobConfig: Option[JobConfig]): Unit = {
-    info(s"UIStore: changeSelectedJobConfig ${jobConfig.map(_.ident)}")
-    uiState.selectedJobConfig.value = jobConfig
+  protected def changeSelectedJobConfig(jobConfigTempl: Option[JobConfigTempl]): Unit = {
+    info(s"UIStore: changeSelectedJobConfig ${jobConfigTempl.map(_.ident)}")
+    uiState.selectedJobConfig.value = jobConfigTempl
   }
 
   protected def replaceLastResults(lastResults: Seq[JsValue]) {
@@ -125,8 +125,8 @@ case class UIState(logData: Vars[LogEntry] = Vars[LogEntry]()
                    , showAdapterInfo: Var[Boolean] = Var(false)
                    , showClients: Var[Boolean] = Var(false)
                    , showLastResults: Var[Boolean] = Var(false)
-                   , jobConfigs: Var[JobConfigs] = Var(JobConfigs(Map()))
-                   , selectedJobConfig: Var[Option[JobConfig]] = Var(None)
+                   , jobConfigTempls: Var[JobConfigTempls] = Var(JobConfigTempls(Map()))
+                   , selectedJobConfig: Var[Option[JobConfigTempl]] = Var(None)
                    , lastResults: Vars[JsValue] = Vars()
                    , allClients: Vars[ClientConfig] = Vars()
                   )

@@ -9,7 +9,6 @@ import play.api.Configuration
 import play.api.libs.json._
 import play.api.mvc._
 import pme123.adapters.server.control.ClientParentActor.GetClientConfigs
-import pme123.adapters.server.control.JobActor.ClientConfigs
 import pme123.adapters.server.entity.AdaptersContext.settings
 import pme123.adapters.server.entity.JOB_CLIENT
 import pme123.adapters.shared.ClientConfig
@@ -37,9 +36,9 @@ class JobCockpitController @Inject()(@Named("clientParentActor")
     Ok(template(context, JOB_CLIENT, assetsFinder))
   }
 
-  def jobConfigs(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
-    info(s"called jobConfigs: ${settings.jobConfigs}")
-    Ok(Json.toJson(settings.jobConfigs)).as(JSON)
+  def jobConfigTempls(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
+    info(s"called jobConfigTempls: ${settings.jobConfigTempls}")
+    Ok(Json.toJson(settings.jobConfigTempls)).as(JSON)
   }
 
   def clientConfigs(): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>

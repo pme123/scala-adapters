@@ -3,14 +3,14 @@ package pme123.adapters.server.control
 import javax.inject.Inject
 
 import akka.actor.{Actor, ActorRef, Props}
-import akka.event.LoggingReceive
 import akka.stream.Materializer
 import com.google.inject.assistedinject.Assisted
+import pme123.adapters.server.control.JobActor.JobConfig
 import pme123.adapters.server.control.mail.MailNotifier
 import pme123.adapters.server.entity.ActorMessages.{SubscribeClient, UnSubscribeClient}
 import pme123.adapters.server.entity.AdaptersContext.settings._
 import pme123.adapters.server.entity.AdaptersException
-import pme123.adapters.shared.JobConfig.JobIdent
+import pme123.adapters.shared.JobConfigTempl.JobIdent
 import pme123.adapters.shared._
 
 import scala.collection.mutable
@@ -20,7 +20,7 @@ import scala.concurrent.{ExecutionContext, Future}
   * This actor runs the Adapter Process.
   * During this process it will inform all clients with LogEntries.
   */
-class JobActor @Inject()(@Assisted jobIdent: JobIdent
+class JobActor @Inject()(@Assisted jobConfig: JobConfig
                          , @Assisted jobProcess: JobProcess
                         )(implicit val mat: Materializer, val ec: ExecutionContext)
   extends Actor
@@ -40,9 +40,11 @@ class JobActor @Inject()(@Assisted jobIdent: JobIdent
   // a map with all clients (Websocket-Actor) that needs the status about the process
   private val clientActors: mutable.Map[ClientConfig, ActorRef] = mutable.Map()
 
+  private var lastResult: Option[Seq[AConcreteResult]] = None
+
   // 1. level of abstraction
   // **************************
-  def receive = LoggingReceive {
+  def receive = {
     case SubscribeClient(clientConfig, wsActor) => subscribeClient(clientConfig, wsActor)
     case UnSubscribeClient(clientConfig) => unsubscribeClient(clientConfig)
     case si: SchedulerInfo =>
@@ -55,6 +57,7 @@ class JobActor @Inject()(@Assisted jobIdent: JobIdent
       nextExecution()
     case msg: AdapterMsg =>
       sendToSubscriber(msg)
+    case LastResults(results) => checkAndFilter(results)
     case other =>
       warn(s"unexpected message: $other")
   }
@@ -93,18 +96,31 @@ class JobActor @Inject()(@Assisted jobIdent: JobIdent
       info(s"run Adapter: $sender")
       isRunning = true
       sendToSubscriber(RunStarted)
-      implicit val logServ: LogService = LogService(s"Run Job: $jobIdent", user, Some(self))
+      implicit val logServ: LogService = LogService(s"Run Job: ${jobConfig.asString}", user, Some(self))
       logService = Some(logServ)
       handleImportResult(jobProcess.runJob(user))
     }
   }
 
+  private def checkAndFilter(results: Seq[AConcreteResult]): Unit =
+    clientActors.foreach {
+      case (clientConfig, clientActor) =>
+        val newResult = filterConcreteResults(clientConfig, results)
+        if (newResult.nonEmpty) {
+          lastResult = Some(newResult)
+          clientActor ! GenericResults(newResult.map(_.toJson))
+        }
+    }
 
-  protected def sendToSubscriber(logEntry: LogEntry): Unit =
-    sendToSubscriber(LogEntryMsg(logEntry))
+  private def filterConcreteResults(clientConfig: ClientConfig
+                                    , concreteResults: Seq[AConcreteResult]): Seq[AConcreteResult] = {
+    val newResult = concreteResults.filter(_.filter(clientConfig))
+    val oldResult = lastResult.map(_.filter(_.filter(clientConfig)))
+    if (oldResult.contains(newResult)) Nil else newResult
+  }
 
   // sends an AdapterMsg to all subscribed users
-  protected def sendToSubscriber(adapterMsg: AdapterMsg): Unit =
+  private def sendToSubscriber(adapterMsg: AdapterMsg): Unit =
     clientActors.values
       .foreach(_ ! adapterMsg)
 
@@ -148,20 +164,22 @@ class JobActor @Inject()(@Assisted jobIdent: JobIdent
 object JobActor {
   type ClientIdent = String
 
-  def props(jobIdent: JobIdent, jobProcess: JobProcess)
+  def props(jobConfig: JobConfig, jobProcess: JobProcess)
            (implicit mat: Materializer, ec: ExecutionContext): Props =
-    Props(new JobActor(jobIdent, jobProcess))
+    Props(new JobActor(jobConfig, jobProcess))
 
   case class RunJobFromScheduler(schedulerInfo: () => Unit)
 
   case class ClientConfigs(clientConfigs: Seq[ClientConfig])
 
-  case class JobDescr(jobIdent: JobIdent, jobParams: Map[String, ClientConfig.ClientProperty] = Map()) {
+  case class LastResults(payload: Seq[AConcreteResult])
+
+  case class JobConfig(jobIdent: JobIdent, jobParams: Map[String, ClientConfig.ClientProperty] = Map()) {
     def asString: String = jobIdent + jobParams.map{case (k,v) => s"$k -> $v"}.mkString("[","; ", "]")
   }
 
   // used to inject the JobActors as childs of the JobActorFactory
   trait Factory {
-    def apply(jobIdent: JobIdent, jobProcess: JobProcess): Actor
+    def apply(jobConfig: JobConfig, jobProcess: JobProcess): Actor
   }
 }

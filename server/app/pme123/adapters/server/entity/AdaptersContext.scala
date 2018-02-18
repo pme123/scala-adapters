@@ -36,7 +36,7 @@ object AdaptersSettings extends Logger {
   val processLogPathProp = "process.log.path"
   val wsocketHostsAllowedProp = "wsocket.hosts.allowed"
 
-  val jobConfigsProp = "job.configs"
+  val jobConfigTemplsProp = "job.configs"
 
   def config(): Config = {
     ConfigFactory.invalidateCaches()
@@ -94,8 +94,8 @@ class AdaptersSettings(config: Config) extends Logger {
   val isProdMode: Boolean = runMode == "PROD"
   val isDevMode: Boolean = runMode == "DEV"
 
-  val  jobConfigs : JobConfigs =  JobConfigs(
-    projectConfig.getConfigList(jobConfigsProp).asScala.toList
+  val  jobConfigTempls : JobConfigTempls =  JobConfigTempls(
+    projectConfig.getConfigList(jobConfigTemplsProp).asScala.toList
       .map{ c =>
       JobConfigCreator(c, ZoneId.of(timezone)).create()
     }.toMap
@@ -131,7 +131,7 @@ class AdaptersContext(config: Config)
       , AdaptersContextProp(adminMailRecipientProp, settings.adminMailRecipient)
       , AdaptersContextProp(adminMailSubjectProp, settings.adminMailSubject)
       , AdaptersContextProp(adminMailLoglevelProp, settings.adminMailLoglevel)
-      , AdaptersContextProp(jobConfigsProp, settings.jobConfigs.toString)
+      , AdaptersContextProp(jobConfigTemplsProp, settings.jobConfigTempls.toString)
       , AdaptersContextProp(processLogEnabledProp, settings.processLogEnabled)
       , AdaptersContextProp(processLogPathProp, settings.processLogPath)
       , AdaptersContextProp(wsocketHostsAllowedProp, settings.wsocketHostsAllowed)

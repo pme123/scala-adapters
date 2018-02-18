@@ -11,7 +11,7 @@ import play.api.Configuration
 import play.api.libs.concurrent.InjectedActorSupport
 import play.api.libs.json.JsValue
 import pme123.adapters.server.control.ClientActor.GetClientConfig
-import pme123.adapters.server.control.JobActor.JobDescr
+import pme123.adapters.server.control.JobActor.JobConfig
 import pme123.adapters.server.control.JobParentActor.CreateJobActor
 import pme123.adapters.server.entity.ActorMessages.InitActor
 import pme123.adapters.shared.{ClientConfig, Logger}
@@ -50,7 +50,7 @@ class ClientParentActor @Inject()(@Named("jobParentActor")
     info(s"Creating ClientActor $name")
 
     val future =
-      (jobParentActor ? CreateJobActor(JobDescr(clientConfig.jobIdent, clientConfig.clientParams)))
+      (jobParentActor ? CreateJobActor(JobConfig(clientConfig.jobIdent, clientConfig.clientParams)))
         .map(_.asInstanceOf[ActorRef])
         .flatMap { jobActor =>
           val child: ActorRef = injectedChild(childFactory(clientConfig, jobActor), name)

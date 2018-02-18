@@ -3,15 +3,15 @@ package pme123.adapters.server.entity
 import java.time.ZoneId
 
 import com.typesafe.config.Config
-import pme123.adapters.shared.{JobConfig, ScheduleConfig}
+import pme123.adapters.shared.{JobConfigTempl, ScheduleConfig}
 
 case class JobConfigCreator(config: Config, timezone: ZoneId) {
 
   import JobConfigCreator._
 
-  def create(): (String, JobConfig) = {
+  def create(): (String, JobConfigTempl) = {
     val ident = config.getString(jobIdentProp)
-    ident -> JobConfig(
+    ident -> JobConfigTempl(
       ident
       , if (config.hasPath(scheduleProp))
         Some(ScheduleConfigCreator(config.getConfig(scheduleProp), timezone).create())

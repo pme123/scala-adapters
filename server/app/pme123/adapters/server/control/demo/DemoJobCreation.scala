@@ -4,7 +4,7 @@ import javax.inject.{Inject, Named, Singleton}
 
 import akka.actor.{ActorRef, ActorSystem}
 import akka.stream.Materializer
-import pme123.adapters.server.control.JobActor.JobDescr
+import pme123.adapters.server.control.JobActor.JobConfig
 import pme123.adapters.server.control.{JobActor, JobCreation}
 import pme123.adapters.server.entity.ServiceException
 import pme123.adapters.shared.demo.DemoJobs._
@@ -21,11 +21,11 @@ class DemoJobCreation @Inject()(demoJob: DemoJobProcess
                                 , val ec: ExecutionContext)
   extends JobCreation {
 
-  private lazy val demoJobRef = system.actorOf(JobActor.props(demoJobIdent, demoJob), demoJobIdent)
-  private lazy val demoJobWithDefaultSchedulerRef = system.actorOf(JobActor.props(demoJobWithDefaultSchedulerIdent, demoJobWithDefaultScheduler), demoJobWithDefaultSchedulerIdent)
-  private lazy val demoJobWithoutSchedulerRef = system.actorOf(JobActor.props(demoJobWithoutSchedulerIdent, demoJobWithoutScheduler), demoJobWithoutSchedulerIdent)
+  private lazy val demoJobRef = system.actorOf(JobActor.props(JobConfig(demoJobIdent), demoJob), demoJobIdent)
+  private lazy val demoJobWithDefaultSchedulerRef = system.actorOf(JobActor.props(JobConfig(demoJobWithDefaultSchedulerIdent), demoJobWithDefaultScheduler), demoJobWithDefaultSchedulerIdent)
+  private lazy val demoJobWithoutSchedulerRef = system.actorOf(JobActor.props(JobConfig(demoJobWithoutSchedulerIdent), demoJobWithoutScheduler), demoJobWithoutSchedulerIdent)
 
-  def createJobActor(jobDescr: JobDescr): ActorRef = jobDescr.jobIdent match {
+  def createJobActor(jobConfig: JobConfig): ActorRef = jobConfig.jobIdent match {
     case "demoJob" => demoJobRef
     case "demoJobWithDefaultScheduler" => demoJobWithDefaultSchedulerRef
     case "demoJobWithoutScheduler" => demoJobWithoutSchedulerRef

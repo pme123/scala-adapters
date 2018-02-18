@@ -13,7 +13,7 @@ import play.api.libs.json.{JsValue, Json}
 import play.api.mvc._
 import pme123.adapters.server.control.ClientParentActor.RegisterClient
 import pme123.adapters.server.control.http.SameOriginCheck
-import pme123.adapters.shared.JobConfig.JobIdent
+import pme123.adapters.shared.JobConfigTempl.JobIdent
 import pme123.adapters.shared.{ClientConfig, Logger}
 
 import scala.concurrent.duration._

@@ -2,7 +2,7 @@ package pme123.adapters.shared
 
 import julienrf.json.derived
 import play.api.libs.json.OFormat
-import pme123.adapters.shared.JobConfig.JobIdent
+import pme123.adapters.shared.JobConfigTempl.JobIdent
 
 case class ClientConfig(requestIdent: ClientConfig.RequestIdent
                         , jobIdent: JobIdent

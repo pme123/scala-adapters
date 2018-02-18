@@ -17,7 +17,7 @@ case class JobCockpitClient(context: String)
   protected def render: Binding[HTMLElement] = {
     <div>
       {JobCockpitHeader(context, uiState).showHeader().bind}{//
-      ServerServices(uiState, context).jobConfigs().bind}{//
+      ServerServices(uiState, context).jobConfigTempls().bind}{//
       adapterContainer.bind}{//
       renderDetail.bind}{//
       renderLogEntryDetail.bind}{//

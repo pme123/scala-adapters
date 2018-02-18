@@ -4,8 +4,8 @@ import com.thoughtworks.binding.{Binding, FutureBinding, dom}
 import org.scalajs.dom.ext.Ajax
 import org.scalajs.dom.raw.HTMLElement
 import play.api.libs.json.{JsError, JsSuccess, JsValue, Json}
-import pme123.adapters.shared.JobConfig.JobIdent
-import pme123.adapters.shared.{ClientConfig, JobConfigs}
+import pme123.adapters.shared.JobConfigTempl.JobIdent
+import pme123.adapters.shared.{ClientConfig, JobConfigTempls}
 
 import scala.scalajs.concurrent.JSExecutionContext.Implicits.queue
 import scala.util.{Failure, Success}
@@ -16,10 +16,10 @@ import scala.util.{Failure, Success}
 case class ServerServices(uiState: UIState, context: String)
   extends UIStore {
 
-  def jobConfigs(): Binding[HTMLElement] = {
-    val apiPath = s"$context/jobConfigs"
+  def jobConfigTempls(): Binding[HTMLElement] = {
+    val apiPath = s"$context/jobConfigTempls"
 
-    def toJobConfigs(jsValue: JsValue) = jsValue.validate[JobConfigs] match {
+    def toJobConfigs(jsValue: JsValue) = jsValue.validate[JobConfigTempls] match {
       case JsSuccess(jc, _) =>
         changeJobConfigs(jc)
         // select first if no one is set already
