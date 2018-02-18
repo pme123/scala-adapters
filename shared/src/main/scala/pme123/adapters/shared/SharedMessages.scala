@@ -50,9 +50,9 @@ case class ProjectInfo(adapterVersion: String
                        , schedulerInfo: Option[SchedulerInfo] = None
                       ) extends AdapterMsg
 
-case class GenericResult(payload: JsValue) extends AdapterMsg
+case class GenericResult(payload: JsValue, append: Boolean = true) extends AdapterMsg
 
-case class GenericResults(payload: Seq[JsValue]) extends AdapterMsg
+case class GenericResults(payload: Seq[JsValue], append: Boolean = false) extends AdapterMsg
 
 object GenericResults {
   implicit val jsonFormat: OFormat[GenericResults] = derived.oformat[GenericResults]()

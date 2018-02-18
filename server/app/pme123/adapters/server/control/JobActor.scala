@@ -40,7 +40,7 @@ class JobActor @Inject()(@Assisted jobConfig: JobConfig
   // a map with all clients (Websocket-Actor) that needs the status about the process
   private val clientActors: mutable.Map[ClientConfig, ActorRef] = mutable.Map()
 
-  private var lastResult: Option[Seq[AConcreteResult]] = None
+  private var lastResult: Option[AConcreteResult] = None
 
   // 1. level of abstraction
   // **************************
@@ -57,7 +57,7 @@ class JobActor @Inject()(@Assisted jobConfig: JobConfig
       nextExecution()
     case msg: AdapterMsg =>
       sendToSubscriber(msg)
-    case LastResults(results) => checkAndFilter(results)
+    case LastResult(result) => checkAndFilter(result)
     case other =>
       warn(s"unexpected message: $other")
   }
@@ -78,6 +78,7 @@ class JobActor @Inject()(@Assisted jobConfig: JobConfig
     // inform the user about the actual status
     aRef ! status
     aRef ! projectInfo
+    lastResult.foreach(lr => aRef ! GenericResult(lr.toJson))
   }
 
   // Unsubscribe a user(remove from the map)
@@ -102,21 +103,21 @@ class JobActor @Inject()(@Assisted jobConfig: JobConfig
     }
   }
 
-  private def checkAndFilter(results: Seq[AConcreteResult]): Unit =
+  private def checkAndFilter(result: AConcreteResult): Unit =
     clientActors.foreach {
       case (clientConfig, clientActor) =>
-        val newResult = filterConcreteResults(clientConfig, results)
+        val newResult = filterConcreteResult(clientConfig, result)
         if (newResult.nonEmpty) {
-          lastResult = Some(newResult)
-          clientActor ! GenericResults(newResult.map(_.toJson))
+          lastResult = newResult
+          clientActor ! GenericResult(newResult.map(_.toJson).get, append = false)
         }
     }
 
-  private def filterConcreteResults(clientConfig: ClientConfig
-                                    , concreteResults: Seq[AConcreteResult]): Seq[AConcreteResult] = {
-    val newResult = concreteResults.filter(_.filter(clientConfig))
-    val oldResult = lastResult.map(_.filter(_.filter(clientConfig)))
-    if (oldResult.contains(newResult)) Nil else newResult
+  private def filterConcreteResult(clientConfig: ClientConfig
+                                    , concreteResult: AConcreteResult): Option[AConcreteResult] = {
+    val newResult = Some(concreteResult).filter(_.filter(clientConfig))
+    val oldResult = lastResult.filter(_.filter(clientConfig))
+    if (oldResult == newResult) None else newResult
   }
 
   // sends an AdapterMsg to all subscribed users
@@ -172,7 +173,7 @@ object JobActor {
 
   case class ClientConfigs(clientConfigs: Seq[ClientConfig])
 
-  case class LastResults(payload: Seq[AConcreteResult])
+  case class LastResult(payload: AConcreteResult)
 
   case class JobConfig(jobIdent: JobIdent, jobParams: Map[String, ClientConfig.ClientProperty] = Map()) {
     def asString: String = jobIdent + jobParams.map{case (k,v) => s"$k -> $v"}.mkString("[","; ", "]")
