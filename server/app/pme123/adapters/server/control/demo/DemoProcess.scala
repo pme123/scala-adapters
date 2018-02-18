@@ -3,9 +3,10 @@ package pme123.adapters.server.control.demo
 import javax.inject.Inject
 
 import akka.actor.ActorRef
+import akka.pattern.ask
 import akka.stream.Materializer
 import play.api.libs.json.Json
-import pme123.adapters.server.control.JobActor.LastResult
+import pme123.adapters.server.control.JobActor.{ClientsChange, LastResult}
 import pme123.adapters.server.control.{JobProcess, LogService}
 import pme123.adapters.shared.LogLevel.{DEBUG, ERROR, INFO, WARN}
 import pme123.adapters.shared._
@@ -29,7 +30,11 @@ trait DemoProcess extends JobProcess {
       logService.startLogging()
      DemoService.results
           .foreach(doSomeWork)
-      jobActor ! LastResult(DemoResults(DemoService.results))
+      (jobActor ? LastResult(DemoResults(DemoService.results)))
+        .map{
+          case ClientsChange(count) =>
+            logService.info(s"The results of $count Clients have changed.")
+        }
       logService
     }
   }

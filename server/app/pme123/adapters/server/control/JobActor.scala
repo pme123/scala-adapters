@@ -103,18 +103,22 @@ class JobActor @Inject()(@Assisted jobConfig: JobConfig
     }
   }
 
-  private def checkAndFilter(result: AConcreteResult): Unit =
-    clientActors.foreach {
-      case (clientConfig, clientActor) =>
-        val newResult = filterConcreteResult(clientConfig, result)
-        if (newResult.nonEmpty) {
-          lastResult = newResult
-          clientActor ! GenericResult(newResult.map(_.toJson).get, append = false)
-        }
-    }
+  private def checkAndFilter(result: AConcreteResult): Unit = {
+    sender() ! ClientsChange(
+      clientActors.map {
+        case (clientConfig, clientActor) =>
+          val newResult = filterConcreteResult(clientConfig, result)
+          if (newResult.nonEmpty) {
+            clientActor ! GenericResult(newResult.map(_.toJson).get, append = false)
+            1
+          } else
+            0
+      }.sum)
+    lastResult = Some(result)
+  }
 
   private def filterConcreteResult(clientConfig: ClientConfig
-                                    , concreteResult: AConcreteResult): Option[AConcreteResult] = {
+                                   , concreteResult: AConcreteResult): Option[AConcreteResult] = {
     val newResult = Some(concreteResult.clientFiltered(clientConfig))
     val oldResult = lastResult.map(_.clientFiltered(clientConfig))
     if (oldResult == newResult) None else newResult
@@ -125,11 +129,10 @@ class JobActor @Inject()(@Assisted jobConfig: JobConfig
     clientActors.values
       .foreach(_ ! adapterMsg)
 
-
   // helper to finish import and notify the Admin
   private def handleImportResult(result: Future[LogService]) = {
     def logAndNotify() {
-      result.foreach{ls=>
+      result.foreach { ls =>
         ls.stopLogging()
         isRunning = false
         sendToSubscriber(RunFinished(ls.logReport))
@@ -173,14 +176,17 @@ object JobActor {
 
   case class ClientConfigs(clientConfigs: Seq[ClientConfig])
 
+  case class ClientsChange(count: Int)
+
   case class LastResult(payload: AConcreteResult)
 
   case class JobConfig(jobIdent: JobIdent, jobParams: Map[String, ClientConfig.ClientProperty] = Map()) {
-    def asString: String = jobIdent + jobParams.map{case (k,v) => s"$k -> $v"}.mkString("[","; ", "]")
+    def asString: String = jobIdent + jobParams.map { case (k, v) => s"$k -> $v" }.mkString("[", "; ", "]")
   }
 
   // used to inject the JobActors as childs of the JobActorFactory
   trait Factory {
     def apply(jobConfig: JobConfig, jobProcess: JobProcess): Actor
   }
+
 }
