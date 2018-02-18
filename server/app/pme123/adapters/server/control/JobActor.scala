@@ -115,8 +115,8 @@ class JobActor @Inject()(@Assisted jobConfig: JobConfig
 
   private def filterConcreteResult(clientConfig: ClientConfig
                                     , concreteResult: AConcreteResult): Option[AConcreteResult] = {
-    val newResult = Some(concreteResult).filter(_.filter(clientConfig))
-    val oldResult = lastResult.filter(_.filter(clientConfig))
+    val newResult = Some(concreteResult.clientFiltered(clientConfig))
+    val oldResult = lastResult.map(_.clientFiltered(clientConfig))
     if (oldResult == newResult) None else newResult
   }
 

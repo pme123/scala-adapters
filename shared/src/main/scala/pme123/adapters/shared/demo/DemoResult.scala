@@ -4,7 +4,7 @@ import play.api.libs.json.{JsValue, Json, OFormat}
 import pme123.adapters.shared.{AConcreteResult, ClientConfig}
 
 case class DemoResults(demoResults: Seq[DemoResult]) extends AConcreteResult {
-  override def filter(clientConfig: ClientConfig): Boolean = true
+  override def clientFiltered(clientConfig: ClientConfig): DemoResults = this
 
   override def toJson: JsValue = Json.toJson(this)
 }

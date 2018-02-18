@@ -5,7 +5,7 @@ import play.api.libs.json.JsValue
 
 trait AConcreteResult {
 
-  def filter(clientConfig: ClientConfig): Boolean
+  def clientFiltered(clientConfig: ClientConfig): AConcreteResult
 
   def toJson: JsValue
 
