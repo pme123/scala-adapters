@@ -48,10 +48,10 @@ case class ClientWebsocket(uiState: UIState
               changeLastLogLevel(logReport)
             case JsSuccess(adapterInfo: ProjectInfo, _) =>
               changeAdapterInfo(adapterInfo)
-            case JsSuccess(GenericResult(payload), _) =>
-              addLastResult(payload)
-            case JsSuccess(GenericResults(payload), _) =>
-              replaceLastResults(payload)
+            case JsSuccess(GenericResult(payload, append), _) =>
+              replaceLastResult(payload, append)
+            case JsSuccess(GenericResults(payload, append), _) =>
+              replaceLastResults(payload,append)
             case JsSuccess(other, _) =>
               info(s"Other message: $other")
             case JsError(errors) =>

@@ -89,14 +89,17 @@ trait UIStore extends Logger {
     uiState.selectedJobConfig.value = jobConfigTempl
   }
 
-  protected def replaceLastResults(lastResults: Seq[JsValue]) {
+  protected def replaceLastResults(lastResults: Seq[JsValue], append: Boolean) {
     info(s"UIStore: replaceLastResults")
-    uiState.lastResults.value.clear()
+    if (!append)
+      uiState.lastResults.value.clear()
     uiState.lastResults.value ++= lastResults
   }
 
-  protected def addLastResult(lastResult: JsValue) {
+  protected def replaceLastResult(lastResult: JsValue, append: Boolean) {
     info(s"UIStore: addLastResult: $lastResult")
+    if (!append)
+      uiState.lastResults.value.clear()
     uiState.lastResults.value += lastResult
   }
 
@@ -139,22 +142,21 @@ object ToConcreteResults
     def fromJson(jsValue: JsValue): JsResult[A]
   }
 
-  def toConcreteResults[A: ConcreteResult: ClassTag](concreteResults: Vars[A]
-                                           , lastResults: Seq[JsValue])
-                                          (implicit aConcreteResult: ConcreteResult[A]): Seq[A] = {
+  def toConcreteResults[A: ConcreteResult : ClassTag](concreteResults: Vars[A]
+                                                      , lastResults: Seq[JsValue])
+                                                     (implicit aConcreteResult: ConcreteResult[A]): Seq[A] = {
 
     // use the ConcreteResult.fromJson to get the concrete result entity
-    def toConcreteResult(lastResult: JsValue): List[A] =
-      {
-        val clazz = implicitly[ClassTag[A]].runtimeClass
-        aConcreteResult.fromJson(lastResult) match {
-          case JsSuccess(cResult: A, _) if clazz.isInstance(cResult) =>
-            List(cResult)
-          case JsError(errors) =>
-            error(s"Problem parsing DemoResult: ${errors.map(e => s"${e._1} -> ${e._2}")}")
-            Nil
-        }
+    def toConcreteResult(lastResult: JsValue): List[A] = {
+      val clazz = implicitly[ClassTag[A]].runtimeClass
+      aConcreteResult.fromJson(lastResult) match {
+        case JsSuccess(cResult: A, _) if clazz.isInstance(cResult) =>
+          List(cResult)
+        case JsError(errors) =>
+          error(s"Problem parsing DemoResult: ${errors.map(e => s"${e._1} -> ${e._2}")}")
+          Nil
       }
+    }
 
     if (lastResults.isEmpty) {
       concreteResults.value.clear()
