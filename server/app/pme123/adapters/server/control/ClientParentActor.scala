@@ -13,8 +13,8 @@ import play.api.libs.json.JsValue
 import pme123.adapters.server.control.ClientActor.GetClientConfig
 import pme123.adapters.server.control.JobParentActor.CreateJobActor
 import pme123.adapters.server.entity.ActorMessages.InitActor
-import pme123.adapters.shared.{ChangedJobConfig, ClientConfig, Logger}
 import pme123.adapters.server.entity.AdaptersContext.settings.jobConfigs
+import pme123.adapters.shared.{ClientConfig, Logger}
 
 import scala.concurrent.duration._
 import scala.concurrent.{ExecutionContext, Future}

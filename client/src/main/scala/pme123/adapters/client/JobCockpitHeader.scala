@@ -46,8 +46,9 @@ private[client] case class JobCockpitHeader(context: String, websocketPath:Strin
 
   @dom
   private def title = {
+    val clientConfig = uiState.selectedClientConfig.bind
     <div class="ui header item">
-      {s"Job Cockpit "}
+      {s"Job Cockpit: ${clientConfig.map(_.jobIdent).getOrElse("")}"}
     </div>
   }
   /*
