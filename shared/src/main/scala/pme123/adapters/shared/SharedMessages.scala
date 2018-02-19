@@ -50,6 +50,8 @@ case class ProjectInfo(adapterVersion: String
                        , schedulerInfo: Option[SchedulerInfo] = None
                       ) extends AdapterMsg
 
+case class ClientConfigMsg(clientConfig: ClientConfig) extends AdapterMsg
+
 case class GenericResult(payload: JsValue, append: Boolean = true) extends AdapterMsg
 
 case class GenericResults(payload: Seq[JsValue], append: Boolean = false) extends AdapterMsg

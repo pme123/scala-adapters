@@ -84,9 +84,9 @@ trait UIStore extends Logger {
     uiState.jobConfigs.value = jobConfigs
   }
 
-  protected def changeSelectedJobConfig(jobConfig: Option[JobConfig]): Unit = {
-    println(s"UIStore: changeSelectedJobConfig ${jobConfig.map(_.jobIdent)}")
-    uiState.selectedJobConfig.value = jobConfig
+  protected def changeSelectedClientConfig(clientConfig: Option[ClientConfig]): Unit = {
+    println(s"UIStore: changeSelectedClientConfig ${clientConfig.map(_.jobIdent)}")
+    uiState.selectedClientConfig.value = clientConfig
   }
 
   protected def replaceLastResults(lastResults: Seq[JsValue], append: Boolean) {
@@ -129,7 +129,7 @@ case class UIState(logData: Vars[LogEntry] = Vars[LogEntry]()
                    , showClients: Var[Boolean] = Var(false)
                    , showLastResults: Var[Boolean] = Var(false)
                    , jobConfigs: Var[JobConfigs] = Var(JobConfigs())
-                   , selectedJobConfig: Var[Option[JobConfig]] = Var(None)
+                   , selectedClientConfig: Var[Option[ClientConfig]] = Var(None)
                    , lastResults: Vars[JsValue] = Vars()
                    , allClients: Vars[ClientConfig] = Vars()
                   )

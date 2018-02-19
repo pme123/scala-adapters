@@ -5,7 +5,6 @@ import org.scalajs.dom.ext.Ajax
 import org.scalajs.dom.raw.HTMLElement
 import play.api.libs.json.{JsError, JsSuccess, JsValue, Json}
 import pme123.adapters.shared.{ClientConfig, JobConfigs}
-import slogging.{ConsoleLoggerFactory, LoggerConfig}
 
 import scala.scalajs.concurrent.JSExecutionContext.Implicits.queue
 import scala.util.{Failure, Success}
@@ -21,14 +20,10 @@ case class ServerServices(uiState: UIState, context: String)
 
     def toJobConfigs(jsValue: JsValue) = jsValue.validate[JobConfigs] match {
       case JsSuccess(jc, _) =>
-        println("success")
         changeJobConfigs(jc)
-        // select first if no one is set already
-        uiState.selectedJobConfig.value
-          .getOrElse(changeSelectedJobConfig(jc.configs.headOption))
         ""
       case JsError(errors) =>
-        println("errors")
+        error(s"errors: $errors")
         s"Problem parsing JobConfigs: ${errors.map(e => s"${e._1} -> ${e._2}")}"
     }
 

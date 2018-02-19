@@ -75,6 +75,7 @@ class JobActor @Inject()(@Assisted jobConfig: JobConfig
         AdapterNotRunning(logService.map(_.logReport))
     // inform the user about the actual status
     aRef ! status
+    aRef ! ClientConfigMsg(clientConfig)
     aRef ! projectInfo
     lastResult.foreach(lr => aRef ! GenericResult(lr.toJson))
   }

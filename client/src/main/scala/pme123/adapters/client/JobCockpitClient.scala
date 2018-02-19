@@ -103,7 +103,8 @@ case class JobCockpitClient(context: String, websocketPath: String)
   @dom
   private def renderClientConfigsDetail = {
     val showClients = uiState.showClients.bind
-    val selectedJobConfig = uiState.selectedJobConfig.bind
+    val selectedJobConfig = uiState.selectedClientConfig.bind
+    info(s"showClients: $selectedJobConfig")
     if (showClients && selectedJobConfig.isDefined)
       <div>
         {ClientConfigDialog(uiState, context, selectedJobConfig.get.jobIdent)
@@ -116,7 +117,7 @@ case class JobCockpitClient(context: String, websocketPath: String)
   @dom
   private def renderLastResultsDetail = {
     val showLastResults = uiState.showLastResults.bind
-    val selectedJobConfig = uiState.selectedJobConfig.bind
+    val selectedJobConfig = uiState.selectedClientConfig.bind
     if (showLastResults && selectedJobConfig.isDefined)
       <div>
         {LastResultDialog(uiState, context, selectedJobConfig.get.jobIdent)

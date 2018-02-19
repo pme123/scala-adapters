@@ -3,7 +3,9 @@
 # ~~~~
 
 # Index file for the JobCockpit.
-GET        /                               pme123.adapters.server.boundary.JobCockpitController.index
+GET        /                             pme123.adapters.server.boundary.demo.DemoResultController.index
+
+GET        /jobProcess/:jobIdent         pme123.adapters.server.boundary.JobCockpitController.jobProcess(jobIdent)
 # Index file for the DemoResults.
 GET        /demoResults                  pme123.adapters.server.boundary.demo.DemoResultController.demoResults
 # Websocket for live updates (LogEntries) on Jobs

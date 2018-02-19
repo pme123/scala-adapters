@@ -13,8 +13,9 @@ import play.api.libs.json.JsValue
 import pme123.adapters.server.control.ClientActor.GetClientConfig
 import pme123.adapters.server.control.JobParentActor.CreateJobActor
 import pme123.adapters.server.entity.ActorMessages.InitActor
-import pme123.adapters.shared.{ClientConfig, Logger}
+import pme123.adapters.shared.{ChangedJobConfig, ClientConfig, Logger}
 import pme123.adapters.server.entity.AdaptersContext.settings.jobConfigs
+
 import scala.concurrent.duration._
 import scala.concurrent.{ExecutionContext, Future}
 /**
@@ -50,9 +51,6 @@ class ClientParentActor @Inject()(@Named("jobParentActor")
     val jobConfig = jobConfigs(clientConfig.jobIdent).copy(jobParams =  clientConfig.clientParams)
     val future =
       (jobParentActor ? CreateJobActor(jobConfig))
-          .map{d=>
-            d
-          }
         .map(_.asInstanceOf[ActorRef])
         .flatMap { jobActor =>
           val child: ActorRef = injectedChild(childFactory(clientConfig, jobActor), name)
@@ -61,8 +59,7 @@ class ClientParentActor @Inject()(@Named("jobParentActor")
         case exc:Exception =>
           error(exc, s"Problem create JobActor: $clientConfig")
       }
-
-    pipe(future) to sender()
+     pipe(future) to sender()
   }
 
   private def allClientConfigs() {

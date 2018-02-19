@@ -12,6 +12,7 @@ import pme123.adapters.server.control.ClientParentActor.GetClientConfigs
 import pme123.adapters.server.control.JobParentActor.GetAllJobConfigs
 import pme123.adapters.server.entity.AdaptersContext.settings
 import pme123.adapters.server.entity.{JOB_CLIENT, ObjectExpectedException}
+import pme123.adapters.shared.JobConfig.JobIdent
 import pme123.adapters.shared.{ClientConfig, JobConfig, JobConfigs}
 
 import scala.concurrent.ExecutionContext
@@ -33,11 +34,10 @@ class JobCockpitController @Inject()(@Named("clientParentActor")
   extends AbstractController(cc)
     with AdaptersController {
 
-  // Home page that renders template
-  def index = Action { implicit request: Request[AnyContent] =>
+  def jobProcess(jobIdent: JobIdent) = Action { implicit request: Request[AnyContent] =>
     // uses the AssetsFinder API
     Ok(template(context, JOB_CLIENT
-      , "" // no websocket path //TODO use jobIdent
+      , s"/$jobIdent"
       , assetsFinder))
   }
 
@@ -46,7 +46,7 @@ class JobCockpitController @Inject()(@Named("clientParentActor")
     (jobParentActor ? GetAllJobConfigs)
       .map {
         case jobConfigs: Seq[JobConfig] =>
-          Ok(Json.toJson(JobConfigs(jobConfigs.toSeq))).as(JSON)
+          Ok(Json.toJson(JobConfigs(jobConfigs))).as(JSON)
         case other => throw ObjectExpectedException(s"Get all JobConfigs returned an unexpected result: $other")
       }
   }

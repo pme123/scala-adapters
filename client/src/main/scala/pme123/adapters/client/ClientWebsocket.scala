@@ -47,6 +47,8 @@ case class ClientWebsocket(uiState: UIState
               changeLastLogLevel(logReport)
             case JsSuccess(adapterInfo: ProjectInfo, _) =>
               changeAdapterInfo(adapterInfo)
+            case JsSuccess(ClientConfigMsg(clientConfig), _) =>
+              changeSelectedClientConfig(Some(clientConfig))
             case JsSuccess(GenericResult(payload, append), _) =>
               replaceLastResult(payload, append)
             case JsSuccess(GenericResults(payload, append), _) =>
