@@ -4,20 +4,21 @@ import com.thoughtworks.binding.Binding.Constants
 import com.thoughtworks.binding.{Binding, dom}
 import org.scalajs.dom.raw._
 import org.scalajs.jquery.jQuery
-import pme123.adapters.shared.LogEntry
+import pme123.adapters.shared.{LogEntry, Logger}
+import slogging.{ConsoleLoggerFactory, LoggerConfig}
 
 import scala.language.implicitConversions
 import scala.scalajs.js.annotation.JSExportTopLevel
 import scala.scalajs.js.timers.setTimeout
 
-case class JobCockpitClient(context: String)
+case class JobCockpitClient(context: String, websocketPath: String)
   extends AdaptersClient {
 
   @dom
   protected def render: Binding[HTMLElement] = {
     <div>
-      {JobCockpitHeader(context, uiState).showHeader().bind}{//
-      ServerServices(uiState, context).jobConfigTempls().bind}{//
+      {JobCockpitHeader(context, websocketPath, uiState).showHeader().bind}{//
+      ServerServices(uiState, context).jobConfigs().bind}{//
       adapterContainer.bind}{//
       renderDetail.bind}{//
       renderLogEntryDetail.bind}{//
@@ -105,7 +106,7 @@ case class JobCockpitClient(context: String)
     val selectedJobConfig = uiState.selectedJobConfig.bind
     if (showClients && selectedJobConfig.isDefined)
       <div>
-        {ClientConfigDialog(uiState, context, selectedJobConfig.get.ident)
+        {ClientConfigDialog(uiState, context, selectedJobConfig.get.jobIdent)
         .showDetail().bind}
       </div>
     else
@@ -118,7 +119,7 @@ case class JobCockpitClient(context: String)
     val selectedJobConfig = uiState.selectedJobConfig.bind
     if (showLastResults && selectedJobConfig.isDefined)
       <div>
-        {LastResultDialog(uiState, context, selectedJobConfig.get.ident)
+        {LastResultDialog(uiState, context, selectedJobConfig.get.jobIdent)
         .showDetail().bind}
       </div>
     else
@@ -127,11 +128,13 @@ case class JobCockpitClient(context: String)
 
 }
 
-object JobCockpitClient {
+object JobCockpitClient
+  extends Logger {
+  LoggerConfig.factory = ConsoleLoggerFactory()
 
   @JSExportTopLevel("client.JobCockpitClient.main")
-  def main(context: String): Unit = {
-    println(s"JobCockpitClient $context")
-    JobCockpitClient(context).create()
+  def main(context: String, websocketPath: String): Unit = {
+    info(s"JobCockpitClient $context$websocketPath")
+    JobCockpitClient(context, websocketPath).create()
   }
 }

@@ -4,9 +4,9 @@ import javax.inject.{Inject, Named, Singleton}
 
 import akka.actor.{ActorRef, ActorSystem}
 import akka.stream.Materializer
-import pme123.adapters.server.control.JobActor.JobConfig
 import pme123.adapters.server.control.{JobActor, JobCreation}
 import pme123.adapters.server.entity.ServiceException
+import pme123.adapters.shared.JobConfig
 import pme123.adapters.shared.demo.DemoJobs._
 
 import scala.concurrent.ExecutionContext

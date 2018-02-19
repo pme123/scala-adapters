@@ -4,7 +4,7 @@ import java.time.Instant
 
 import julienrf.json.derived
 import play.api.libs.json.OFormat
-import pme123.adapters.shared.JobConfigTempl.JobIdent
+import pme123.adapters.shared.JobConfig.JobIdent
 
 case class AdaptersContextProp(key: String, value: String)
 

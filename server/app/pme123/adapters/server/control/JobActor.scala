@@ -5,12 +5,10 @@ import javax.inject.Inject
 import akka.actor.{Actor, ActorRef, Props}
 import akka.stream.Materializer
 import com.google.inject.assistedinject.Assisted
-import pme123.adapters.server.control.JobActor.JobConfig
 import pme123.adapters.server.control.mail.MailNotifier
 import pme123.adapters.server.entity.ActorMessages.{SubscribeClient, UnSubscribeClient}
 import pme123.adapters.server.entity.AdaptersContext.settings._
 import pme123.adapters.server.entity.AdaptersException
-import pme123.adapters.shared.JobConfigTempl.JobIdent
 import pme123.adapters.shared._
 
 import scala.collection.mutable
@@ -182,10 +180,6 @@ object JobActor {
   case class ClientsChange(clientConfigs: Seq[ClientConfig])
 
   case class LastResult(payload: AConcreteResult)
-
-  case class JobConfig(jobIdent: JobIdent, jobParams: Map[String, ClientConfig.ClientProperty] = Map()) {
-    def asString: String = jobIdent + jobParams.map { case (k, v) => s"$k -> $v" }.mkString("[", "; ", "]")
-  }
 
   // used to inject the JobActors as childs of the JobActorFactory
   trait Factory {

@@ -4,7 +4,9 @@ import com.thoughtworks.binding.Binding.Constants
 import com.thoughtworks.binding.{Binding, dom}
 import org.scalajs.dom.raw._
 import pme123.adapters.client.{AdaptersClient, ClientWebsocket}
+import pme123.adapters.shared.Logger
 import pme123.adapters.shared.demo.DemoJobs.demoJobWithoutSchedulerIdent
+import slogging.{ConsoleLoggerFactory, LoggerConfig}
 
 import scala.language.implicitConversions
 import scala.scalajs.js.annotation.JSExportTopLevel
@@ -19,7 +21,7 @@ case class DemoResultClient(context: String)
 
   @dom
   protected def render: Binding[HTMLElement] = {
-    socket.connectWS(Some(demoJobWithoutSchedulerIdent))
+    socket.connectWS(Some(s"/$demoJobWithoutSchedulerIdent"))
     <div>
       {imageContainer.bind}
     </div>
@@ -37,11 +39,14 @@ case class DemoResultClient(context: String)
   }
 }
 
-object DemoResultClient {
+object DemoResultClient extends Logger {
+
+  LoggerConfig.factory = ConsoleLoggerFactory()
 
   @JSExportTopLevel("client.DemoResultClient.main")
   def main(context: String): Unit = {
-    println(s"DemoResultClient $context")
+
+    info(s"DemoResultClient $context")
     DemoResultClient(context).create()
   }
 }

@@ -6,8 +6,7 @@ import akka.actor.{Actor, ActorRef, ActorSystem}
 import akka.event.LoggingReceive
 import akka.stream.Materializer
 import play.api.libs.concurrent.InjectedActorSupport
-import pme123.adapters.server.control.JobActor.JobConfig
-import pme123.adapters.shared.JobConfigTempl.JobIdent
+import pme123.adapters.shared.JobConfig.JobIdent
 import pme123.adapters.shared._
 
 import scala.collection.mutable
@@ -33,6 +32,7 @@ class JobParentActor @Inject()(jobCreation: JobCreation
     case InitJobParentActor => init()
     case CreateJobActor(jobConfig) => sender() ! getOrCreateJobActor(jobConfig)
     case RemoveJobActor(jobConfig) => //TODO
+    case GetAllJobConfigs => sender() ! jobActors.keys.toSeq
     case GetAllJobActors(jobIdent) => allJobActorsFor(jobIdent)
     case other => warn(s"unexpected message: $other")
   }
@@ -67,6 +67,8 @@ object JobParentActor {
   case class CreateJobActor(jobConfig: JobConfig)
 
   case class RemoveJobActor(jobConfig: JobConfig)
+
+  case object GetAllJobConfigs
 
   case class GetAllJobActors(jobIdent: JobIdent)
 

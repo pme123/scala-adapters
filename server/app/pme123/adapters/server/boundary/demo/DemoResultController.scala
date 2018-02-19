@@ -26,7 +26,9 @@ class DemoResultController @Inject()(template: views.html.adapters.demo
   // Home page that renders template
   def demoResults = Action { implicit request: Request[AnyContent] =>
     // uses the AssetsFinder API
-    Ok(template(context, RESULT_CLIENT, assetsFinder))
+    Ok(template(context, RESULT_CLIENT
+      , "" // no websocket path
+      , assetsFinder))
   }
 
 }

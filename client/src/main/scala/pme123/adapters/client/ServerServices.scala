@@ -4,8 +4,8 @@ import com.thoughtworks.binding.{Binding, FutureBinding, dom}
 import org.scalajs.dom.ext.Ajax
 import org.scalajs.dom.raw.HTMLElement
 import play.api.libs.json.{JsError, JsSuccess, JsValue, Json}
-import pme123.adapters.shared.JobConfigTempl.JobIdent
-import pme123.adapters.shared.{ClientConfig, JobConfigTempls}
+import pme123.adapters.shared.{ClientConfig, JobConfigs}
+import slogging.{ConsoleLoggerFactory, LoggerConfig}
 
 import scala.scalajs.concurrent.JSExecutionContext.Implicits.queue
 import scala.util.{Failure, Success}
@@ -16,17 +16,19 @@ import scala.util.{Failure, Success}
 case class ServerServices(uiState: UIState, context: String)
   extends UIStore {
 
-  def jobConfigTempls(): Binding[HTMLElement] = {
-    val apiPath = s"$context/jobConfigTempls"
+  def jobConfigs(): Binding[HTMLElement] = {
+    val apiPath = s"$context/jobConfigs"
 
-    def toJobConfigs(jsValue: JsValue) = jsValue.validate[JobConfigTempls] match {
+    def toJobConfigs(jsValue: JsValue) = jsValue.validate[JobConfigs] match {
       case JsSuccess(jc, _) =>
+        println("success")
         changeJobConfigs(jc)
         // select first if no one is set already
         uiState.selectedJobConfig.value
-          .getOrElse(changeSelectedJobConfig(jc.configs.values.headOption))
+          .getOrElse(changeSelectedJobConfig(jc.configs.headOption))
         ""
       case JsError(errors) =>
+        println("errors")
         s"Problem parsing JobConfigs: ${errors.map(e => s"${e._1} -> ${e._2}")}"
     }
 
@@ -47,7 +49,7 @@ case class ServerServices(uiState: UIState, context: String)
     callService(apiPath, toClientConfigs)
   }
 
-  @dom private def callService(apiPath: String, toEntity: (JsValue) => String) = {
+  @dom private def callService(apiPath: String, toEntity: (JsValue) => String): Binding[HTMLElement] = {
     FutureBinding(Ajax.get(apiPath))
       .bind match {
       case None =>
@@ -56,7 +58,7 @@ case class ServerServices(uiState: UIState, context: String)
         </div>
       case Some(Success(response)) =>
         val json: JsValue = Json.parse(response.responseText)
-        info(s"Json received from $apiPath: ${json.toString().take(20)}")
+        println(s"Json received from $apiPath: ${json.toString().take(20)}")
         <div>
           {toEntity(json)}
         </div>

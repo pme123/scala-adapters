@@ -6,7 +6,7 @@ import javax.inject.{Inject, Singleton}
 import akka.actor.{Actor, ActorRef, ActorSystem, Cancellable}
 import akka.event.LoggingReceive
 import akka.stream.Materializer
-import pme123.adapters.server.control.JobActor.{JobConfig, RunJobFromScheduler}
+import pme123.adapters.server.control.JobActor.RunJobFromScheduler
 import pme123.adapters.server.entity.{DateTimeHelper, JobSchedule}
 import pme123.adapters.shared._
 

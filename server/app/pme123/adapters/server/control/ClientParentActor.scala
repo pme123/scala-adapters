@@ -11,11 +11,10 @@ import play.api.Configuration
 import play.api.libs.concurrent.InjectedActorSupport
 import play.api.libs.json.JsValue
 import pme123.adapters.server.control.ClientActor.GetClientConfig
-import pme123.adapters.server.control.JobActor.JobConfig
 import pme123.adapters.server.control.JobParentActor.CreateJobActor
 import pme123.adapters.server.entity.ActorMessages.InitActor
 import pme123.adapters.shared.{ClientConfig, Logger}
-
+import pme123.adapters.server.entity.AdaptersContext.settings.jobConfigs
 import scala.concurrent.duration._
 import scala.concurrent.{ExecutionContext, Future}
 /**
@@ -48,14 +47,20 @@ class ClientParentActor @Inject()(@Named("jobParentActor")
   private def registerClient(clientConfig: ClientConfig) = {
     val name = s"clientActor-${clientConfig.requestIdent}"
     info(s"Creating ClientActor $name")
-
+    val jobConfig = jobConfigs(clientConfig.jobIdent).copy(jobParams =  clientConfig.clientParams)
     val future =
-      (jobParentActor ? CreateJobActor(JobConfig(clientConfig.jobIdent, clientConfig.clientParams)))
+      (jobParentActor ? CreateJobActor(jobConfig))
+          .map{d=>
+            d
+          }
         .map(_.asInstanceOf[ActorRef])
         .flatMap { jobActor =>
           val child: ActorRef = injectedChild(childFactory(clientConfig, jobActor), name)
           (child ? InitActor).mapTo[Flow[JsValue, JsValue, _]]
-        }
+        }.recover{
+        case exc:Exception =>
+          error(exc, s"Problem create JobActor: $clientConfig")
+      }
 
     pipe(future) to sender()
   }

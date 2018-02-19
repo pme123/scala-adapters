@@ -4,7 +4,7 @@ import com.thoughtworks.binding.Binding.Constants
 import com.thoughtworks.binding.{Binding, dom}
 import org.scalajs.dom.raw.HTMLElement
 import play.api.libs.json.JsValue
-import pme123.adapters.shared.JobConfigTempl.JobIdent
+import pme123.adapters.shared.JobConfig.JobIdent
 
 private[client] case class LastResultDialog(uiState: UIState
                                             , context: String

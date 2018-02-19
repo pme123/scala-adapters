@@ -4,7 +4,6 @@ import com.thoughtworks.binding.Binding.Var
 import org.scalajs.dom.raw._
 import org.scalajs.dom.window
 import play.api.libs.json.{JsError, JsSuccess, Json}
-import pme123.adapters.shared.JobConfigTempl.JobIdent
 import pme123.adapters.shared.{AdapterMsg, RunJob, RunStarted, _}
 
 import scala.scalajs.js.timers.setTimeout
@@ -19,10 +18,10 @@ case class ClientWebsocket(uiState: UIState
   private val reconnectWSCode = 3001
 
 
-  def connectWS(selJobIdent: Option[JobIdent]) {
+  def connectWS(maybeWebPath: Option[String]) {
     closeWS()
-    selJobIdent.foreach { ji =>
-      val path = s"$wsURL/$ji"
+    maybeWebPath.foreach { webPath =>
+      val path = s"$wsURL$webPath"
       val socket = new WebSocket(path)
       webSocket.value = Some(socket)
       info(s"Connect to Websocket: $path")
@@ -70,7 +69,7 @@ case class ClientWebsocket(uiState: UIState
         info("closed socket" + e.reason)
         if (e.code != reconnectWSCode) {
           setTimeout(1000) {
-            connectWS(selJobIdent) // try to reconnect automatically
+            connectWS(maybeWebPath) // try to reconnect automatically
           }
         }
       }

@@ -9,9 +9,10 @@ import play.api.Configuration
 import play.api.libs.json._
 import play.api.mvc._
 import pme123.adapters.server.control.ClientParentActor.GetClientConfigs
+import pme123.adapters.server.control.JobParentActor.GetAllJobConfigs
 import pme123.adapters.server.entity.AdaptersContext.settings
-import pme123.adapters.server.entity.JOB_CLIENT
-import pme123.adapters.shared.ClientConfig
+import pme123.adapters.server.entity.{JOB_CLIENT, ObjectExpectedException}
+import pme123.adapters.shared.{ClientConfig, JobConfig, JobConfigs}
 
 import scala.concurrent.ExecutionContext
 
@@ -22,6 +23,8 @@ import scala.concurrent.ExecutionContext
 @Singleton
 class JobCockpitController @Inject()(@Named("clientParentActor")
                                      val clientParentActor: ActorRef
+                                     , @Named("jobParentActor")
+                                     jobParentActor: ActorRef
                                      , template: views.html.adapters.demo
                                      , assetsFinder: AssetsFinder
                                      , cc: ControllerComponents
@@ -33,12 +36,19 @@ class JobCockpitController @Inject()(@Named("clientParentActor")
   // Home page that renders template
   def index = Action { implicit request: Request[AnyContent] =>
     // uses the AssetsFinder API
-    Ok(template(context, JOB_CLIENT, assetsFinder))
+    Ok(template(context, JOB_CLIENT
+      , "" // no websocket path //TODO use jobIdent
+      , assetsFinder))
   }
 
-  def jobConfigTempls(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
-    info(s"called jobConfigTempls: ${settings.jobConfigTempls}")
-    Ok(Json.toJson(settings.jobConfigTempls)).as(JSON)
+  def jobConfigs(): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
+    info(s"called jobConfigs: ${settings.jobConfigs}")
+    (jobParentActor ? GetAllJobConfigs)
+      .map {
+        case jobConfigs: Seq[JobConfig] =>
+          Ok(Json.toJson(JobConfigs(jobConfigs.toSeq))).as(JSON)
+        case other => throw ObjectExpectedException(s"Get all JobConfigs returned an unexpected result: $other")
+      }
   }
 
   def clientConfigs(): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
