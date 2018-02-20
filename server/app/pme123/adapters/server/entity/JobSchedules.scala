@@ -16,7 +16,7 @@ case class JobSchedules(schedules: Map[JobIdent, JobSchedule]) {
 
 object JobSchedules {
   def apply(): JobSchedules = new JobSchedules(
-    jobConfigs.configs
+    jobConfigs
       .filter(entry => entry._2.jobSchedule.nonEmpty)
       .map(entry => entry._1 -> JobSchedule(entry._1, entry._2.jobSchedule.get))
   )

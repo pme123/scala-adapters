@@ -72,7 +72,7 @@ case class LogService(name: String, initiator: String, sender: Option[ActorRef] 
     logReport + sendToSender(logEntry)
 
   def startLogging(): LogEntry = {
-    info(s"$name started at ${LocalDateTime.ofInstant(startDateTime, timezone)}")
+    info(s"$name started at ${LocalDateTime.ofInstant(startDateTime, timezone)} by $initiator")
   }
 
   def stopLogging(): LogEntry = {

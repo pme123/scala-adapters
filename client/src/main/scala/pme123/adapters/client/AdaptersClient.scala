@@ -10,8 +10,6 @@ import scala.scalajs.js.timers.setTimeout
 trait AdaptersClient extends UIStore
   with ClientUtils {
 
-  LoggerConfig.factory = ConsoleLoggerFactory()
-
   val uiState = UIState()
 
 

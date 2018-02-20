@@ -4,7 +4,6 @@ import com.thoughtworks.binding.{Binding, FutureBinding, dom}
 import org.scalajs.dom.ext.Ajax
 import org.scalajs.dom.raw.HTMLElement
 import play.api.libs.json.{JsError, JsSuccess, JsValue, Json}
-import pme123.adapters.shared.JobConfig.JobIdent
 import pme123.adapters.shared.{ClientConfig, JobConfigs}
 
 import scala.scalajs.concurrent.JSExecutionContext.Implicits.queue
@@ -22,19 +21,17 @@ case class ServerServices(uiState: UIState, context: String)
     def toJobConfigs(jsValue: JsValue) = jsValue.validate[JobConfigs] match {
       case JsSuccess(jc, _) =>
         changeJobConfigs(jc)
-        // select first if no one is set already
-        uiState.selectedJobConfig.value
-          .getOrElse(changeSelectedJobConfig(jc.configs.values.headOption))
         ""
       case JsError(errors) =>
+        error(s"errors: $errors")
         s"Problem parsing JobConfigs: ${errors.map(e => s"${e._1} -> ${e._2}")}"
     }
 
     callService(apiPath, toJobConfigs)
   }
 
-  def clientConfigs(jobIdent: JobIdent): Binding[HTMLElement] = {
-    val apiPath = s"$context/clientConfigs/$jobIdent"
+  def clientConfigs(): Binding[HTMLElement] = {
+    val apiPath = s"$context/clientConfigs"
 
     def toClientConfigs(jsValue: JsValue) = jsValue.validate[List[ClientConfig]] match {
       case JsSuccess(u, _) =>
@@ -47,7 +44,7 @@ case class ServerServices(uiState: UIState, context: String)
     callService(apiPath, toClientConfigs)
   }
 
-  @dom private def callService(apiPath: String, toEntity: (JsValue) => String) = {
+  @dom private def callService(apiPath: String, toEntity: (JsValue) => String): Binding[HTMLElement] = {
     FutureBinding(Ajax.get(apiPath))
       .bind match {
       case None =>

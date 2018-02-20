@@ -4,24 +4,25 @@ import julienrf.json.derived
 import play.api.libs.json.OFormat
 import pme123.adapters.shared.JobConfig.JobIdent
 
-case class JobConfigs(configs: Map[JobIdent, JobConfig]) {
+case class JobConfigs(configs: Seq[JobConfig] = Nil) {
 
   def fromIdent(ident: JobIdent): Option[JobConfig] =
     configs
-      .values
-      .find(_.ident == ident)
+      .find(_.jobIdent == ident)
 
 }
 
 object JobConfigs {
   implicit val jsonFormat: OFormat[JobConfigs] = derived.oformat[JobConfigs]()
 
-
 }
 
-case class JobConfig(ident: JobConfig.JobIdent
+case class JobConfig(jobIdent: JobIdent
                      , jobSchedule: Option[ScheduleConfig] = None
-                        )
+                     , subWebPath: String = "") {
+
+  def webPath: String = s"/$jobIdent$subWebPath"
+}
 
 object JobConfig {
 

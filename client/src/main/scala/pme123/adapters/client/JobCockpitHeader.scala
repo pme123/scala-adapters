@@ -11,22 +11,22 @@ import scala.language.implicitConversions
 import scala.scalajs.js.Dynamic.{global => g}
 import scala.scalajs.js.timers.setTimeout
 
-private[client] case class JobCockpitHeader(context: String, uiState: UIState)
+private[client] case class JobCockpitHeader(context: String, websocketPath:String, uiState: UIState)
   extends UIStore
     with ClientUtils {
 
   private lazy val socket = ClientWebsocket(uiState, context)
 
-
   // 1. level of abstraction
   // **************************
   @dom
   private[client] def showHeader(): Binding[HTMLElement] = {
+    socket.connectWS(Some(websocketPath))
+
     <div class="ui main fixed borderless menu">
       <div class="ui item">
         <img src={"" + g.jsRoutes.controllers.Assets.versioned("images/favicon.png").url}></img>
-      </div>{title.bind}{//
-      jobConfigs.bind //
+      </div>{title.bind //
       }<div class="right menu">
       {lastLevel.bind}{//
       textFilter.bind}{//
@@ -45,44 +45,11 @@ private[client] case class JobCockpitHeader(context: String, uiState: UIState)
 
   @dom
   private def title = {
+    val clientConfig = uiState.selectedClientConfig.bind
     <div class="ui header item">
-      {s"Job Cockpit "}
+      {s"Job Cockpit: ${clientConfig.map(_.jobConfig.jobIdent).getOrElse("")}"}
     </div>
   }
-
-  @dom
-  private def jobConfigs = {
-    val jobConfigs = uiState.jobConfigs.bind
-    val selectedJobConfig = uiState.selectedJobConfig.bind
-    socket.connectWS(selectedJobConfig.map(_.ident))
-    <div class="ui item">
-      <span data:data-tooltip="Choose the adapter job"
-            data:data-position="bottom right">
-        {selJobConfigSelect(jobConfigs).bind}
-      </span>
-    </div>
-  }
-
-  @dom
-  private def selJobConfigSelect(jobConfigs: JobConfigs) = {
-    <select id="jobConfigSelect"
-            class="ui compact dropdown"
-            onchange={_: Event =>
-              changeSelectedJobConfig(jobConfigs.fromIdent(s"${jobConfigSelect.value}"))}>
-      {Constants(jobConfigs.configs.values.map(selJobConfigOption).toSeq: _*)
-      .map(_.bind)}
-    </select>
-  }
-
-  @dom
-  private def selJobConfigOption(jobConfig: JobConfig) = {
-    val selectedJC = uiState.selectedJobConfig.bind
-    val isSelected = selectedJC.forall(_.ident == jobConfig.ident)
-    <option value={jobConfig.ident} selected={isSelected}>
-      {jobConfig.ident}
-    </option>
-  }
-
   @dom
   private def lastLevel = {
     val logLevel = uiState.lastLogLevel.bind

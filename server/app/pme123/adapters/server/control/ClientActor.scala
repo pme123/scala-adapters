@@ -7,7 +7,7 @@ import akka.stream._
 import akka.util.Timeout
 import com.google.inject.assistedinject.Assisted
 import pme123.adapters.server.entity.ActorMessages.{InitActor, SubscribeClient, UnSubscribeClient}
-import pme123.adapters.shared.ClientConfig.RequestIdent
+import pme123.adapters.shared.ClientConfig
 
 import scala.concurrent.ExecutionContext
 import scala.concurrent.duration._
@@ -22,22 +22,23 @@ import scala.concurrent.duration._
   * @param jobActor the actor responsible for the Adapter process
   * @param ec       implicit CPU bound execution context.
   */
-class UserActor @Inject()(@Assisted requestIdent: RequestIdent
-                          , @Assisted jobActor: ActorRef)
-                         (implicit val mat: Materializer, val ec: ExecutionContext)
+class ClientActor @Inject()(@Assisted clientConfig: ClientConfig
+                            , @Assisted jobActor: ActorRef)
+                           (implicit val mat: Materializer, val ec: ExecutionContext)
   extends UserWebsocket {
 
+  import ClientActor._
   implicit private val timeout: Timeout = Timeout(50.millis)
 
-  /**
-    * The receive block, useful if other actors want to manipulate the flow.
-    * This is used by the UserParentActor to initiate the Websocket for a client.
-    */
+
+  // 1. level of abstraction
+  // **************************
+
   override def receive: Receive = {
-    case InitActor =>
-      info(s"Create Websocket for Client: $requestIdent")
-      jobActor ! SubscribeClient(requestIdent, wsActor)
-      sender() ! websocketFlow(jobActor)
+    case InitActor => init()
+    case GetClientConfig =>
+      info(s"GetClientConfig: $clientConfig")
+      sender() ! clientConfig
     case other =>
       info(s"Unexpected message from ${sender()}: $other")
   }
@@ -47,18 +48,28 @@ class UserActor @Inject()(@Assisted requestIdent: RequestIdent
     * In our case unsubscribe the client in the AdapterActor
     */
   override def postStop(): Unit = {
-    info(s"Stopping $requestIdent: actor $self")
-    jobActor ! UnSubscribeClient(requestIdent)
+    info(s"Stopping $clientConfig: actor $self")
+    jobActor ! UnSubscribeClient(clientConfig)
+  }
+
+  // 2. level of abstraction
+  // **************************
+  private def init() = {
+    info(s"Create Websocket for Client: $clientConfig")
+    jobActor ! SubscribeClient(clientConfig, wsActor)
+    sender() ! websocketFlow(jobActor)
   }
 
 }
 
-object UserActor {
+object ClientActor {
 
   // used to inject the UserActors as childs of the UserParentActor
   trait Factory {
-    def apply(requestIdent: RequestIdent, adapterActor: ActorRef): Actor
+    def apply(clientConfig: ClientConfig, jobActor: ActorRef): Actor
   }
+
+  case object GetClientConfig
 
 }
 

@@ -8,7 +8,8 @@ import pme123.adapters.shared.demo.DemoResult
 
 import scala.language.implicitConversions
 
-trait DemoUIStore extends Logger {
+trait DemoUIStore
+  extends Logger {
 
   protected def demoUIState: DemoUIState
 
@@ -24,6 +25,5 @@ trait DemoUIStore extends Logger {
     toConcreteResults(demoUIState.imageElems, lastResults)
   }
 }
-
 
 case class DemoUIState(imageElems: Vars[ImageElem] = Vars())

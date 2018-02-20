@@ -2,17 +2,18 @@ package pme123.adapters.server.boundary
 
 import javax.inject._
 
+import akka.actor.ActorRef
 import akka.pattern.ask
 import controllers.AssetsFinder
 import play.api.Configuration
 import play.api.libs.json._
 import play.api.mvc._
-import pme123.adapters.server.control.JobActor.{ClientConfigs, GetClientConfigs}
-import pme123.adapters.server.control.JobActorFactory
+import pme123.adapters.server.control.ClientParentActor.GetClientConfigs
+import pme123.adapters.server.control.JobParentActor.GetAllJobConfigs
 import pme123.adapters.server.entity.AdaptersContext.settings
-import pme123.adapters.server.entity.JOB_CLIENT
-import pme123.adapters.shared.ClientConfig
+import pme123.adapters.server.entity.{JOB_CLIENT, ObjectExpectedException}
 import pme123.adapters.shared.JobConfig.JobIdent
+import pme123.adapters.shared.{ClientConfig, JobConfig, JobConfigs}
 
 import scala.concurrent.ExecutionContext
 
@@ -21,7 +22,10 @@ import scala.concurrent.ExecutionContext
   * Original see here: https://github.com/playframework/play-scala-websocket-example
   */
 @Singleton
-class JobCockpitController @Inject()(val jobFactory: JobActorFactory
+class JobCockpitController @Inject()(@Named("clientParentActor")
+                                     val clientParentActor: ActorRef
+                                     , @Named("jobParentActor")
+                                     jobParentActor: ActorRef
                                      , template: views.html.adapters.demo
                                      , assetsFinder: AssetsFinder
                                      , cc: ControllerComponents
@@ -30,22 +34,26 @@ class JobCockpitController @Inject()(val jobFactory: JobActorFactory
   extends AbstractController(cc)
     with AdaptersController {
 
-  // Home page that renders template
-  def index = Action { implicit request: Request[AnyContent] =>
+  def jobProcess(jobIdent: JobIdent) = Action { implicit request: Request[AnyContent] =>
     // uses the AssetsFinder API
-    Ok(template(context, JOB_CLIENT, assetsFinder))
+    Ok(template(context, JOB_CLIENT
+      , s"/$jobIdent"
+      , assetsFinder))
   }
 
-  def jobConfigs(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
+  def jobConfigs(): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
     info(s"called jobConfigs: ${settings.jobConfigs}")
-    Ok(Json.toJson(settings.jobConfigs)).as(JSON)
+    (jobParentActor ? GetAllJobConfigs)
+      .map {
+        case jobConfigs: Seq[JobConfig] =>
+          Ok(Json.toJson(JobConfigs(jobConfigs))).as(JSON)
+        case other => throw ObjectExpectedException(s"Get all JobConfigs returned an unexpected result: $other")
+      }
   }
 
-  def clientConfigs(jobIdent: JobIdent): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
-    info(s"called clientConfigs for job $jobIdent")
-    (jobFactory.jobActorFor(jobIdent) ? GetClientConfigs)
-      .map(_.asInstanceOf[ClientConfigs])
-      .map(_.clientConfigs)
+  def clientConfigs(): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
+    (clientParentActor ? GetClientConfigs)
+      .map(_.asInstanceOf[Seq[ClientConfig]])
       .map(clients => Ok(Json.toJson[Seq[ClientConfig]](clients)))
   }
 

@@ -3,17 +3,20 @@
 # ~~~~
 
 # Index file for the JobCockpit.
-GET        /                               pme123.adapters.server.boundary.JobCockpitController.index
-# Index file for the DemoResults.
-GET        /demoResults                    pme123.adapters.server.boundary.demo.DemoResultController.demoResults
-# Websocket for live updates (LogEntries) on Jobs
-GET        /ws/:jobIdent                   pme123.adapters.server.boundary.WebsocketController.ws(jobIdent)
-# API to get all the Jobs that are provided
-GET        /jobConfigs                     pme123.adapters.server.boundary.JobCockpitController.jobConfigs()
-# API to get all the Client Configs that are registered for a jobConfig
-GET        /clientConfigs/:jobIdent        pme123.adapters.server.boundary.JobCockpitController.clientConfigs(jobIdent)
-# Map static resources from the /public folder to the /assets URL path
-GET        /assets/*file                   controllers.Assets.at(file)
-GET        /versionedAssets/*file          controllers.Assets.versioned(file)
+GET        /                             pme123.adapters.server.boundary.demo.DemoResultController.index
 
-->         /webjars                        webjars.Routes
+GET        /jobProcess/:jobIdent         pme123.adapters.server.boundary.JobCockpitController.jobProcess(jobIdent)
+# Index file for the DemoResults.
+GET        /demoResults                  pme123.adapters.server.boundary.demo.DemoResultController.defaultResults
+GET        /demoResults/:jobIdent        pme123.adapters.server.boundary.demo.DemoResultController.demoResults(jobIdent)
+# Websocket for live updates (LogEntries) on Jobs
+GET        /ws/:jobIdent                 pme123.adapters.server.boundary.WebsocketController.ws(jobIdent)
+# API to get all the Jobs that are provided
+GET        /jobConfigs                   pme123.adapters.server.boundary.JobCockpitController.jobConfigs()
+# API to get all the Client Configs that are registered for a jobConfig
+GET        /clientConfigs                pme123.adapters.server.boundary.JobCockpitController.clientConfigs()
+# Map static resources from the /public folder to the /assets URL path
+GET        /assets/*file                 controllers.Assets.at(file)
+GET        /versionedAssets/*file        controllers.Assets.versioned(file)
+
+->         /webjars                      webjars.Routes

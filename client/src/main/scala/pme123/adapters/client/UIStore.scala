@@ -5,6 +5,7 @@ import play.api.libs.json._
 import pme123.adapters.shared._
 
 import scala.language.implicitConversions
+import scala.reflect.ClassTag
 
 trait UIStore extends Logger {
   protected def uiState: UIState
@@ -79,23 +80,26 @@ trait UIStore extends Logger {
   }
 
   protected def changeJobConfigs(jobConfigs: JobConfigs): Unit = {
-    info(s"UIStore: changeJobConfigs ${jobConfigs.configs.keys.mkString(", ")}")
+    info(s"UIStore: changeJobConfigs ${jobConfigs.configs.map(_.jobIdent).mkString(", ")}")
     uiState.jobConfigs.value = jobConfigs
   }
 
-  protected def changeSelectedJobConfig(jobConfig: Option[JobConfig]): Unit = {
-    info(s"UIStore: changeSelectedJobConfig ${jobConfig.map(_.ident)}")
-    uiState.selectedJobConfig.value = jobConfig
+  protected def changeSelectedClientConfig(clientConfig: Option[ClientConfig]): Unit = {
+    info(s"UIStore: changeSelectedClientConfig ${clientConfig.map(_.jobConfig.jobIdent)}")
+    uiState.selectedClientConfig.value = clientConfig
   }
 
-  protected def replaceLastResults(lastResults: Seq[JsValue]) {
+  protected def replaceLastResults(lastResults: Seq[JsValue], append: Boolean) {
     info(s"UIStore: replaceLastResults")
-    uiState.lastResults.value.clear()
+    if (!append)
+      uiState.lastResults.value.clear()
     uiState.lastResults.value ++= lastResults
   }
 
-  protected def addLastResult(lastResult: JsValue) {
+  protected def replaceLastResult(lastResult: JsValue, append: Boolean) {
     info(s"UIStore: addLastResult: $lastResult")
+    if (!append)
+      uiState.lastResults.value.clear()
     uiState.lastResults.value += lastResult
   }
 
@@ -124,8 +128,8 @@ case class UIState(logData: Vars[LogEntry] = Vars[LogEntry]()
                    , showAdapterInfo: Var[Boolean] = Var(false)
                    , showClients: Var[Boolean] = Var(false)
                    , showLastResults: Var[Boolean] = Var(false)
-                   , jobConfigs: Var[JobConfigs] = Var(JobConfigs(Map()))
-                   , selectedJobConfig: Var[Option[JobConfig]] = Var(None)
+                   , jobConfigs: Var[JobConfigs] = Var(JobConfigs())
+                   , selectedClientConfig: Var[Option[ClientConfig]] = Var(None)
                    , lastResults: Vars[JsValue] = Vars()
                    , allClients: Vars[ClientConfig] = Vars()
                   )
@@ -138,19 +142,21 @@ object ToConcreteResults
     def fromJson(jsValue: JsValue): JsResult[A]
   }
 
-  def toConcreteResults[A: ConcreteResult](concreteResults: Vars[A]
-                                           , lastResults: Seq[JsValue])
-                                          (implicit aConcreteResult: ConcreteResult[A]): Seq[A] = {
+  def toConcreteResults[A: ConcreteResult : ClassTag](concreteResults: Vars[A]
+                                                      , lastResults: Seq[JsValue])
+                                                     (implicit aConcreteResult: ConcreteResult[A]): Seq[A] = {
 
     // use the ConcreteResult.fromJson to get the concrete result entity
-    def toConcreteResult(lastResult: JsValue): List[A] =
+    def toConcreteResult(lastResult: JsValue): List[A] = {
+      val clazz = implicitly[ClassTag[A]].runtimeClass
       aConcreteResult.fromJson(lastResult) match {
-        case JsSuccess(cResult: A, _) =>
+        case JsSuccess(cResult: A, _) if clazz.isInstance(cResult) =>
           List(cResult)
         case JsError(errors) =>
           error(s"Problem parsing DemoResult: ${errors.map(e => s"${e._1} -> ${e._2}")}")
           Nil
       }
+    }
 
     if (lastResults.isEmpty) {
       concreteResults.value.clear()

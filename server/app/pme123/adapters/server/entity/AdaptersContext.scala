@@ -4,6 +4,7 @@ import java.time._
 
 import com.typesafe.config.{Config, ConfigFactory}
 import pme123.adapters.server.entity.AdaptersSettings.wsocketHostsAllowedProp
+import pme123.adapters.shared.JobConfig.JobIdent
 import pme123.adapters.shared._
 
 import scala.collection.JavaConverters._
@@ -19,6 +20,7 @@ object AdaptersSettings extends Logger {
   val httpContextProp = "play.http.context"
   val projectProp = "project"
   val runModeProp = "run.mode"
+  val charEncodingProp = "char.encoding"
   val timezoneProp = "timezone"
 
   val mailHostProp = "mail.host"
@@ -63,6 +65,7 @@ class AdaptersSettings(config: Config) extends Logger {
   val httpContext: String = config.getString(httpContextProp)
   val project: String = projectConfig.getString(projectProp)
   val runMode: String = projectConfig.getString(runModeProp)
+  val charEncoding: String = projectConfig.getString(charEncodingProp)
   val timezone: String = projectConfig.getString(timezoneProp)
   val timezoneID: ZoneId = ZoneId.of(timezone)
 
@@ -94,12 +97,11 @@ class AdaptersSettings(config: Config) extends Logger {
   val isProdMode: Boolean = runMode == "PROD"
   val isDevMode: Boolean = runMode == "DEV"
 
-  val  jobConfigs : JobConfigs =  JobConfigs(
-    projectConfig.getConfigList(jobConfigsProp).asScala.toList
-      .map{ c =>
+  val jobConfigs: Map[JobIdent, JobConfig] =
+    projectConfig.getConfigList(jobConfigsProp).asScala
+      .map { c =>
       JobConfigCreator(c, ZoneId.of(timezone)).create()
     }.toMap
-  )
 
 }
 
@@ -120,6 +122,7 @@ class AdaptersContext(config: Config)
       , AdaptersContextProp(projectProp, settings.project)
       , AdaptersContextProp(runModeProp, settings.runMode)
       , AdaptersContextProp(timezoneProp, settings.timezone)
+      , AdaptersContextProp(charEncodingProp, settings.charEncoding)
       , AdaptersContextProp(mailSmtpTlsProp, settings.mailSmtpTls)
       , AdaptersContextProp(mailSmtpSslProp, settings.mailSmtpSsl)
       , AdaptersContextProp(mailPortProp, settings.mailPort)

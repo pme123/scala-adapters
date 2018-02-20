@@ -4,11 +4,9 @@ import com.thoughtworks.binding.Binding.Constants
 import com.thoughtworks.binding.{Binding, dom}
 import org.scalajs.dom.raw.HTMLElement
 import pme123.adapters.shared.ClientConfig
-import pme123.adapters.shared.JobConfig.JobIdent
 
 private[client] case class ClientConfigDialog(uiState: UIState
-                                              , context: String
-                                              , jobIdent: JobIdent)
+                                              , context: String)
   extends UIStore
     with IntellijImplicits {
 
@@ -17,7 +15,7 @@ private[client] case class ClientConfigDialog(uiState: UIState
   @dom
   private[client] def showDetail(): Binding[HTMLElement] =
     <div class="ui modal">
-      {ServerServices(uiState, context).clientConfigs(jobIdent).bind}{//
+      {ServerServices(uiState, context).clientConfigs().bind}{//
       detailHeader.bind}{//
       clientsTable.bind}
     </div>
@@ -38,7 +36,10 @@ private[client] case class ClientConfigDialog(uiState: UIState
         <thead>
           <tr>
             <th>Client Id</th>
-            <th>Info</th>
+            <th>Job Ident</th>
+            <th>Job Sub-Webpath</th>
+            <th>Result Count</th>
+            <th>Result Filter</th>
           </tr>
         </thead>
         <tbody>
@@ -52,12 +53,28 @@ private[client] case class ClientConfigDialog(uiState: UIState
   @dom
   private def propRow(clientConfig: ClientConfig) =
     <tr>
-      <td class="four wide">
+      <td class="two wide">
         {clientConfig.requestIdent}
       </td>
-      <td class="twelve wide">
-        {clientConfig.info}
+      <td class="two wide">
+        {clientConfig.jobConfig.jobIdent}
       </td>
+      <td class="three wide">
+        {clientConfig.jobConfig.subWebPath}
+      </td>
+      <td class="one wide">
+        {s"${clientConfig.resultCount}"}
+      </td>
+      <td class="eight wide">
+        {clientConfig.resultFilter.getOrElse("-")}
+      </td>
+
     </tr>
+
+  @dom
+  private def param(param: String) =
+    <p>
+      {param}
+    </p>
 
 }
