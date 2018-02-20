@@ -4,11 +4,9 @@ import com.thoughtworks.binding.Binding.Constants
 import com.thoughtworks.binding.{Binding, dom}
 import org.scalajs.dom.raw.HTMLElement
 import pme123.adapters.shared.ClientConfig
-import pme123.adapters.shared.JobConfig.JobIdent
 
 private[client] case class ClientConfigDialog(uiState: UIState
-                                              , context: String
-                                              , jobIdent: JobIdent)
+                                              , context: String)
   extends UIStore
     with IntellijImplicits {
 
@@ -39,7 +37,9 @@ private[client] case class ClientConfigDialog(uiState: UIState
           <tr>
             <th>Client Id</th>
             <th>Job Ident</th>
-            <th>Job Parameters</th>
+            <th>Job Sub-Webpath</th>
+            <th>Result Count</th>
+            <th>Result Filter</th>
           </tr>
         </thead>
         <tbody>
@@ -53,15 +53,22 @@ private[client] case class ClientConfigDialog(uiState: UIState
   @dom
   private def propRow(clientConfig: ClientConfig) =
     <tr>
-      <td class="three wide">
+      <td class="two wide">
         {clientConfig.requestIdent}
       </td>
+      <td class="two wide">
+        {clientConfig.jobConfig.jobIdent}
+      </td>
       <td class="three wide">
-        {clientConfig.jobIdent}
+        {clientConfig.jobConfig.subWebPath}
       </td>
-      <td class="ten wide">
-        {Constants(clientConfig.clientParams.map{case (k, v) => param(s"$k=$v")}.toSeq:_*).map(_.bind)}
+      <td class="one wide">
+        {s"${clientConfig.resultCount}"}
       </td>
+      <td class="eight wide">
+        {clientConfig.resultFilter.getOrElse("-")}
+      </td>
+
     </tr>
 
   @dom

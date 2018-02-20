@@ -97,7 +97,7 @@ class JobActor @Inject()(@Assisted jobConfig: JobConfig
       info(s"run Adapter: $sender")
       isRunning = true
       sendToSubscriber(RunStarted)
-      implicit val logServ: LogService = LogService(s"Run Job: ${jobConfig.asString}", user, Some(self))
+      implicit val logServ: LogService = LogService(s"Run Job: ${jobConfig.webPath}", user, Some(self))
       logService = Some(logServ)
       handleImportResult(jobProcess.runJob(user))
     }

@@ -14,7 +14,7 @@ import play.api.mvc._
 import pme123.adapters.server.control.ClientParentActor.RegisterClient
 import pme123.adapters.server.control.http.SameOriginCheck
 import pme123.adapters.shared.JobConfig.JobIdent
-import pme123.adapters.shared.{ClientConfig, Logger}
+import pme123.adapters.shared.{ClientConfig, JobConfig, Logger}
 
 import scala.concurrent.duration._
 import scala.concurrent.{ExecutionContext, Future}
@@ -37,11 +37,14 @@ class WebsocketController @Inject()(@Named("clientParentActor")
     *
     * @return a fully realized websocket.
     */
-  def ws(jobIdent: JobIdent): WebSocket = websocket(jobIdent)
+  def ws(jobIdent: JobIdent): WebSocket = websocket(JobConfig(jobIdent))
 
-  def websocket(jobIdent: JobIdent, params: Map[String, ClientConfig.ClientProperty] = Map()): WebSocket = WebSocket.acceptOrResult[JsValue, JsValue] {
+  def websocket(jobConfig: JobConfig
+                , resultCount: Int = ClientConfig.defaultResultCount
+                , resultFilter: Option[String] = None
+               ): WebSocket = WebSocket.acceptOrResult[JsValue, JsValue] {
     case rh if sameOriginCheck(rh) =>
-      val config = ClientConfig(rh.id.toString, jobIdent, params)
+      val config = ClientConfig(rh.id.toString, jobConfig, resultCount, resultFilter)
       wsFutureFlow(config).map { flow =>
         Right(flow)
       }.recover {

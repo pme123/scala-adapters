@@ -48,7 +48,7 @@ private[client] case class JobCockpitHeader(context: String, websocketPath:Strin
   private def title = {
     val clientConfig = uiState.selectedClientConfig.bind
     <div class="ui header item">
-      {s"Job Cockpit: ${clientConfig.map(_.jobIdent).getOrElse("")}"}
+      {s"Job Cockpit: ${clientConfig.map(_.jobConfig.jobIdent).getOrElse("")}"}
     </div>
   }
   /*
@@ -75,16 +75,16 @@ private[client] case class JobCockpitHeader(context: String, websocketPath:Strin
         .map(_.bind)}
       </select>
     }
-  */
+
   @dom
   private def selJobConfigOption(jobConfig: JobConfig) = {
     val selectedJC = uiState.selectedClientConfig.bind
-    val isSelected = selectedJC.forall(_.jobIdent == jobConfig.jobIdent)
+    val isSelected = selectedJC.forall(_.jobConfig == jobConfig)
     <option value={jobConfig.jobIdent} selected={isSelected}>
       {jobConfig.jobIdent}
     </option>
   }
-
+  */
   @dom
   private def lastLevel = {
     val logLevel = uiState.lastLogLevel.bind

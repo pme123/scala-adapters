@@ -48,7 +48,7 @@ class ClientParentActor @Inject()(@Named("jobParentActor")
   private def registerClient(clientConfig: ClientConfig) = {
     val name = s"clientActor-${clientConfig.requestIdent}"
     info(s"Creating ClientActor $name")
-    val jobConfig = jobConfigs(clientConfig.jobIdent).copy(jobParams =  clientConfig.clientParams)
+    val jobConfig = clientConfig.jobConfig
     val future =
       (jobParentActor ? CreateJobActor(jobConfig))
         .map(_.asInstanceOf[ActorRef])

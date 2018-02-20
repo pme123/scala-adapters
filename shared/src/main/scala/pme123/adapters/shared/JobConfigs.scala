@@ -19,10 +19,9 @@ object JobConfigs {
 
 case class JobConfig(jobIdent: JobIdent
                      , jobSchedule: Option[ScheduleConfig] = None
-                     , jobParams: Map[String, ClientConfig.ClientProperty] = Map()) {
+                     , subWebPath: String = "") {
 
-  def asString: String = jobIdent + jobParams.map { case (k, v) => s"$k -> $v" }.mkString("[", "; ", "]")
-  def webPath:String = s"/$jobIdent?"+ jobParams.map { case (k, v) => s"$k=$v" }.mkString("&")
+  def webPath: String = s"/$jobIdent$subWebPath"
 }
 
 object JobConfig {

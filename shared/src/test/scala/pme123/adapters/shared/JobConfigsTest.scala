@@ -12,9 +12,7 @@ class JobConfigsTest extends UnitTest {
   }
 
   "JobConfig" should "create its webPath correctly" in {
-    JobConfig("job2").webPath should be("/job2?")
-    JobConfig("job2", jobParams =
-      Map("projectIdent" -> "proj1"
-        , "category" -> "level2")).webPath should be("/job2?projectIdent=proj1&category=level2")
+    JobConfig("job2").webPath should be("/job2")
+    JobConfig("job2", subWebPath = "/test/path").webPath should be("/job2/test/path")
   }
 }

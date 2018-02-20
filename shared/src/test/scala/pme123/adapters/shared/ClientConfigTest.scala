@@ -3,7 +3,7 @@ package pme123.adapters.shared
 import play.api.libs.json.Json
 
 class ClientConfigTest extends UnitTest {
-  val clientConfig = ClientConfig("1231", "dummyJob", Map("filter" -> "asdf"))
+  val clientConfig = ClientConfig("1231", JobConfig("dummyJob"))
 
   "ClientConfig" should "be marshaled and un-marshaled correctly" in {
 

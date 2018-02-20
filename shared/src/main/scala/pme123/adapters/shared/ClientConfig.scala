@@ -5,16 +5,18 @@ import play.api.libs.json.OFormat
 import pme123.adapters.shared.JobConfig.JobIdent
 
 case class ClientConfig(requestIdent: ClientConfig.RequestIdent
-                        , jobIdent: JobIdent
-                        , clientParams: Map[String, ClientConfig.ClientProperty] = Map()) {
+                        , jobConfig: JobConfig
+                        , resultCount: Int = ClientConfig.defaultResultCount
+                        , resultFilter: Option[String] = None) {
+
 }
 
 object ClientConfig {
   type RequestIdent = String
 
-  type ClientProperty = String
-
   val encoding = "UTF-8"
+
+  val defaultResultCount = 20
 
   implicit val jsonFormat: OFormat[ClientConfig] = derived.oformat[ClientConfig]()
 
