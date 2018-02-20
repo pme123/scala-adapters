@@ -5,12 +5,13 @@ import javax.inject.Inject
 import akka.actor.ActorRef
 import akka.pattern.ask
 import akka.stream.Materializer
-import play.api.libs.json.Json
+import play.api.libs.json.{JsValue, Json}
 import pme123.adapters.server.control.JobActor.{ClientsChange, LastResult}
 import pme123.adapters.server.control.{JobProcess, LogService}
+import pme123.adapters.server.entity.AConcreteResult
 import pme123.adapters.shared.LogLevel.{DEBUG, ERROR, INFO, WARN}
 import pme123.adapters.shared._
-import pme123.adapters.shared.demo.{DemoResult, DemoResults}
+import pme123.adapters.shared.demo.DemoResult
 
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.Random
@@ -30,7 +31,9 @@ trait DemoProcess extends JobProcess {
       logService.startLogging()
      DemoService.results
           .foreach(doSomeWork)
-      (jobActor ? LastResult(DemoResults(DemoService.results)))
+
+      val results = if (Random.nextBoolean()) DemoService.results else DemoService.results.reverse
+      (jobActor ? LastResult(DemoResults(results)))
         .map{
           case ClientsChange(clientConfigs) =>
             logService.info(s"The results of ${clientConfigs.size} Clients have changed: ${clientConfigs.map(_.requestIdent).mkString("(", ", ", ")")}.")
@@ -78,4 +81,9 @@ class DemoJobWithoutSchedulerActor @Inject()()(implicit val mat: Materializer, v
     }
   }
 
+}
+
+case class DemoResults(results: Seq[DemoResult]) extends AConcreteResult {
+  def clientFiltered(clientConfig: ClientConfig): Seq[JsValue] =
+    results.map(dr => Json.toJson(dr))
 }

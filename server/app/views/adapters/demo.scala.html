@@ -21,7 +21,7 @@
     @if(clientType == JOB_CLIENT) {
         <script>client.JobCockpitClient.main("@context", "@websocketPath");</script>
     } else {
-        <script>client.DemoResultClient.main("@context");</script>
+        <script>client.DemoResultClient.main("@context", "@websocketPath");</script>
     }
 
 }

@@ -7,7 +7,8 @@ GET        /                             pme123.adapters.server.boundary.demo.De
 
 GET        /jobProcess/:jobIdent         pme123.adapters.server.boundary.JobCockpitController.jobProcess(jobIdent)
 # Index file for the DemoResults.
-GET        /demoResults                  pme123.adapters.server.boundary.demo.DemoResultController.demoResults
+GET        /demoResults                  pme123.adapters.server.boundary.demo.DemoResultController.defaultResults
+GET        /demoResults/:jobIdent        pme123.adapters.server.boundary.demo.DemoResultController.demoResults(jobIdent)
 # Websocket for live updates (LogEntries) on Jobs
 GET        /ws/:jobIdent                 pme123.adapters.server.boundary.WebsocketController.ws(jobIdent)
 # API to get all the Jobs that are provided

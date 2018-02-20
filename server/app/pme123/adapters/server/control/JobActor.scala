@@ -5,10 +5,11 @@ import javax.inject.Inject
 import akka.actor.{Actor, ActorRef, Props}
 import akka.stream.Materializer
 import com.google.inject.assistedinject.Assisted
+import play.api.libs.json.JsValue
 import pme123.adapters.server.control.mail.MailNotifier
 import pme123.adapters.server.entity.ActorMessages.{SubscribeClient, UnSubscribeClient}
 import pme123.adapters.server.entity.AdaptersContext.settings._
-import pme123.adapters.server.entity.AdaptersException
+import pme123.adapters.server.entity.{AConcreteResult, AdaptersException}
 import pme123.adapters.shared._
 
 import scala.collection.mutable
@@ -77,7 +78,7 @@ class JobActor @Inject()(@Assisted jobConfig: JobConfig
     aRef ! status
     aRef ! ClientConfigMsg(clientConfig)
     aRef ! projectInfo
-    lastResult.foreach(lr => aRef ! GenericResult(lr.toJson))
+    lastResult.foreach(lr => aRef ! GenericResults(lastResult.map(_.clientFiltered(clientConfig)).get))
   }
 
   // Unsubscribe a user(remove from the map)
@@ -108,7 +109,7 @@ class JobActor @Inject()(@Assisted jobConfig: JobConfig
         case (clientConfig, clientActor) =>
           val newResult = filterConcreteResult(clientConfig, result)
           if (newResult.nonEmpty) {
-            clientActor ! GenericResult(newResult.map(_.toJson).get, append = false)
+            clientActor ! GenericResults(newResult.get)
             Some(clientConfig)
           } else
             None
@@ -120,7 +121,7 @@ class JobActor @Inject()(@Assisted jobConfig: JobConfig
   }
 
   private def filterConcreteResult(clientConfig: ClientConfig
-                                   , concreteResult: AConcreteResult): Option[AConcreteResult] = {
+                                   , concreteResult: AConcreteResult): Option[Seq[JsValue]] = {
     val newResult = Some(concreteResult.clientFiltered(clientConfig))
     val oldResult = lastResult.map(_.clientFiltered(clientConfig))
     if (oldResult == newResult) None else newResult
