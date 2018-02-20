@@ -15,7 +15,7 @@ import pme123.adapters.server.control.ClientParentActor.RegisterClient
 import pme123.adapters.server.control.http.SameOriginCheck
 import pme123.adapters.shared.JobConfig.JobIdent
 import pme123.adapters.shared.{ClientConfig, JobConfig, Logger}
-
+import pme123.adapters.server.entity.AdaptersContext.settings
 import scala.concurrent.duration._
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -37,7 +37,9 @@ class WebsocketController @Inject()(@Named("clientParentActor")
     *
     * @return a fully realized websocket.
     */
-  def ws(jobIdent: JobIdent): WebSocket = websocket(JobConfig(jobIdent))
+  def ws(jobIdent: JobIdent): WebSocket = {
+    websocket(settings.jobConfigs(jobIdent))
+  }
 
   def websocket(jobConfig: JobConfig
                 , resultCount: Int = ClientConfig.defaultResultCount

@@ -10,7 +10,7 @@ import pme123.adapters.shared.JobConfig
 import pme123.adapters.shared.demo.DemoJobs._
 
 import scala.concurrent.ExecutionContext
-
+import pme123.adapters.server.entity.AdaptersContext.settings.jobConfigs
 @Singleton
 class DemoJobCreation @Inject()(demoJob: DemoJobProcess
                                 , demoJobWithDefaultScheduler: DemoJobWithDefaultSchedulerActor
@@ -21,9 +21,9 @@ class DemoJobCreation @Inject()(demoJob: DemoJobProcess
                                 , val ec: ExecutionContext)
   extends JobCreation {
 
-  private lazy val demoJobRef = system.actorOf(JobActor.props(JobConfig(demoJobIdent), demoJob), demoJobIdent)
-  private lazy val demoJobWithDefaultSchedulerRef = system.actorOf(JobActor.props(JobConfig(demoJobWithDefaultSchedulerIdent), demoJobWithDefaultScheduler), demoJobWithDefaultSchedulerIdent)
-  private lazy val demoJobWithoutSchedulerRef = system.actorOf(JobActor.props(JobConfig(demoJobWithoutSchedulerIdent), demoJobWithoutScheduler), demoJobWithoutSchedulerIdent)
+  private lazy val demoJobRef = system.actorOf(JobActor.props(jobConfigs(demoJobIdent), demoJob), demoJobIdent)
+  private lazy val demoJobWithDefaultSchedulerRef = system.actorOf(JobActor.props(jobConfigs(demoJobWithDefaultSchedulerIdent), demoJobWithDefaultScheduler), demoJobWithDefaultSchedulerIdent)
+  private lazy val demoJobWithoutSchedulerRef = system.actorOf(JobActor.props(jobConfigs(demoJobWithoutSchedulerIdent), demoJobWithoutScheduler), demoJobWithoutSchedulerIdent)
 
   def createJobActor(jobConfig: JobConfig): ActorRef = jobConfig.jobIdent match {
     case "demoJob" => demoJobRef

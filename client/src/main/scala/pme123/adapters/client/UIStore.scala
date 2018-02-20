@@ -62,6 +62,12 @@ trait UIStore extends Logger {
     uiState.showAdapterInfo.value = true
   }
 
+  protected def showJobs() {
+    info(s"UIStore: showJobs")
+    hideAllDialogs()
+    uiState.showJobs.value = true
+  }
+
   protected def showClients() {
     info(s"UIStore: showClients")
     hideAllDialogs()
@@ -79,9 +85,10 @@ trait UIStore extends Logger {
     uiState.showAdapterInfo.value = false
   }
 
-  protected def changeJobConfigs(jobConfigs: JobConfigs): Unit = {
-    info(s"UIStore: changeJobConfigs ${jobConfigs.configs.map(_.jobIdent).mkString(", ")}")
-    uiState.jobConfigs.value = jobConfigs
+  protected def changeJobConfigs(jobConfigs: Seq[JobConfig]): Unit = {
+    info(s"UIStore: changeJobConfigs ${jobConfigs.map(_.jobIdent).mkString(", ")}")
+    uiState.allJobs.value.clear()
+    uiState.allJobs.value ++= jobConfigs
   }
 
   protected def changeSelectedClientConfig(clientConfig: Option[ClientConfig]): Unit = {
@@ -111,6 +118,7 @@ trait UIStore extends Logger {
 
   // make sure all are closed
   private def hideAllDialogs(): Unit = {
+    uiState.showJobs.value = false
     uiState.showClients.value = false
     uiState.showLastResults.value = false
     uiState.showAdapterInfo.value = false
@@ -126,9 +134,10 @@ case class UIState(logData: Vars[LogEntry] = Vars[LogEntry]()
                    , logEntryDetail: Var[Option[LogEntry]] = Var[Option[LogEntry]](None)
                    , adapterInfo: Var[Option[ProjectInfo]] = Var[Option[ProjectInfo]](None)
                    , showAdapterInfo: Var[Boolean] = Var(false)
+                   , showJobs: Var[Boolean] = Var(false)
                    , showClients: Var[Boolean] = Var(false)
                    , showLastResults: Var[Boolean] = Var(false)
-                   , jobConfigs: Var[JobConfigs] = Var(JobConfigs())
+                   , allJobs: Vars[JobConfig] = Vars()
                    , selectedClientConfig: Var[Option[ClientConfig]] = Var(None)
                    , lastResults: Vars[JsValue] = Vars()
                    , allClients: Vars[ClientConfig] = Vars()

@@ -42,7 +42,7 @@ class JobParentActor @Inject()(jobCreation: JobCreation
   // inits the scheduler jobs
   private def init() {
     info("The following Jobs where initiated on startup:")
-    jobActors.keys.foreach(jd => s"- ${jd.webPath}")
+    jobActors.keys.foreach(jd => info(s"- ${jd.webPath}"))
   }
 
   private def getOrCreateJobActor(jobConfig: JobConfig) =

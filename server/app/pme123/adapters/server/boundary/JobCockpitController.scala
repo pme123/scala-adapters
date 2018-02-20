@@ -13,7 +13,7 @@ import pme123.adapters.server.control.JobParentActor.GetAllJobConfigs
 import pme123.adapters.server.entity.AdaptersContext.settings
 import pme123.adapters.server.entity.{JOB_CLIENT, ObjectExpectedException}
 import pme123.adapters.shared.JobConfig.JobIdent
-import pme123.adapters.shared.{ClientConfig, JobConfig, JobConfigs}
+import pme123.adapters.shared.{ClientConfig, JobConfig}
 
 import scala.concurrent.ExecutionContext
 
@@ -42,11 +42,10 @@ class JobCockpitController @Inject()(@Named("clientParentActor")
   }
 
   def jobConfigs(): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
-    info(s"called jobConfigs: ${settings.jobConfigs}")
     (jobParentActor ? GetAllJobConfigs)
       .map {
         case jobConfigs: Seq[JobConfig] =>
-          Ok(Json.toJson(JobConfigs(jobConfigs))).as(JSON)
+          Ok(Json.toJson(jobConfigs)).as(JSON)
         case other => throw ObjectExpectedException(s"Get all JobConfigs returned an unexpected result: $other")
       }
   }

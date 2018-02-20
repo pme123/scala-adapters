@@ -68,13 +68,6 @@ private[client] case class ClientConfigDialog(uiState: UIState
       <td class="eight wide">
         {clientConfig.resultFilter.getOrElse("-")}
       </td>
-
     </tr>
-
-  @dom
-  private def param(param: String) =
-    <p>
-      {param}
-    </p>
 
 }

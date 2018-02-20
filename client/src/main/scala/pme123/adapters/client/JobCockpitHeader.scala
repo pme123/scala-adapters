@@ -32,6 +32,7 @@ private[client] case class JobCockpitHeader(context: String, websocketPath:Strin
       textFilter.bind}{//
       levelFilter.bind}{//
       runAdapterButton.bind}{//
+      jobsButton.bind}{//
       clientsButton.bind}{//
       jsonButton.bind}{//
       clearButton.bind}{//
@@ -127,6 +128,22 @@ private[client] case class JobCockpitHeader(context: String, websocketPath:Strin
               data:data-tooltip="Run the Adapter"
               data:data-position="bottom right">
         <i class="toggle right icon large"></i>
+      </button>
+    </div>
+  }
+
+  @dom
+  private def jobsButton = {
+    <div class="ui item">
+      <button class="ui basic icon button"
+              onclick={_: Event =>
+                showJobs()
+                setTimeout(200) {
+                  jQuery(".ui.modal").modal("show")
+                }}
+              data:data-tooltip="Show the registered Jobs"
+              data:data-position="bottom right">
+        <i class="cogs icon large"></i>
       </button>
     </div>
   }

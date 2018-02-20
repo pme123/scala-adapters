@@ -16,8 +16,7 @@ trait JobCreation {
   def createJobActorsOnStartUp(): Map[JobConfig, ActorRef] = {
     // initiates all JobSchedules
     jobConfigs
-      .map { case (jobIdent, _) =>
-        val jobConfig = JobConfig(jobIdent)
+      .map { case (_, jobConfig) =>
         val jobActor = createJobActor(jobConfig)
         JobSchedules().schedules
           .get(jobConfig.jobIdent)

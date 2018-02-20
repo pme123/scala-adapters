@@ -4,7 +4,7 @@ import com.thoughtworks.binding.{Binding, FutureBinding, dom}
 import org.scalajs.dom.ext.Ajax
 import org.scalajs.dom.raw.HTMLElement
 import play.api.libs.json.{JsError, JsSuccess, JsValue, Json}
-import pme123.adapters.shared.{ClientConfig, JobConfigs}
+import pme123.adapters.shared.{ClientConfig, JobConfig}
 
 import scala.scalajs.concurrent.JSExecutionContext.Implicits.queue
 import scala.util.{Failure, Success}
@@ -18,9 +18,9 @@ case class ServerServices(uiState: UIState, context: String)
   def jobConfigs(): Binding[HTMLElement] = {
     val apiPath = s"$context/jobConfigs"
 
-    def toJobConfigs(jsValue: JsValue) = jsValue.validate[JobConfigs] match {
-      case JsSuccess(jc, _) =>
-        changeJobConfigs(jc)
+    def toJobConfigs(jsValue: JsValue) = jsValue.validate[Seq[JobConfig]] match {
+      case JsSuccess(jcs, _) =>
+        changeJobConfigs(jcs)
         ""
       case JsError(errors) =>
         error(s"errors: $errors")

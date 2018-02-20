@@ -22,6 +22,7 @@ case class JobCockpitClient(context: String, websocketPath: String)
       adapterContainer.bind}{//
       renderDetail.bind}{//
       renderLogEntryDetail.bind}{//
+      renderJobConfigsDetail.bind}{//
       renderClientConfigsDetail.bind}{//
       renderLastResultsDetail.bind}
     </div>
@@ -101,11 +102,22 @@ case class JobCockpitClient(context: String, websocketPath: String)
   }
 
   @dom
+  private def renderJobConfigsDetail = {
+    val showJobs = uiState.showJobs.bind
+    if (showJobs)
+      <div>
+        {JobConfigDialog(uiState, context)
+        .showDetail().bind}
+      </div>
+    else
+      <div></div>
+  }
+
+  @dom
   private def renderClientConfigsDetail = {
     val showClients = uiState.showClients.bind
-    val selectedJobConfig = uiState.selectedClientConfig.bind
-    info(s"showClients: $selectedJobConfig")
-    if (showClients && selectedJobConfig.isDefined)
+    val selectedClientConfig = uiState.selectedClientConfig.bind
+    if (showClients && selectedClientConfig.isDefined)
       <div>
         {ClientConfigDialog(uiState, context)
         .showDetail().bind}
