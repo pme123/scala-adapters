@@ -53,7 +53,7 @@ case class ServerServices(uiState: UIState, context: String)
         </div>
       case Some(Success(response)) =>
         val json: JsValue = Json.parse(response.responseText)
-        println(s"Json received from $apiPath: ${json.toString().take(20)}")
+        info(s"Json received from $apiPath: ${json.toString().take(20)}")
         <div>
           {toEntity(json)}
         </div>

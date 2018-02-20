@@ -80,12 +80,12 @@ trait UIStore extends Logger {
   }
 
   protected def changeJobConfigs(jobConfigs: JobConfigs): Unit = {
-    println(s"UIStore: changeJobConfigs ${jobConfigs.configs.map(_.jobIdent).mkString(", ")}")
+    info(s"UIStore: changeJobConfigs ${jobConfigs.configs.map(_.jobIdent).mkString(", ")}")
     uiState.jobConfigs.value = jobConfigs
   }
 
   protected def changeSelectedClientConfig(clientConfig: Option[ClientConfig]): Unit = {
-    println(s"UIStore: changeSelectedClientConfig ${clientConfig.map(_.jobConfig.jobIdent)}")
+    info(s"UIStore: changeSelectedClientConfig ${clientConfig.map(_.jobConfig.jobIdent)}")
     uiState.selectedClientConfig.value = clientConfig
   }
 

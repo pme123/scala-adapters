@@ -26,9 +26,8 @@ private[client] case class JobCockpitHeader(context: String, websocketPath:Strin
     <div class="ui main fixed borderless menu">
       <div class="ui item">
         <img src={"" + g.jsRoutes.controllers.Assets.versioned("images/favicon.png").url}></img>
-      </div>{title.bind/*}{//
-      jobConfigs.bind //
-      */}<div class="right menu">
+      </div>{title.bind //
+      }<div class="right menu">
       {lastLevel.bind}{//
       textFilter.bind}{//
       levelFilter.bind}{//
@@ -51,40 +50,6 @@ private[client] case class JobCockpitHeader(context: String, websocketPath:Strin
       {s"Job Cockpit: ${clientConfig.map(_.jobConfig.jobIdent).getOrElse("")}"}
     </div>
   }
-  /*
-    @dom
-    private def jobConfigs = {
-      val jobConfigs = uiState.jobConfigs.bind
-      val selectedJobConfig = uiState.selectedJobConfig.bind
-      socket.connectWS(selectedJobConfig.map(_.webPath))
-      <div class="ui item">
-        <span data:data-tooltip="Choose the adapter job"
-              data:data-position="bottom right">
-          {selJobConfigSelect(jobConfigs).bind}
-        </span>
-      </div>
-    }
-
-    @dom
-    private def selJobConfigSelect(jobConfigs: JobConfigs) = {
-      <select id="jobConfigSelect"
-              class="ui compact dropdown"
-              onchange={_: Event =>
-                changeSelectedJobConfig(jobConfigs.fromIdent(s"${jobConfigSelect.value}"))}>
-        {Constants(jobConfigs.configs.map(selJobConfigOption): _*)
-        .map(_.bind)}
-      </select>
-    }
-
-  @dom
-  private def selJobConfigOption(jobConfig: JobConfig) = {
-    val selectedJC = uiState.selectedClientConfig.bind
-    val isSelected = selectedJC.forall(_.jobConfig == jobConfig)
-    <option value={jobConfig.jobIdent} selected={isSelected}>
-      {jobConfig.jobIdent}
-    </option>
-  }
-  */
   @dom
   private def lastLevel = {
     val logLevel = uiState.lastLogLevel.bind
