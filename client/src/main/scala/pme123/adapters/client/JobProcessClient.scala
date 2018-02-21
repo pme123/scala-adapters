@@ -11,13 +11,16 @@ import scala.language.implicitConversions
 import scala.scalajs.js.annotation.JSExportTopLevel
 import scala.scalajs.js.timers.setTimeout
 
-case class JobCockpitClient(context: String, websocketPath: String)
+case class JobProcessClient(context: String, websocketPath: String)
   extends AdaptersClient {
+
+  private lazy val socket = ClientWebsocket(uiState, context)
 
   @dom
   protected def render: Binding[HTMLElement] = {
+    socket.connectWS(Some(websocketPath))
     <div>
-      {JobCockpitHeader(context, websocketPath, uiState).showHeader().bind}{//
+      {JobProcessHeader(context, websocketPath, uiState, socket).showHeader().bind}{//
       ServerServices(uiState, context).jobConfigs().bind}{//
       adapterContainer.bind}{//
       renderDetail.bind}{//
@@ -141,13 +144,13 @@ case class JobCockpitClient(context: String, websocketPath: String)
 
 }
 
-object JobCockpitClient
+object JobProcessClient
   extends Logger {
   LoggerConfig.factory = ConsoleLoggerFactory()
 
-  @JSExportTopLevel("client.JobCockpitClient.main")
+  @JSExportTopLevel("client.JobProcessClient.main")
   def main(context: String, websocketPath: String): Unit = {
-    info(s"JobCockpitClient $context$websocketPath")
-    JobCockpitClient(context, websocketPath).create()
+    info(s"JobProcessClient $context$websocketPath")
+    JobProcessClient(context, websocketPath).create()
   }
 }

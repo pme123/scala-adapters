@@ -4,4 +4,6 @@ sealed trait ClientType
 
 case object JOB_CLIENT extends ClientType
 
-case object RESULT_CLIENT extends ClientType
+case object JOB_RESULTS extends ClientType
+
+case object CUSTOM_PAGE extends ClientType

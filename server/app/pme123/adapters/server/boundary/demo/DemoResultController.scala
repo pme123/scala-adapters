@@ -6,7 +6,7 @@ import controllers.AssetsFinder
 import play.api.Configuration
 import play.api.mvc._
 import pme123.adapters.server.boundary.{AdaptersController, JobCockpitController}
-import pme123.adapters.server.entity.RESULT_CLIENT
+import pme123.adapters.server.entity.CUSTOM_PAGE
 import pme123.adapters.shared.JobConfig.JobIdent
 import pme123.adapters.shared.demo.DemoJobs.demoJobIdent
 
@@ -16,7 +16,7 @@ import scala.concurrent.ExecutionContext
   * Original see here: https://github.com/playframework/play-scala-websocket-example
   */
 @Singleton
-class DemoResultController @Inject()(template: views.html.adapters.demo
+class DemoResultController @Inject()(template: views.html.adapters.index
                                     , jobController: JobCockpitController
                                      , assetsFinder: AssetsFinder
                                      , cc: ControllerComponents
@@ -33,7 +33,7 @@ class DemoResultController @Inject()(template: views.html.adapters.demo
 
   def demoResults(jobIdent: JobIdent) = Action { implicit request: Request[AnyContent] =>
     // uses the AssetsFinder API
-    Ok(template(context, RESULT_CLIENT
+    Ok(template(context, CUSTOM_PAGE
       , s"/$jobIdent"
       , assetsFinder))
   }

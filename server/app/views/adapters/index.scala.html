@@ -1,4 +1,4 @@
-@import pme123.adapters.server.entity.{ClientType, JOB_CLIENT}
+@import pme123.adapters.server.entity.{ClientType, JOB_CLIENT, JOB_RESULTS}
 
 @this(webJarsUtil: org.webjars.play.WebJarsUtil)
 @(context: String
@@ -19,7 +19,9 @@
         name => getClass.getResource(s"/public/$name") != null)
 
     @if(clientType == JOB_CLIENT) {
-        <script>client.JobCockpitClient.main("@context", "@websocketPath");</script>
+        <script>client.JobProcessClient.main("@context", "@websocketPath");</script>
+    } else if(clientType == JOB_RESULTS) {
+        <script>client.JobResultsClient.main("@context", "@websocketPath");</script>
     } else {
         <script>client.DemoResultClient.main("@context", "@websocketPath");</script>
     }

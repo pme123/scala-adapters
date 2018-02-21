@@ -5,24 +5,23 @@ import com.thoughtworks.binding.{Binding, dom}
 import org.scalajs.dom.raw.{Event, HTMLElement}
 import org.scalajs.jquery.jQuery
 import pme123.adapters.client.SemanticUI.jq2semantic
-import pme123.adapters.shared.{JobConfig, JobConfigs, LogLevel}
+import pme123.adapters.shared.LogLevel
 
 import scala.language.implicitConversions
 import scala.scalajs.js.Dynamic.{global => g}
 import scala.scalajs.js.timers.setTimeout
 
-private[client] case class JobCockpitHeader(context: String, websocketPath:String, uiState: UIState)
+private[client] case class JobProcessHeader(context: String
+                                            , websocketPath: String
+                                            , uiState: UIState
+                                            , socket: ClientWebsocket)
   extends UIStore
     with ClientUtils {
-
-  private lazy val socket = ClientWebsocket(uiState, context)
 
   // 1. level of abstraction
   // **************************
   @dom
   private[client] def showHeader(): Binding[HTMLElement] = {
-    socket.connectWS(Some(websocketPath))
-
     <div class="ui main fixed borderless menu">
       <div class="ui item">
         <img src={"" + g.jsRoutes.controllers.Assets.versioned("images/favicon.png").url}></img>

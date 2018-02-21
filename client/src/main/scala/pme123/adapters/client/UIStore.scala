@@ -116,6 +116,24 @@ trait UIStore extends Logger {
     uiState.allClients.value ++= clientConfigs
   }
 
+  protected def changeResultCount(countStr: String) {
+    info(s"UIStore: changeResultCount $countStr")
+    val clientConfig = uiState.selectedClientConfig.value
+    uiState.selectedClientConfig.value =
+      clientConfig
+        .map(_.copy(resultCount =
+          if (countStr.trim.isEmpty) ClientConfig.defaultResultCount else countStr.toInt))
+  }
+
+  protected def changeResultFilter(filterStr: String) {
+    info(s"UIStore: changeResultFilter $filterStr")
+    val newFilter = if (filterStr.trim.isEmpty) None else Some(filterStr)
+    val clientConfig = uiState.selectedClientConfig.value
+    uiState.selectedClientConfig.value =
+      clientConfig
+        .map(_.copy(resultFilter = newFilter))
+  }
+
   // make sure all are closed
   private def hideAllDialogs(): Unit = {
     uiState.showJobs.value = false

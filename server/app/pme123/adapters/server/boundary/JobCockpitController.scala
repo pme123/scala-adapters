@@ -10,8 +10,7 @@ import play.api.libs.json._
 import play.api.mvc._
 import pme123.adapters.server.control.ClientParentActor.GetClientConfigs
 import pme123.adapters.server.control.JobParentActor.GetAllJobConfigs
-import pme123.adapters.server.entity.AdaptersContext.settings
-import pme123.adapters.server.entity.{JOB_CLIENT, ObjectExpectedException}
+import pme123.adapters.server.entity.{JOB_CLIENT, JOB_RESULTS}
 import pme123.adapters.shared.JobConfig.JobIdent
 import pme123.adapters.shared.{ClientConfig, JobConfig}
 
@@ -26,7 +25,7 @@ class JobCockpitController @Inject()(@Named("clientParentActor")
                                      val clientParentActor: ActorRef
                                      , @Named("jobParentActor")
                                      jobParentActor: ActorRef
-                                     , template: views.html.adapters.demo
+                                     , template: views.html.adapters.index
                                      , assetsFinder: AssetsFinder
                                      , cc: ControllerComponents
                                      , val config: Configuration)
@@ -41,13 +40,19 @@ class JobCockpitController @Inject()(@Named("clientParentActor")
       , assetsFinder))
   }
 
+  def jobResults(jobIdent: JobIdent) = Action { implicit request: Request[AnyContent] =>
+    // uses the AssetsFinder API
+    Ok(template(context, JOB_RESULTS
+      , s"/$jobIdent"
+      , assetsFinder))
+  }
+
   def jobConfigs(): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
     (jobParentActor ? GetAllJobConfigs)
-      .map {
-        case jobConfigs: Seq[JobConfig] =>
+      .map(_.asInstanceOf[Seq[JobConfig]])
+      .map(jobConfigs =>
           Ok(Json.toJson(jobConfigs)).as(JSON)
-        case other => throw ObjectExpectedException(s"Get all JobConfigs returned an unexpected result: $other")
-      }
+      )
   }
 
   def clientConfigs(): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>

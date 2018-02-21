@@ -1,7 +1,8 @@
-#log-panel {
+.container {
     margin-top: 6em;
     max-height:calc(100vh - 8em);
     overflow: auto;
+    width: 1000px;
 }
 
 .hide-header {

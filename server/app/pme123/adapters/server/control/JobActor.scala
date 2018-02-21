@@ -78,7 +78,8 @@ class JobActor @Inject()(@Assisted jobConfig: JobConfig
     aRef ! status
     aRef ! ClientConfigMsg(clientConfig)
     aRef ! projectInfo
-    lastResult.foreach(lr => aRef ! GenericResults(lastResult.map(_.clientFiltered(clientConfig)).get))
+    lastResult.foreach(lr =>
+      aRef ! GenericResults(lastResult.map(_.clientFiltered(clientConfig)).get))
   }
 
   // Unsubscribe a user(remove from the map)

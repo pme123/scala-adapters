@@ -1,0 +1,172 @@
+package pme123.adapters.client
+
+import com.thoughtworks.binding.Binding.Constants
+import com.thoughtworks.binding.{Binding, dom}
+import org.scalajs.dom.document
+import org.scalajs.dom.raw._
+import org.scalajs.jquery.jQuery
+import play.api.libs.json.JsValue
+import pme123.adapters.client.SemanticUI.jq2semantic
+import pme123.adapters.shared.ClientConfig.{resultCountL, resultFilterL}
+import pme123.adapters.shared.{ClientConfig, Logger}
+import slogging.{ConsoleLoggerFactory, LoggerConfig}
+
+import scala.language.implicitConversions
+import scala.scalajs.js
+import scala.scalajs.js.Dynamic.{global => g}
+import scala.scalajs.js.URIUtils
+import scala.scalajs.js.annotation.JSExportTopLevel
+
+case class JobResultsClient(context: String, websocketPath: String)
+  extends AdaptersClient
+    with UIStore {
+
+  lazy val socket: ClientWebsocket = ClientWebsocket(uiState, context)
+
+  // 1. level of abstraction
+  // **************************
+
+  override def create(): Unit = {
+    dom.render(document.body, render)
+    jQuery(".ui.dropdown").dropdown(js.Dynamic.literal(on = "hover"))
+    jQuery(".ui.item .ui.input").popup(js.Dynamic.literal(on = "hover"))
+  }
+
+  @dom
+  def render: Binding[HTMLElement] = {
+    socket.connectWS(Some(websocketPath))
+    <div>
+      {detailHeader.bind}{//
+      adapterHeader.bind}{//
+      resultsTable.bind}
+    </div>
+  }
+
+  // 2. level of abstraction
+  // **************************
+
+  @dom
+  private def detailHeader = <div class="header">
+    Last Result (as raw JSON)
+  </div>
+
+  @dom
+  private def adapterHeader = {
+    <div class="ui main fixed borderless menu">
+      <div class="ui item">
+        <img src={"" + g.jsRoutes.controllers.Assets.versioned("images/favicon.png").url}></img>
+      </div>
+      {headerTitle.bind}
+      <div class="right menu">
+        {resultCountField.bind}{//
+        filterField.bind}{//
+        reconnectWSButton.bind}
+      </div>
+    </div>
+  }
+
+  @dom
+  private def resultsTable = {
+    val lastResults = uiState.lastResults.bind
+    <div class="ui main text container">
+        <table class="ui padded table">
+        <thead>
+          <tr>
+            <th>Result as JSON</th>
+          </tr>
+        </thead>
+        <tbody>
+          {Constants(lastResults.map(resultRow): _*)
+          .map(_.bind)}
+        </tbody>
+      </table>
+    </div>
+  }
+
+  // 3. level of abstraction
+  // **************************
+
+  @dom
+  private def headerTitle = {
+    val clientConfig = uiState.selectedClientConfig.bind
+    <div class="ui header item">
+      {s"Last Result (as raw JSON): ${clientConfig.map(_.jobConfig.webPath).getOrElse("")}"}
+    </div>
+  }
+
+  @dom
+  private def resultCountField = {
+    <div class="ui item">
+      <div class="ui input resultCount"
+           data:data-tooltip="Number of results"
+           data:data-position="bottom right">
+        <input id="resultCountInput"
+               type="number"
+               placeholder="Results..."
+               size={3}
+               onchange={_: Event =>
+                 changeResultCount(s"${resultCountInput.value}")}>
+        </input>
+      </div>
+    </div>
+  }
+
+  @dom
+  private def filterField = {
+    <div class="ui item">
+      <div class="ui input" data:data-html="The Filter is individuel of project"
+           data:data-position="bottom right"
+           data:data-variation="very wide">
+        <input id="filterInput"
+               type="text"
+               size={45}
+               placeholder="Filter Results..."
+               onkeyup={_: Event =>
+                 changeResultFilter(s"${filterInput.value}")}>
+        </input>
+      </div>
+    </div>
+  }
+
+  @dom
+  private def reconnectWSButton = {
+    <div class="ui item">
+      <button class="ui basic icon button"
+              onclick={_: Event =>
+                connectToWebsocket(uiState.selectedClientConfig.value)}
+              data:data-tooltip="Reconnect the WebSocket (new filter)"
+              data:data-position="bottom right">
+        <i class="refresh icon large"></i>
+      </button>
+    </div>
+  }
+
+  @dom
+  private def resultRow(result: JsValue) =
+    <tr>
+      <td class="sixteen wide">
+        {result.toString}
+      </td>
+    </tr>
+
+  private def connectToWebsocket(clientConfig: Option[ClientConfig]) {
+    clientConfig.map { clientConfig =>
+      val resultCount = s"$resultCountL=${clientConfig.resultCount}"
+      val filter = clientConfig.resultFilter.map(f => s"$resultFilterL=${URIUtils.encodeURIComponent(f)}").getOrElse("")
+      s"${clientConfig.jobConfig.webPath}?$resultCount&$filter"
+    }.foreach(path => socket.connectWS(Some(path)))
+  }
+
+
+}
+
+object JobResultsClient
+  extends Logger {
+  LoggerConfig.factory = ConsoleLoggerFactory()
+
+  @JSExportTopLevel("client.JobResultsClient.main")
+  def main(context: String, websocketPath: String): Unit = {
+    info(s"JobResultsClient $context$websocketPath")
+    JobResultsClient(context, websocketPath).create()
+  }
+}
