@@ -7,17 +7,19 @@ import org.scalajs.dom.raw._
 import org.scalajs.jquery.jQuery
 import play.api.libs.json.JsValue
 import pme123.adapters.client.SemanticUI.jq2semantic
+import pme123.adapters.client.ToConcreteResults.{ConcreteResult, toConcreteResults}
+import pme123.adapters.shared.ClientConfig
 import pme123.adapters.shared.ClientConfig.{resultCountL, resultFilterL}
-import pme123.adapters.shared.{ClientConfig, Logger}
-import slogging.{ConsoleLoggerFactory, LoggerConfig}
 
 import scala.language.implicitConversions
 import scala.scalajs.js
 import scala.scalajs.js.Dynamic.{global => g}
 import scala.scalajs.js.URIUtils
-import scala.scalajs.js.annotation.JSExportTopLevel
 
-case class JobResultsClient(context: String, websocketPath: String)
+case class JobResultsView(context: String
+                          , websocketPath: String
+                          , headerColumns: Seq[String])
+                         (implicit concreteResult: ConcreteResult[JobResultsRow])
   extends AdaptersClient
     with UIStore {
 
@@ -68,15 +70,17 @@ case class JobResultsClient(context: String, websocketPath: String)
   @dom
   private def resultsTable = {
     val lastResults = uiState.lastResults.bind
-    <div class="ui main text container">
+    toConcreteResults(uiState.jobResultsRows, lastResults)
+    <div class="ui main container">
         <table class="ui padded table">
         <thead>
           <tr>
-            <th>Result as JSON</th>
+            {Constants(headerColumns.map(headerCell): _*)
+            .map(_.bind)}
           </tr>
         </thead>
         <tbody>
-          {Constants(lastResults.map(resultRow): _*)
+          {Constants(uiState.jobResultsRows.value.map(_.resultRow): _*)
           .map(_.bind)}
         </tbody>
       </table>
@@ -157,16 +161,10 @@ case class JobResultsClient(context: String, websocketPath: String)
     }.foreach(path => socket.connectWS(Some(path)))
   }
 
+  @dom
+  private def headerCell(name: String) =
+    <th>
+      {name}
+    </th>
 
-}
-
-object JobResultsClient
-  extends Logger {
-  LoggerConfig.factory = ConsoleLoggerFactory()
-
-  @JSExportTopLevel("client.JobResultsClient.main")
-  def main(context: String, websocketPath: String): Unit = {
-    info(s"JobResultsClient $context$websocketPath")
-    JobResultsClient(context, websocketPath).create()
-  }
 }

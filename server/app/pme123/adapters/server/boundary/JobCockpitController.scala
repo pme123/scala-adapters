@@ -10,7 +10,7 @@ import play.api.libs.json._
 import play.api.mvc._
 import pme123.adapters.server.control.ClientParentActor.GetClientConfigs
 import pme123.adapters.server.control.JobParentActor.GetAllJobConfigs
-import pme123.adapters.server.entity.{JOB_CLIENT, JOB_RESULTS}
+import pme123.adapters.shared.{JOB_PROCESS, JOB_RESULTS}
 import pme123.adapters.shared.JobConfig.JobIdent
 import pme123.adapters.shared.{ClientConfig, JobConfig}
 
@@ -35,7 +35,7 @@ class JobCockpitController @Inject()(@Named("clientParentActor")
 
   def jobProcess(jobIdent: JobIdent) = Action { implicit request: Request[AnyContent] =>
     // uses the AssetsFinder API
-    Ok(template(context, JOB_CLIENT
+    Ok(template(context, JOB_PROCESS
       , s"/$jobIdent"
       , assetsFinder))
   }

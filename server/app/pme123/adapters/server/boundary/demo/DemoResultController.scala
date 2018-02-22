@@ -6,7 +6,7 @@ import controllers.AssetsFinder
 import play.api.Configuration
 import play.api.mvc._
 import pme123.adapters.server.boundary.{AdaptersController, JobCockpitController}
-import pme123.adapters.server.entity.CUSTOM_PAGE
+import pme123.adapters.shared.CUSTOM_PAGE
 import pme123.adapters.shared.JobConfig.JobIdent
 import pme123.adapters.shared.demo.DemoJobs.demoJobIdent
 
@@ -26,10 +26,10 @@ class DemoResultController @Inject()(template: views.html.adapters.index
     with AdaptersController {
 
 
-  def index = jobController.jobProcess(demoJobIdent)
+  def index: Action[AnyContent] = jobController.jobProcess(demoJobIdent)
 
   // Home page that renders template
-  def defaultResults = demoResults(demoJobIdent)
+  def defaultResults: Action[AnyContent] = demoResults(demoJobIdent)
 
   def demoResults(jobIdent: JobIdent) = Action { implicit request: Request[AnyContent] =>
     // uses the AssetsFinder API

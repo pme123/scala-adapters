@@ -22,6 +22,14 @@ trait ClientUtils
   def logLevelIcon(entry: LogEntry): Binding[HTMLElement] =
     <i class={"large middle aligned " + SemanticUI.levelClass(entry.level)}></i>
 
+  @dom
+  def td(value: String): Binding[HTMLElement] =
+    <td>{value}</td>
+
+  @dom
+  def tdImg(imageUrl: String): Binding[HTMLElement] =
+    <td> <img class="defaultImage" src={imageUrl}/></td>
+
 }
 
 trait IntellijImplicits {
