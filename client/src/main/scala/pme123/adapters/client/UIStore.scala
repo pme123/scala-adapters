@@ -159,6 +159,7 @@ case class UIState(logData: Vars[LogEntry] = Vars[LogEntry]()
                    , selectedClientConfig: Var[Option[ClientConfig]] = Var(None)
                    , lastResults: Vars[JsValue] = Vars()
                    , allClients: Vars[ClientConfig] = Vars()
+                   , jobResultsRows: Vars[JobResultsRow] = Vars()
                   )
 
 object ToConcreteResults

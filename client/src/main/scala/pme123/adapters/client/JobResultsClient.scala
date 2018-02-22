@@ -7,6 +7,7 @@ import org.scalajs.dom.raw._
 import org.scalajs.jquery.jQuery
 import play.api.libs.json.JsValue
 import pme123.adapters.client.SemanticUI.jq2semantic
+import pme123.adapters.client.ToConcreteResults.toConcreteResults
 import pme123.adapters.shared.ClientConfig.{resultCountL, resultFilterL}
 import pme123.adapters.shared.{ClientConfig, Logger}
 import slogging.{ConsoleLoggerFactory, LoggerConfig}
@@ -68,6 +69,7 @@ case class JobResultsClient(context: String, websocketPath: String)
   @dom
   private def resultsTable = {
     val lastResults = uiState.lastResults.bind
+    toConcreteResults(uiState.jobResultsRows, lastResults)
     <div class="ui main text container">
         <table class="ui padded table">
         <thead>
@@ -76,7 +78,7 @@ case class JobResultsClient(context: String, websocketPath: String)
           </tr>
         </thead>
         <tbody>
-          {Constants(lastResults.map(resultRow): _*)
+          {Constants(uiState.jobResultsRows.value.map(_.resultRow): _*)
           .map(_.bind)}
         </tbody>
       </table>

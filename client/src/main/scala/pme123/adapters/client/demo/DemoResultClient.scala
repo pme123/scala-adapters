@@ -30,9 +30,9 @@ case class DemoResultClient(context: String, websocketPath: String)
   // **************************
   @dom
   private def imageContainer = {
-    val demoResults = uiState.lastResults.bind
+    val imageElems = demoUIState.imageElems.bind
     <div>
-      {Constants(updateImageElems(demoResults): _*)
+      {Constants(imageElems: _*)
       .map(_.imageElement.bind)}
     </div>
   }
