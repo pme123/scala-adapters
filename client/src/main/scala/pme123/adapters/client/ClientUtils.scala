@@ -18,6 +18,22 @@ trait ClientUtils
     s"${date.toLocaleDateString} ${date.toLocaleTimeString}"
   }
 
+  // helper - need separate class at some point
+  def jsLocalDate(dateString: String): String = {
+    val date = new js.Date(dateString)
+    date.toLocaleDateString()
+  }
+
+  def jsLocalTime(dateString: String): String = {
+    val date = new js.Date(dateString)
+    if (date.getHours() == 0)
+      ""
+    else {
+      val timeStr = date.toLocaleTimeString
+      timeStr.replaceFirst(":\\d\\d\\b", "") // remove seconds
+    }
+  }
+
   @dom
   def logLevelIcon(entry: LogEntry): Binding[HTMLElement] =
     <i class={"large middle aligned " + SemanticUI.levelClass(entry.level)}></i>
