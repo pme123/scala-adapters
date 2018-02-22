@@ -40,7 +40,7 @@ case class JobProcessView(context: String, websocketPath: String)
         .filter(le => le.level >= level)
         .filter(le => le.msg.toLowerCase.contains(text.toLowerCase))
     scrollDown()
-    <div class="ui main text container">
+    <div class="ui main container">
       <div id="log-panel" class="ui relaxed divided list">
         {Constants(filteredLE: _*).map(logEntry(_).bind)}
       </div>

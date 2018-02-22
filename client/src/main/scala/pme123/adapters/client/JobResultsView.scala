@@ -71,7 +71,7 @@ case class JobResultsView(context: String
   private def resultsTable = {
     val lastResults = uiState.lastResults.bind
     toConcreteResults(uiState.jobResultsRows, lastResults)
-    <div class="ui main text container">
+    <div class="ui main container">
         <table class="ui padded table">
         <thead>
           <tr>

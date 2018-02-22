@@ -22,19 +22,14 @@ case class JobResultsHeader(fields: Seq[String]) {
     </td>
 }
 
-case class JobResultsRow(values: Seq[String]) {
+case class JobResultsRow(values: Seq[Binding[HTMLElement]]) {
 
   @dom
   private[client] lazy val resultRow =
 
     <tr>
-      {Constants(values.map(resultCell): _*)
+      {Constants(values: _*)
       .map(_.bind)}
     </tr>
 
-  @dom
-  private def resultCell(value: String): Binding[HTMLElement] =
-    <td>
-      {value}
-    </td>
 }

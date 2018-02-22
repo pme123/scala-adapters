@@ -66,13 +66,15 @@ object DemoResultClient
   }
 }
 
-trait ClientImplicits {
+trait ClientImplicits
+  extends ClientUtils {
 
   implicit object DemoResultForJobResultsRow extends ConcreteResult[JobResultsRow] {
 
     override def fromJson(lastResult: JsValue): JsResult[JobResultsRow] =
       Json.fromJson[DemoResult](lastResult)
-        .map(dr => JobResultsRow(Seq(dr.name, dr.imgUrl, dr.created)))
+        .map(dr => JobResultsRow(
+          Seq(td(dr.name), tdImg(dr.imgUrl), td(dr.created))))
   }
 
 }
