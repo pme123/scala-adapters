@@ -4,11 +4,9 @@ import com.thoughtworks.binding.Binding.Constants
 import com.thoughtworks.binding.{Binding, dom}
 import org.scalajs.dom.raw._
 import org.scalajs.jquery.jQuery
-import pme123.adapters.shared.{LogEntry, Logger}
-import slogging.{ConsoleLoggerFactory, LoggerConfig}
+import pme123.adapters.shared.LogEntry
 
 import scala.language.implicitConversions
-import scala.scalajs.js.annotation.JSExportTopLevel
 import scala.scalajs.js.timers.setTimeout
 
 case class JobProcessClient(context: String, websocketPath: String)
@@ -142,15 +140,4 @@ case class JobProcessClient(context: String, websocketPath: String)
       <div></div>
   }
 
-}
-
-object JobProcessClient
-  extends Logger {
-  LoggerConfig.factory = ConsoleLoggerFactory()
-
-  @JSExportTopLevel("client.JobProcessClient.main")
-  def main(context: String, websocketPath: String): Unit = {
-    info(s"JobProcessClient $context$websocketPath")
-    JobProcessClient(context, websocketPath).create()
-  }
 }
