@@ -16,8 +16,10 @@ import scala.scalajs.js
 import scala.scalajs.js.Dynamic.{global => g}
 import scala.scalajs.js.URIUtils
 
-case class JobResultsClient(context: String, websocketPath: String)
-                           (implicit concreteResult: ConcreteResult[JobResultsRow])
+case class JobResultsView(context: String
+                          , websocketPath: String
+                          , headerColumns: Seq[String])
+                         (implicit concreteResult: ConcreteResult[JobResultsRow])
   extends AdaptersClient
     with UIStore {
 
@@ -73,7 +75,8 @@ case class JobResultsClient(context: String, websocketPath: String)
         <table class="ui padded table">
         <thead>
           <tr>
-            <th>Result as JSON</th>
+            {Constants(headerColumns.map(headerCell): _*)
+            .map(_.bind)}
           </tr>
         </thead>
         <tbody>
@@ -158,5 +161,10 @@ case class JobResultsClient(context: String, websocketPath: String)
     }.foreach(path => socket.connectWS(Some(path)))
   }
 
+  @dom
+  private def headerCell(name: String) =
+    <th>
+      {name}
+    </th>
 
 }

@@ -9,7 +9,7 @@ import pme123.adapters.shared.LogEntry
 import scala.language.implicitConversions
 import scala.scalajs.js.timers.setTimeout
 
-case class JobProcessClient(context: String, websocketPath: String)
+case class JobProcessView(context: String, websocketPath: String)
   extends AdaptersClient {
 
   private lazy val socket = ClientWebsocket(uiState, context)

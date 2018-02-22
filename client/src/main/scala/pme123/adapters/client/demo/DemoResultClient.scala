@@ -44,7 +44,7 @@ case class DemoResultClient(context: String, websocketPath: String)
 object DemoResultClient
   extends ClientImplicits
     with Logger {
-  
+
   LoggerConfig.factory = ConsoleLoggerFactory()
 
   // type class instance for ImageElem
@@ -55,9 +55,12 @@ object DemoResultClient
       case CUSTOM_PAGE =>
         DemoResultClient(context, websocketPath).create()
       case JOB_PROCESS =>
-        JobProcessClient(context, websocketPath).create()
+        JobProcessView(context, websocketPath).create()
       case JOB_RESULTS =>
-        JobResultsClient(context, websocketPath)(DemoResultForJobResultsRow).create()
+        JobResultsView(context
+          , websocketPath
+          , Seq("Name", "Image Url", "Created")
+        )(DemoResultForJobResultsRow).create()
       case other => warn(s"Unexpected ClientType: $other")
     }
   }
