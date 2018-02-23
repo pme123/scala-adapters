@@ -18,7 +18,7 @@ import scala.scalajs.js.URIUtils
 
 case class JobResultsView(context: String
                           , websocketPath: String
-                          , headerColumns: Seq[String])
+                          , resultsInfos: CustomResultsInfos)
                          (implicit concreteResult: ConcreteResult[JobResultsRow])
   extends AdaptersClient
     with UIStore {
@@ -75,7 +75,7 @@ case class JobResultsView(context: String
         <table class="ui padded table">
         <thead>
           <tr>
-            {Constants(headerColumns.map(headerCell): _*)
+            {Constants(resultsInfos.headerColumns.map(headerCell): _*)
             .map(_.bind)}
           </tr>
         </thead>
@@ -118,7 +118,7 @@ case class JobResultsView(context: String
   @dom
   private def filterField = {
     <div class="ui item">
-      <div class="ui input" data:data-html="The Filter is individuel of project"
+      <div class="ui input" data:data-html={resultsInfos.filterTooltip}
            data:data-position="bottom right"
            data:data-variation="very wide">
         <input id="filterInput"

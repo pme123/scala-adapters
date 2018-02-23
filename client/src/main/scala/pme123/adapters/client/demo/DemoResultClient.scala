@@ -59,7 +59,13 @@ object DemoResultClient
       case JOB_RESULTS =>
         JobResultsView(context
           , websocketPath
-          , Seq("Name", "Image Url", "Created")
+          , CustomResultsInfos(Seq("Name", "Image Url", "Created")
+            ,
+            """<ul>
+                  <li>name, imgUrl: String, * matches any part. Examples are name=Example*, subject=*Excel*</li>
+                  <li>startDateTime: take created from the defined DateTime, for example: 2017-12-22T12:00</li>
+                  <li>endDateTime: take created until the defined DateTime, for example: 2018-01-22T23:00</li>
+                </ul>""")
         )(DemoResultForJobResultsRow).create()
       case other => warn(s"Unexpected ClientType: $other")
     }
