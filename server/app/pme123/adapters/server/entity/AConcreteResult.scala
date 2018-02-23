@@ -6,5 +6,7 @@ import pme123.adapters.shared.ClientConfig
 trait AConcreteResult {
 
   def clientFiltered(clientConfig: ClientConfig): Seq[JsValue]
+
+  def merge(other: AConcreteResult): AConcreteResult
   
 }

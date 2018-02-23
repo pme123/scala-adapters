@@ -80,8 +80,17 @@ trait ClientImplicits
     override def fromJson(lastResult: JsValue): JsResult[JobResultsRow] =
       Json.fromJson[DemoResult](lastResult)
         .map(dr => JobResultsRow(
-          Seq(td(dr.name), tdImg(dr.imgUrl), td(dr.created))))
+          Seq(td(dr.name), tdImg(dr.imgUrl), tdDateTime(dr.created))))
   }
+
+
+  @dom
+  private def tdDateTime(dateTimeStr: String) =
+    <td>
+      {s"${jsLocalDate(dateTimeStr)}"}<li>
+      {jsLocalTime(dateTimeStr)}
+    </li>
+    </td>
 
 }
 

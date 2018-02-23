@@ -3,10 +3,12 @@ package pme123.adapters.server.entity.demo
 import play.api.libs.json.{JsValue, Json}
 import pme123.adapters.server.entity.AConcreteResult
 import pme123.adapters.shared.ClientConfig.Filterable
-import pme123.adapters.shared.{ClientConfig, dateTimeAfterL, dateTimeBeforeL}
+import pme123.adapters.shared.{ClientConfig, Logger, dateTimeAfterL, dateTimeBeforeL}
 import pme123.adapters.shared.demo.DemoResult
 
-case class DemoResults(results: Seq[DemoResult]) extends AConcreteResult {
+case class DemoResults(results: Seq[DemoResult])
+  extends AConcreteResult
+    with Logger {
 
   // type class instance for ImageElem
   implicit object filterableDemoResult extends Filterable[DemoResult] {
@@ -24,4 +26,12 @@ case class DemoResults(results: Seq[DemoResult]) extends AConcreteResult {
   def clientFiltered(clientConfig: ClientConfig): Seq[JsValue] =
     ClientConfig.filterResults(results, clientConfig)
       .map(dr => Json.toJson(dr))
+
+  def merge(other: AConcreteResult): AConcreteResult = other match {
+    case DemoResults(toMerge) =>
+      DemoResults(results ++ toMerge)
+    case unexpected =>
+      warn(s"Not expected message: $unexpected")
+      this
+  }
 }

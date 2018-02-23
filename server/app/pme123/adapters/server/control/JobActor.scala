@@ -56,7 +56,7 @@ class JobActor @Inject()(@Assisted jobConfig: JobConfig
       nextExecution()
     case msg: AdapterMsg =>
       sendToSubscriber(msg)
-    case LastResult(result) => checkAndFilter(result)
+    case LastResult(result, append) => checkAndFilter(result, append)
     case other =>
       warn(s"unexpected message: $other")
   }
@@ -104,13 +104,13 @@ class JobActor @Inject()(@Assisted jobConfig: JobConfig
     }
   }
 
-  private def checkAndFilter(result: AConcreteResult): Unit = {
+  private def checkAndFilter(result: AConcreteResult, append: Boolean): Unit = {
     sender() ! ClientsChange(
       clientActors.map {
         case (clientConfig, clientActor) =>
           val newResult = filterConcreteResult(clientConfig, result)
           if (newResult.nonEmpty) {
-            clientActor ! GenericResults(newResult.get)
+            clientActor ! GenericResults(newResult.get, append)
             Some(clientConfig)
           } else
             None
@@ -118,7 +118,10 @@ class JobActor @Inject()(@Assisted jobConfig: JobConfig
         .map(_.get)
         .toSeq
     )
-    lastResult = Some(result)
+    lastResult = Some(
+      lastResult.map { r => if (append) result.merge(r) else result }
+        .getOrElse(result)
+    )
   }
 
   private def filterConcreteResult(clientConfig: ClientConfig
@@ -182,7 +185,7 @@ object JobActor {
 
   case class ClientsChange(clientConfigs: Seq[ClientConfig])
 
-  case class LastResult(payload: AConcreteResult)
+  case class LastResult(payload: AConcreteResult, append: Boolean = false)
 
   // used to inject the JobActors as childs of the JobActorFactory
   trait Factory {

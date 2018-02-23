@@ -71,11 +71,11 @@ class DemoJobWithoutSchedulerActor @Inject()()(implicit val mat: Materializer, v
              , jobActor: ActorRef): Future[LogService] = {
     Future {
       logService.startLogging()
-      jobActor ! GenericResults(Nil) // reset last result
+      jobActor ? LastResult(DemoResults(Nil)) // reset last result
 
       DemoService.results.foreach { dr =>
         doSomeWork(dr)
-        jobActor ! GenericResult(Json.toJson(dr))
+        jobActor ? LastResult(DemoResults(Seq(dr)), append = true)
       }
       logService
     }
