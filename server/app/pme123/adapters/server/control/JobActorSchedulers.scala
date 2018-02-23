@@ -7,7 +7,7 @@ import akka.actor.{Actor, ActorRef, ActorSystem, Cancellable}
 import akka.event.LoggingReceive
 import akka.stream.Materializer
 import pme123.adapters.server.control.JobActor.RunJobFromScheduler
-import pme123.adapters.server.entity.{DateTimeHelper, JobSchedule}
+import pme123.adapters.server.entity.JobSchedule
 import pme123.adapters.shared._
 
 import scala.collection.mutable
@@ -34,7 +34,6 @@ class JobActorSchedulers @Inject()()
                                    , val ec: ExecutionContext
                                    , val actorSystem: ActorSystem)
   extends Actor
-    with DateTimeHelper
     with Logger {
 
   import JobActorSchedulers._

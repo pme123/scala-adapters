@@ -11,7 +11,6 @@ import play.api.Logger
 import pme123.adapters.shared.LogLevel._
 import pme123.adapters.shared.{LogEntry, LogEntryMsg, LogLevel, LogReport}
 import pme123.adapters.server.entity.AdaptersContext.settings._
-import pme123.adapters.server.entity.DateTimeHelper
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -22,8 +21,7 @@ import scala.concurrent.{ExecutionContext, Future}
   * Created by pascal.mengelt on 08.12.2015.
   */
 case class LogService(name: String, initiator: String, sender: Option[ActorRef] = None)
-                     (implicit mat: Materializer, ec: ExecutionContext)
-  extends DateTimeHelper {
+                     (implicit mat: Materializer, ec: ExecutionContext) {
 
   val startDateTime: Instant = Instant.now
   val logReport = LogReport(initiator)
@@ -72,7 +70,7 @@ case class LogService(name: String, initiator: String, sender: Option[ActorRef] 
     logReport + sendToSender(logEntry)
 
   def startLogging(): LogEntry = {
-    info(s"$name started at ${LocalDateTime.ofInstant(startDateTime, timezone)} by $initiator")
+    info(s"$name started at ${LocalDateTime.ofInstant(startDateTime, timezoneID)} by $initiator")
   }
 
   def stopLogging(): LogEntry = {

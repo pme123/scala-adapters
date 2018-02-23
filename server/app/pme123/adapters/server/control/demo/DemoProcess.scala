@@ -5,11 +5,10 @@ import javax.inject.Inject
 import akka.actor.ActorRef
 import akka.pattern.ask
 import akka.stream.Materializer
-import play.api.libs.json.{JsValue, Json}
+import play.api.libs.json.Json
 import pme123.adapters.server.control.JobActor.{ClientsChange, LastResult}
 import pme123.adapters.server.control.{JobProcess, LogService}
-import pme123.adapters.server.entity.AConcreteResult
-import pme123.adapters.shared.ClientConfig.Filterable
+import pme123.adapters.server.entity.demo.DemoResults
 import pme123.adapters.shared.LogLevel.{DEBUG, ERROR, INFO, WARN}
 import pme123.adapters.shared._
 import pme123.adapters.shared.demo.DemoResult
@@ -82,24 +81,4 @@ class DemoJobWithoutSchedulerActor @Inject()()(implicit val mat: Materializer, v
     }
   }
 
-}
-
-case class DemoResults(results: Seq[DemoResult]) extends AConcreteResult {
-
-  // type class instance for ImageElem
-  implicit object filterableDemoResult extends Filterable[DemoResult] {
-     def sortBy(filterable: DemoResult): String = filterable.name
-
-     def doFilter(filterable: DemoResult)(implicit filters: Map[String, String]): Boolean = {
-       matchText("name", filterable.name) &&
-         matchText("imgUrl", filterable.imgUrl) &&
-         matchDate(dateTimeAfterL, filterable.created, (a, b) => a <= b) &&
-         matchDate(dateTimeBeforeL, filterable.created, (a, b) => a >= b)
-     }
-
-  }
-
-  def clientFiltered(clientConfig: ClientConfig): Seq[JsValue] =
-    ClientConfig.filterResults(results, clientConfig)
-      .map(dr => Json.toJson(dr))
 }

@@ -2,11 +2,13 @@ package pme123.adapters.server.control.demo
 
 import java.time.LocalDateTime
 
-import pme123.adapters.server.entity.DateTimeHelper
+import pme123.adapters.server.entity.ISODateTimeHelper
 import pme123.adapters.shared.demo.DemoResult
 
+import scala.util.Random
+
 object DemoService
-  extends DateTimeHelper {
+  extends ISODateTimeHelper {
 
   lazy val results: Seq[DemoResult] =
     for {
@@ -14,7 +16,7 @@ object DemoService
       k <- 1 to 5
     } yield DemoResult(s"Image Gallery $i - $k"
       , s"https://www.gstatic.com/webp/gallery$i/$k.png"
-      , localDateTimeStrFrom(LocalDateTime.now()))
+      , toISODateTimeString(LocalDateTime.now().minusHours(Random.nextInt(100))))
 
 
 }
