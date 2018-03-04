@@ -48,7 +48,7 @@ object DemoResultClient
   LoggerConfig.factory = ConsoleLoggerFactory()
 
   // type class instance for ImageElem
-  @JSExportTopLevel("client.ProjectClient.main")
+  @JSExportTopLevel("client.DemoClient.main")
   def main(context: String, websocketPath: String, clientType: String): Unit = {
     info(s"JobCockpitClient $clientType: $context$websocketPath")
     ClientType.fromString(clientType) match {
