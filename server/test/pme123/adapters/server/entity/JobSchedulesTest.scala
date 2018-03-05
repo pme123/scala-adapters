@@ -1,6 +1,6 @@
 package pme123.adapters.server.entity
 
-import java.time.{DayOfWeek, Instant, LocalDate, LocalDateTime}
+import java.time._
 
 import pme123.adapters.shared.demo.DemoJobs._
 import pme123.adapters.server.entity.AdaptersContext.settings.timezoneID
@@ -27,7 +27,7 @@ class JobSchedulesTest
 
   s"The first time of NOW" should "be now" in {
     val instant = nowJobSchedule.firstTime(LocalDate.now(timezoneID), None)
-    assert(Math.abs(Instant.now().getEpochSecond - instant.getEpochSecond) <= 1)
+    assert(Math.abs(Instant.now(Clock.system(timezoneID)).getEpochSecond - instant.getEpochSecond) <= 1)
   }
 
   s"The first time of  $expectedStartHour" should "be correct without Weekday configured" in {
