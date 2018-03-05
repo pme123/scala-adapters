@@ -30,11 +30,11 @@ case class JobSchedule(jobIdent: JobIdent, scheduleConfig: ScheduleConfig) {
   val intervalDuration: FiniteDuration = intervalInMin.minutes
 
   // parameters for testing
-  def firstTime(now: LocalDate = LocalDate.now
+  def firstTime(now: LocalDate = LocalDate.now(timezoneID)
                 , maybeDayOfWeek: Option[DayOfWeek] = dayOfWeek()): Instant = {
     val ldt = scheduleConfig.firstTime match {
       case "NOW" =>
-        LocalDateTime.now()
+        LocalDateTime.now(timezoneID)
       case firstT =>
         val offset =
           maybeDayOfWeek

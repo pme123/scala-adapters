@@ -27,7 +27,9 @@ class JobSchedulesTest
 
   s"The first time of NOW" should "be now" in {
     val instant = nowJobSchedule.firstTime(LocalDate.now(timezoneID), None)
-    assert(Math.abs(Instant.now(Clock.system(timezoneID)).getEpochSecond - instant.getEpochSecond) <= 1)
+    val ldt = LocalDateTime.now(timezoneID)
+    val zo = timezoneID.getRules.getOffset(ldt)
+    assert(Math.abs(ldt.toInstant(zo).getEpochSecond - instant.getEpochSecond) <= 1)
   }
 
   s"The first time of  $expectedStartHour" should "be correct without Weekday configured" in {
