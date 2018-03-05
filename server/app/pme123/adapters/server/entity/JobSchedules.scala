@@ -32,22 +32,26 @@ case class JobSchedule(jobIdent: JobIdent, scheduleConfig: ScheduleConfig) {
   // parameters for testing
   def firstTime(now: LocalDate = LocalDate.now
                 , maybeDayOfWeek: Option[DayOfWeek] = dayOfWeek()): Instant = {
-    val offset =
-      maybeDayOfWeek
-        .map { dow =>
-          val weekDay = dow.getValue
-          val currentDay = now.getDayOfWeek.getValue
-          if (weekDay >= currentDay)
-            weekDay - currentDay
-          else
-            7 - currentDay + weekDay
-        }.getOrElse(0)
-    val ldt =
-      LocalDateTime
-        .of(now, DateTimeHelper.toTime(scheduleConfig.firstTime))
-        .plusDays(offset)
-    val zo = timezoneID.getRules.getOffset(ldt)
+    val ldt = scheduleConfig.firstTime match {
+      case "NOW" =>
+        LocalDateTime.now()
+      case firstT =>
+        val offset =
+          maybeDayOfWeek
+            .map { dow =>
+              val weekDay = dow.getValue
+              val currentDay = now.getDayOfWeek.getValue
+              if (weekDay >= currentDay)
+                weekDay - currentDay
+              else
+                7 - currentDay + weekDay
+            }.getOrElse(0)
+        LocalDateTime
+          .of(now, DateTimeHelper.toTime(firstT))
+          .plusDays(offset)
+    }
 
+    val zo = timezoneID.getRules.getOffset(ldt)
     ldt.toInstant(zo)
   }
 

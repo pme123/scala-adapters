@@ -16,17 +16,9 @@ import scala.concurrent.duration._
 
 /**
   * Part of the adapter framework.
-  * - Scheduler that can be configured:
-  * pme123.adapters.server.scheduler.execution {
-  * // the first time of day the Import should run (this is the Server time!). (format is HH:mm)
-  * // Default is 01:00
-  *   first.time = "01:00"
-  * // the period the Adapter should call the Coop Webservice
-  * // Default is one day (1440 minutes) - be aware 1 minute is the smallest period possible
-  * // - and it must be greater than the time the import takes!
-  * // make also sure that the period is so that the import is at always the same time of day.
-  *   period.minutes = 1440
-  * }
+  * - Scheduler that can be configured - see reference.conf:
+  * pme123.adapters.job.configs[*].schedule
+  *
   */
 @Singleton
 class JobActorSchedulers @Inject()()

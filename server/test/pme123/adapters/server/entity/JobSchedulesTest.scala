@@ -1,6 +1,6 @@
 package pme123.adapters.server.entity
 
-import java.time.{DayOfWeek, LocalDateTime}
+import java.time.{DayOfWeek, Instant, LocalDate, LocalDateTime}
 
 import pme123.adapters.shared.demo.DemoJobs._
 import pme123.adapters.server.entity.AdaptersContext.settings.timezoneID
@@ -12,7 +12,8 @@ class JobSchedulesTest
 
   private val expectedStartHour = 3 // "03:00"
   private val schedules = JobSchedules()
-  private val jobSchedule = schedules.jobSchedule(demoJobIdent)
+  private val nowJobSchedule: JobSchedule = schedules.jobSchedule(demoJobIdent)
+  private val jobSchedule = nowJobSchedule.copy(scheduleConfig= nowJobSchedule.scheduleConfig.copy(firstTime = "03:00"))
 
   "A JobSchedules" should "be init correctly" in {
     schedules.schedules.values.size should be(2)
@@ -23,21 +24,11 @@ class JobSchedulesTest
   it should "throw a BadArgumentException for a JobConfig that has no Schedule" in {
     intercept[BadArgumentException](schedules.jobSchedule(demoJobWithoutSchedulerIdent).jobIdent should be(demoJobIdent))
   }
-  /*
-    it should "" in {
-      val executionPeriod = 1.day.toMinutes
-      scheduler.intervalDuration.length should be(executionPeriod * 60)
-      assert(scheduler.firstExecution isAfter Instant.now)
-      assert((scheduler.firstExecution.toEpochMilli - Instant.now.toEpochMilli) <= scheduler.intervalDuration.toMillis)
-      debug(s"The first import is ${scheduler.firstExecution}")
-    }
 
-    it should "init correctly with offset" in {
-      val offsetInMin = 60
-      val scheduler2 = TestAdapterScheduler(offsetInMin)
-      scheduler2.firstExecution should be(scheduler.firstExecution.plusSeconds(offsetInMin * 60))
-      debug(s"The first import is ${scheduler2.firstExecution}")
-    }*/
+  s"The first time of NOW" should "be now" in {
+    val instant = nowJobSchedule.firstTime(LocalDate.now(timezoneID), None)
+    assert(Math.abs(Instant.now().getEpochSecond - instant.getEpochSecond) <= 1)
+  }
 
   s"The first time of  $expectedStartHour" should "be correct without Weekday configured" in {
     val instant = jobSchedule.firstTime(testNow, None)
