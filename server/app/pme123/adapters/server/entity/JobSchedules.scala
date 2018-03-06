@@ -34,7 +34,7 @@ case class JobSchedule(jobIdent: JobIdent, scheduleConfig: ScheduleConfig) {
                 , maybeDayOfWeek: Option[DayOfWeek] = dayOfWeek()): Instant = {
     val ldt = scheduleConfig.firstTime match {
       case "NOW" =>
-        LocalDateTime.now(timezoneID)
+        LocalDateTime.now(timezoneID).plusNanos(500 * 1000)
       case firstT =>
         val offset =
           maybeDayOfWeek
