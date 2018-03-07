@@ -5,11 +5,12 @@ import pme123.adapters.shared.JOB_RESULTS
 class ProjectConfigTest extends UnitTest {
 
   "A ProjectConfig" should "be created correctly" in {
-    val projConfig = ProjectConfig("context", JOB_RESULTS,"/demo/ws")
+    val projConfig = ProjectConfig("context", JOB_RESULTS,"/demo/ws", isDevMode = false)
     // values from constructor
     projConfig.context should be("context")
     projConfig.clientType should be(JOB_RESULTS)
     projConfig.websocketPath should be("/demo/ws")
+    projConfig.isDevMode should be(false)
 
     // values from the reference.conf
     /*
