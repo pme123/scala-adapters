@@ -10,7 +10,7 @@ import pme123.adapters.shared._
 import scala.concurrent.duration._
 import scala.concurrent.{ExecutionContext, Future}
 
-trait UserWebsocket
+trait ClientWebsocket
   extends Actor
     with Logger {
   implicit def mat: Materializer

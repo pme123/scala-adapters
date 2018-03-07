@@ -26,15 +26,17 @@ trait JobProcess {
 
   def createInfo(): ProjectInfo
 
-  protected def createInfo(adapterVersion: String
-                           , adapterProps: Seq[AdaptersContextProp]) =
-    ProjectInfo(adapterVersion
+  protected def createInfo(projectVersion: String
+                           , adapterProps: Seq[AdaptersContextProp] = Nil
+                           , additionalVersions: Seq[AdaptersContextProp] = Nil
+                          ) =
+    ProjectInfo(projectVersion
       , BuildInfo.version
+      , BuildInfo.builtAtString
       , email
       , adapterProps
       , AdaptersContext.props
-      , None
-      , None
+      , additionalVersions
     )
 }
 

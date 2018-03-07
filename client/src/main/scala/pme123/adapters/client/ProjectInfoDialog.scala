@@ -3,7 +3,7 @@ package pme123.adapters.client
 import com.thoughtworks.binding.Binding.Constants
 import com.thoughtworks.binding.{Binding, dom}
 import org.scalajs.dom.raw.HTMLElement
-import pme123.adapters.shared.{ProjectInfo, AdaptersContextProp, SchedulerInfo}
+import pme123.adapters.shared.{AdaptersContextProp, ProjectInfo}
 
 private[client] case class ProjectInfoDialog(projectInfo: ProjectInfo, uiState: UIState)
   extends UIStore
@@ -47,9 +47,10 @@ private[client] case class ProjectInfoDialog(projectInfo: ProjectInfo, uiState: 
 
   private def versionList = {
     propTable("Versions", Seq(
-      AdaptersContextProp("Adapter", projectInfo.adapterVersion)
-      , AdaptersContextProp("Common Adapter", projectInfo.commonVersion)
-    ))
+      AdaptersContextProp("Project", projectInfo.projectVersion)
+      , AdaptersContextProp("Adapter", projectInfo.adaptersVersion)
+      , AdaptersContextProp("Build time", projectInfo.buildTime)
+    ) ++ projectInfo.additionalVersions)
   }
 
   @dom

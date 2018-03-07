@@ -20,8 +20,8 @@ trait DemoProcess extends JobProcess {
 
   def jobLabel: String
 
-  def createInfo(): ProjectInfo =
-    createInfo(pme123.adapters.version.BuildInfo.version, Nil)
+  def createInfo(): ProjectInfo = // same version as the adapters!
+    createInfo(pme123.adapters.version.BuildInfo.version)
 
   // the process fakes some long taking tasks that logs its progress
   def runJob(user: String)
