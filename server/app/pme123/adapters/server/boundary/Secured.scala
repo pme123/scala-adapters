@@ -25,16 +25,7 @@ trait Secured {
 
   def cc: ControllerComponents
 
-  /**
-    * A user is valid for authentication if:
-    * - is the 'importer' user
-    * - is a user with the 'admin' role
-    *
-    * @param user username
-    * @param pwd  plain password
-    * @return valid logged user for importing
-    */
-  def isValidUser(user: String, pwd: String): Boolean
+  def accessControl: AccessControl
 
   /**
     * Request action builder that allows to add authentication
@@ -49,7 +40,7 @@ trait Secured {
       request.headers.get("Authorization").flatMap { authorization =>
         authorization.split(" ").drop(1).headOption.filter { encoded =>
           new String(org.apache.commons.codec.binary.Base64.decodeBase64(encoded.getBytes)).split(":").toList match {
-            case u :: p :: Nil if isValidUser(u, p) => true
+            case u :: p :: Nil if accessControl.isValidUser(u, p) => true
             case _ => false
           }
         }.map(_ => block(request))
@@ -73,4 +64,24 @@ trait Secured {
     }
   }
 
+}
+
+
+trait AccessControl {
+
+  /**
+    * A user is valid for authentication if:
+    * - is the 'importer' user
+    * - is a user with the 'admin' role
+    *
+    * @param user username
+    * @param pwd  plain password
+    * @return valid logged user for importing
+    */
+  def isValidUser(user: String, pwd: String): Boolean
+}
+
+// no access control needed
+class NoAccessControl extends AccessControl {
+  def isValidUser(user: String, pwd: String): Boolean = true
 }

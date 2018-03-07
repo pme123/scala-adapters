@@ -28,30 +28,32 @@ class JobCockpitController @Inject()(@Named("clientParentActor")
                                      jobParentActor: ActorRef
                                      , template: views.html.adapters.index
                                      , assetsFinder: AssetsFinder
-                                     , cc: ControllerComponents
+                                     , env: Environment
+                                     , val cc: ControllerComponents
                                      , val config: Configuration
-                                     , env: Environment)
+                                     , val accessControl: AccessControl)
                                     (implicit val ec: ExecutionContext)
   extends AbstractController(cc)
-    with AdaptersController {
+    with AdaptersController
+    with Secured {
 
-  def jobProcess(jobIdent: JobIdent) = Action { implicit request: Request[AnyContent] =>
+  def jobProcess(jobIdent: JobIdent) = AuthenticatedAction { implicit request: Request[AnyContent] =>
     // uses the AssetsFinder API
     Ok(template(ProjectConfig(context, JOB_PROCESS, s"/$jobIdent", env.isDev)
       , assetsFinder))
   }
 
-  def jobResults(jobIdent: JobIdent) = Action { implicit request: Request[AnyContent] =>
+  def jobResults(jobIdent: JobIdent) = AuthenticatedAction { implicit request: Request[AnyContent] =>
     Ok(template(ProjectConfig(context, JOB_RESULTS, s"/$jobIdent", env.isDev)
       , assetsFinder))
   }
 
-  def customPage(jobIdent: JobIdent) = Action { implicit request: Request[AnyContent] =>
+  def customPage(jobIdent: JobIdent) = AuthenticatedAction { implicit request: Request[AnyContent] =>
     Ok(template(ProjectConfig(context, CUSTOM_PAGE, s"/$jobIdent", env.isDev)
       , assetsFinder))
   }
 
-  def jobConfigs(): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
+  def jobConfigs(): Action[AnyContent] = AuthenticatedAction.async { implicit request: Request[AnyContent] =>
     (jobParentActor ? GetAllJobConfigs)
       .map(_.asInstanceOf[Seq[JobConfig]])
       .map(jobConfigs =>
@@ -59,7 +61,7 @@ class JobCockpitController @Inject()(@Named("clientParentActor")
       )
   }
 
-  def clientConfigs(): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
+  def clientConfigs(): Action[AnyContent] = AuthenticatedAction.async { implicit request: Request[AnyContent] =>
     (clientParentActor ? GetClientConfigs)
       .map(_.asInstanceOf[Seq[ClientConfig]])
       .map(clients => Ok(Json.toJson[Seq[ClientConfig]](clients)))
