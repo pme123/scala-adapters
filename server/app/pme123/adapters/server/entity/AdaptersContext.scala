@@ -18,7 +18,6 @@ object AdaptersSettings extends Logger {
   val configPath = "pme123.adapters"
 
   val httpContextProp = "play.http.context"
-  val projectProp = "project"
   val runModeProp = "run.mode"
   val charEncodingProp = "char.encoding"
   val timezoneProp = "timezone"
@@ -38,6 +37,7 @@ object AdaptersSettings extends Logger {
   val processLogPathProp = "process.log.path"
   val wsocketHostsAllowedProp = "wsocket.hosts.allowed"
 
+  val projectConfigProp = "project.config"
   val jobConfigsProp = "job.configs"
 
   def config(): Config = {
@@ -58,24 +58,23 @@ class AdaptersSettings(config: Config) extends Logger {
     s"$protocol://$host:$port"
   }
 
-  val projectConfig: Config = config.getConfig(configPath)
+  val baseConfig: Config = config.getConfig(configPath)
 
   // note that these fields are NOT lazy, because if we're going to
   // get any exceptions, we want to get them on startup.
   val httpContext: String = config.getString(httpContextProp)
-  val project: String = projectConfig.getString(projectProp)
-  val runMode: String = projectConfig.getString(runModeProp)
-  val charEncoding: String = projectConfig.getString(charEncodingProp)
-  val timezone: String = projectConfig.getString(timezoneProp)
+  val runMode: String = baseConfig.getString(runModeProp)
+  val charEncoding: String = baseConfig.getString(charEncodingProp)
+  val timezone: String = baseConfig.getString(timezoneProp)
   val timezoneID: ZoneId = ZoneId.of(timezone)
 
   // mail server
-  val mailSmtpTls: Boolean = projectConfig.getBoolean(mailSmtpTlsProp)
-  val mailSmtpSsl: Boolean = projectConfig.getBoolean(mailSmtpSslProp)
-  val mailHost: String = projectConfig.getString(mailHostProp)
-  val mailPort: Int = projectConfig.getInt(mailPortProp)
-  val mailUsername: String = projectConfig.getString(mailUsernameProp)
-  val mailPassword: String = projectConfig.getString(mailPasswordProp)
+  val mailSmtpTls: Boolean = baseConfig.getBoolean(mailSmtpTlsProp)
+  val mailSmtpSsl: Boolean = baseConfig.getBoolean(mailSmtpSslProp)
+  val mailHost: String = baseConfig.getString(mailHostProp)
+  val mailPort: Int = baseConfig.getInt(mailPortProp)
+  val mailUsername: String = baseConfig.getString(mailUsernameProp)
+  val mailPassword: String = baseConfig.getString(mailPasswordProp)
   val smtpConfig = SmtpConfig(
     mailSmtpTls,
     mailSmtpSsl,
@@ -84,21 +83,23 @@ class AdaptersSettings(config: Config) extends Logger {
     mailUsername,
     mailPassword
   )
-  val mailFrom: String = projectConfig.getString(mailFromProp)
-  val adminMailActive: Boolean = projectConfig.getBoolean(adminMailActiveProp)
-  val adminMailRecipient: String = projectConfig.getString(adminMailRecipientProp)
-  val adminMailSubject: String = projectConfig.getString(adminMailSubjectProp)
-  val adminMailLoglevel: LogLevel = LogLevel.fromLevel(projectConfig.getString(adminMailLoglevelProp)).get
-  val wsocketHostsAllowed: Seq[String] = projectConfig.getStringList(wsocketHostsAllowedProp).asScala
+  val mailFrom: String = baseConfig.getString(mailFromProp)
+  val adminMailActive: Boolean = baseConfig.getBoolean(adminMailActiveProp)
+  val adminMailRecipient: String = baseConfig.getString(adminMailRecipientProp)
+  val adminMailSubject: String = baseConfig.getString(adminMailSubjectProp)
+  val adminMailLoglevel: LogLevel = LogLevel.fromLevel(baseConfig.getString(adminMailLoglevelProp)).get
+  val wsocketHostsAllowed: Seq[String] = baseConfig.getStringList(wsocketHostsAllowedProp).asScala
 
-  val processLogEnabled: Boolean = projectConfig.getBoolean(processLogEnabledProp)
-  val processLogPath: String = projectConfig.getString(processLogPathProp)
+  val processLogEnabled: Boolean = baseConfig.getBoolean(processLogEnabledProp)
+  val processLogPath: String = baseConfig.getString(processLogPathProp)
 
   val isProdMode: Boolean = runMode == "PROD"
   val isDevMode: Boolean = runMode == "DEV"
 
+  val projectConfig: Config = baseConfig.getConfig(projectConfigProp)
+
   val jobConfigs: Map[JobIdent, JobConfig] =
-    projectConfig.getConfigList(jobConfigsProp).asScala
+    baseConfig.getConfigList(jobConfigsProp).asScala
       .map { c =>
       JobConfigCreator(c, ZoneId.of(timezone)).create()
     }.toMap
@@ -119,7 +120,6 @@ class AdaptersContext(config: Config)
   lazy val props: Seq[AdaptersContextProp] =
     Seq(
       AdaptersContextProp(httpContextProp, settings.httpContext)
-      , AdaptersContextProp(projectProp, settings.project)
       , AdaptersContextProp(runModeProp, settings.runMode)
       , AdaptersContextProp(timezoneProp, settings.timezone)
       , AdaptersContextProp(charEncodingProp, settings.charEncoding)
@@ -134,6 +134,7 @@ class AdaptersContext(config: Config)
       , AdaptersContextProp(adminMailRecipientProp, settings.adminMailRecipient)
       , AdaptersContextProp(adminMailSubjectProp, settings.adminMailSubject)
       , AdaptersContextProp(adminMailLoglevelProp, settings.adminMailLoglevel)
+      , AdaptersContextProp(projectConfigProp, settings.projectConfig.toString)
       , AdaptersContextProp(jobConfigsProp, settings.jobConfigs.toString)
       , AdaptersContextProp(processLogEnabledProp, settings.processLogEnabled)
       , AdaptersContextProp(processLogPathProp, settings.processLogPath)

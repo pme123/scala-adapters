@@ -14,7 +14,7 @@ trait TestResources {
   val testMonth = 5
   val testNow: LocalDate = LocalDate.of(testYear, testMonth, testDay)
 
-  def getJobConfig(index: Int): Config = projectConfig.getConfigList(jobConfigsProp).get(index)
+  def getJobConfig(index: Int): Config = baseConfig.getConfigList(jobConfigsProp).get(index)
 
   val jobConfigDefault: JobConfig = JobConfigCreator(getJobConfig(1), timezoneID).create()._2
 }

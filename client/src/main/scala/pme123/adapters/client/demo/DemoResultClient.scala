@@ -4,7 +4,7 @@ import com.thoughtworks.binding.Binding.Constants
 import com.thoughtworks.binding.{Binding, dom}
 import org.scalajs.dom.raw._
 import play.api.libs.json.{JsResult, JsValue, Json}
-import pme123.adapters.client.ToConcreteResults.{ConcreteResult, toConcreteResults}
+import pme123.adapters.client.ToConcreteResults.ConcreteResult
 import pme123.adapters.client._
 import pme123.adapters.shared._
 import pme123.adapters.shared.demo.DemoResult

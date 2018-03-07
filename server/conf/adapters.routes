@@ -7,9 +7,9 @@ GET        /                             pme123.adapters.server.boundary.demo.De
 
 GET        /jobProcess/:jobIdent         pme123.adapters.server.boundary.JobCockpitController.jobProcess(jobIdent)
 GET        /jobResults/:jobIdent         pme123.adapters.server.boundary.JobCockpitController.jobResults(jobIdent)
-# Index file for the DemoResults.
-GET        /demoResults                  pme123.adapters.server.boundary.demo.DemoResultController.defaultResults
-GET        /demoResults/:jobIdent        pme123.adapters.server.boundary.demo.DemoResultController.demoResults(jobIdent)
+GET        /customPage/:jobIdent         pme123.adapters.server.boundary.JobCockpitController.customPage(jobIdent)
+# Index file for the Demo (this is needed because of local environment - wich differs from usual setup).
+GET        /demo/customPage                  pme123.adapters.server.boundary.demo.DemoResultController.defaultResults
 # Websocket for live updates (LogEntries) on Jobs
 GET        /ws/:jobIdent                 pme123.adapters.server.boundary.WebsocketController.ws(jobIdent, subWebpath: Option[String], resultCount: Option[Int], resultFilter: Option[String])
 # API to get all the Jobs that are provided

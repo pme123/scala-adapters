@@ -25,7 +25,7 @@ import scala.concurrent.duration._
 class ClientActor @Inject()(@Assisted clientConfig: ClientConfig
                             , @Assisted jobActor: ActorRef)
                            (implicit val mat: Materializer, val ec: ExecutionContext)
-  extends UserWebsocket {
+  extends ClientWebsocket {
 
   import ClientActor._
   implicit private val timeout: Timeout = Timeout(50.millis)
