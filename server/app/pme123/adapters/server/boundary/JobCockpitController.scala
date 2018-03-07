@@ -5,6 +5,7 @@ import javax.inject._
 import akka.actor.ActorRef
 import akka.pattern.ask
 import controllers.AssetsFinder
+import play.Environment
 import play.api.Configuration
 import play.api.libs.json._
 import play.api.mvc._
@@ -28,26 +29,25 @@ class JobCockpitController @Inject()(@Named("clientParentActor")
                                      , template: views.html.adapters.index
                                      , assetsFinder: AssetsFinder
                                      , cc: ControllerComponents
-                                     , val config: Configuration)
+                                     , val config: Configuration
+                                     , env: Environment)
                                     (implicit val ec: ExecutionContext)
   extends AbstractController(cc)
     with AdaptersController {
 
   def jobProcess(jobIdent: JobIdent) = Action { implicit request: Request[AnyContent] =>
     // uses the AssetsFinder API
-    Ok(template(ProjectConfig(context, JOB_PROCESS, s"/$jobIdent")
+    Ok(template(ProjectConfig(context, JOB_PROCESS, s"/$jobIdent", env.isDev)
       , assetsFinder))
   }
 
   def jobResults(jobIdent: JobIdent) = Action { implicit request: Request[AnyContent] =>
-    // uses the AssetsFinder API
-    Ok(template(ProjectConfig(context, JOB_RESULTS, s"/$jobIdent")
+    Ok(template(ProjectConfig(context, JOB_RESULTS, s"/$jobIdent", env.isDev)
       , assetsFinder))
   }
 
   def customPage(jobIdent: JobIdent) = Action { implicit request: Request[AnyContent] =>
-    // uses the AssetsFinder API
-    Ok(template(ProjectConfig(context, CUSTOM_PAGE, s"/$jobIdent")
+    Ok(template(ProjectConfig(context, CUSTOM_PAGE, s"/$jobIdent", env.isDev)
       , assetsFinder))
   }
 

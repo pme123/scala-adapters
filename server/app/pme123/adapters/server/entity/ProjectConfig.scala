@@ -10,6 +10,7 @@ case class ProjectConfig(context: String
                          , websocketPath: String
                          , pageTitle: String
                          , isDemo: Boolean
+                         , isDevMode: Boolean
                          , styleName: Option[String] = None
                         ) {
 
@@ -19,7 +20,9 @@ object ProjectConfig {
 
   def apply(context: String
             , clientType: ClientType
-            , websocketPath: String): ProjectConfig =
+            , websocketPath: String
+            , isDevMode: Boolean
+           ): ProjectConfig =
     new ProjectConfig(context
       , projectConfig.getString("name")
       , projectConfig.getString("client.name")
@@ -30,6 +33,7 @@ object ProjectConfig {
         projectConfig.getBoolean("demo")
       else
         false
+      , isDevMode
       , if (projectConfig.hasPath("style.name"))
         Some(projectConfig.getString("style.name"))
       else

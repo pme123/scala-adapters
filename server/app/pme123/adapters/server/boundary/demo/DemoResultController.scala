@@ -17,8 +17,7 @@ import scala.concurrent.ExecutionContext
   * Original see here: https://github.com/playframework/play-scala-websocket-example
   */
 @Singleton
-class DemoResultController @Inject()(template: views.html.adapters.index
-                                    , jobController: JobCockpitController
+class DemoResultController @Inject()(jobController: JobCockpitController
                                      , assetsFinder: AssetsFinder
                                      , cc: ControllerComponents
                                      , val config: Configuration)

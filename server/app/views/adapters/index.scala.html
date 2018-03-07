@@ -15,6 +15,8 @@
         routes.Assets.at(_).toString,
         name => getClass.getResource(s"/public/$name") != null)
 
+    <script src=@(s"${projConfig.context}/assets/${projConfig.projectName}-client-jsdeps${if(projConfig.isDevMode) "" else ".min"}.js") type="text/javascript" ></script>
+    <script src=@(s"${projConfig.context}/assets/${projConfig.projectName}-client-${if(projConfig.isDevMode) "fast" else ""}opt.js") type="text/javascript" ></script>
 
     <script>client.@(projConfig.clientName).main("@projConfig.context", "@projConfig.websocketPath", "@projConfig.clientType");</script>
 }
