@@ -1,7 +1,8 @@
+@import pme123.adapters.server.entity.ProjectConfig
 @(assets: AssetsFinder
         , webJarsUtil: org.webjars.play.WebJarsUtil
 )(
-        title: String
+        projConfig: ProjectConfig
         , icon: String = assets.path("assets/images/favicon.png")
         , styles: Html = Html("")
         , clientScripts: Html = Html("")
@@ -11,15 +12,24 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>@title</title>
+        <title>@projConfig.pageTitle</title>
         <link rel="shortcut icon" type="image/png" href="@icon">
         @Html(webJarsUtil.css("semantic.min.css"))
-        @Html(webJarsUtil.css("stylesheets/main.css"))
+        @if(projConfig.isDemo) {
+            @Html("<link rel=\"stylesheet\" type=\"text/css\" href=\"" + assets.withUrlPrefix(projConfig.context).path("assets/stylesheets/main.css") + "\">")
+        } else {
+            @Html(webJarsUtil.css("stylesheets/main.css"))
+        }
         @styles
+
             <!-- for scalajs routing -->
         @helper.javascriptRouter("jsRoutes")(routes.javascript.Assets.versioned)
 
-        @Html(webJarsUtil.script("javascripts/versioned.js"))
+        @if(projConfig.isDemo) {
+            @Html("<script src=\"" + assets.withUrlPrefix(projConfig.context).path("assets/javascripts/versioned.js") + "\" ></script>")
+        } else {
+            @Html(webJarsUtil.script("javascripts/versioned.js"))
+        }
 
         <script type="text/javascript">
                 (function () {

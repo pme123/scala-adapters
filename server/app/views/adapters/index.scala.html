@@ -1,23 +1,20 @@
-@import pme123.adapters.shared.ClientType
+@import pme123.adapters.server.entity.ProjectConfig
 
 @this(webJarsUtil: org.webjars.play.WebJarsUtil)
-@(context: String
-        , clientType: ClientType
-        , websocketPath: String
+@(projConfig: ProjectConfig
         , assets: AssetsFinder)(implicit r: Request[_], rh: RequestHeader)
 
-@views.html.adapters.mainDemo(assets = assets
+@views.html.adapters.main(assets = assets
     , webJarsUtil = webJarsUtil
-)(title = "Demo Adapter"
-    , icon = assets.withUrlPrefix(context).path("assets/images/favicon.png")
-    , styles = Html("<link rel=\"stylesheet\" type=\"text/css\" href=\"" +assets.withUrlPrefix(context).path("assets/stylesheets/main.css") + "\">")
-    , clientScripts = Html("<script src=\"" +assets.withUrlPrefix(context).path("assets/javascripts/versioned.js")+ "\" ></script>")
+)(projConfig = projConfig
+    , icon = assets.withUrlPrefix(projConfig.context).path("assets/images/favicon.png")
+    , styles = Html(projConfig.styleName.map(style=> "<link rel=\"stylesheet\" type=\"text/css\" href=\"" + assets.withUrlPrefix(projConfig.context).path(s"assets/stylesheets/$style.css") + "\">").getOrElse(""))
 ) {
 
-    @scalajs.html.scripts("scala-adapters-client",
+    @scalajs.html.scripts(s"${projConfig.projectName}-client",
         routes.Assets.at(_).toString,
         name => getClass.getResource(s"/public/$name") != null)
 
-    <script>client.DemoClient.main("@context", "@websocketPath", "@clientType");</script>
 
+    <script>client.@(projConfig.clientName).main("@projConfig.context", "@projConfig.websocketPath", "@projConfig.clientType");</script>
 }

@@ -12,8 +12,7 @@ class JobSchedulesTest
 
   private val expectedStartHour = 3 // "03:00"
   private val schedules = JobSchedules()
-  private val nowJobSchedule: JobSchedule = schedules.jobSchedule(demoJobIdent)
-  private val jobSchedule = nowJobSchedule.copy(scheduleConfig= nowJobSchedule.scheduleConfig.copy(firstTime = "03:00"))
+  private val jobSchedule: JobSchedule = schedules.jobSchedule(demoJobIdent)
 
   "A JobSchedules" should "be init correctly" in {
     schedules.schedules.values.size should be(2)
@@ -23,13 +22,6 @@ class JobSchedulesTest
   }
   it should "throw a BadArgumentException for a JobConfig that has no Schedule" in {
     intercept[BadArgumentException](schedules.jobSchedule(demoJobWithoutSchedulerIdent).jobIdent should be(demoJobIdent))
-  }
-
-  s"The first time of NOW" should "be now" in {
-    val instant = nowJobSchedule.firstTime(LocalDate.now(timezoneID), None)
-    val ldt = LocalDateTime.now(timezoneID)
-    val zo = timezoneID.getRules.getOffset(ldt)
-    assert(Math.abs(ldt.toInstant(zo).getEpochSecond - instant.getEpochSecond) <= 1)
   }
 
   s"The first time of  $expectedStartHour" should "be correct without Weekday configured" in {

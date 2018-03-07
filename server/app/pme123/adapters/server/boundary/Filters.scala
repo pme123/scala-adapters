@@ -12,7 +12,7 @@ import play.api.mvc._
 import play.filters.cors.CORSFilter
 import play.filters.headers.SecurityHeadersFilter
 import play.filters.hosts.AllowedHostsFilter
-import pme123.adapters.server.entity.AdaptersContext.settings.project
+import pme123.adapters.server.entity.AdaptersContext.settings.projectConfig
 
 import scala.concurrent.ExecutionContext
 
@@ -41,7 +41,7 @@ class LoggingFilter @Inject()(registry: MetricRegistry)(implicit ec: ExecutionCo
 
   private lazy val runJmxReporter = JmxReporter
     .forRegistry(registry)
-    .inDomain(s"pme123-adapters-$project")
+    .inDomain(projectConfig.getString("name"))
     .convertRatesTo(TimeUnit.MINUTES)
     .build.start()
 
