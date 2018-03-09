@@ -80,7 +80,7 @@ case class JobProcessView(context: String, websocketPath: String)
 
   @dom
   private def renderDetail = {
-    val show = uiState.showAdapterInfo.bind
+    val show = uiState.showProjectInfo.bind
     val adapterInfo = uiState.adapterInfo.bind
     if (show)
       <div>

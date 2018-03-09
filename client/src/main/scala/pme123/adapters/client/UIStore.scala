@@ -51,15 +51,15 @@ trait UIStore extends Logger {
     uiState.logEntryDetail.value = detail
   }
 
-  protected def changeAdapterInfo(adapterInfo: ProjectInfo) {
-    info(s"UIStore: change AdapterInfo")
+  protected def changeProjectInfo(adapterInfo: ProjectInfo) {
+    info(s"UIStore: change ProjectInfo")
     uiState.adapterInfo.value = Some(adapterInfo)
   }
 
-  protected def showAdapterInfo() {
-    info(s"UIStore: show AdapterInfo")
+  protected def showProjectInfo() {
+    info(s"UIStore: show ProjectInfo")
     hideAllDialogs()
-    uiState.showAdapterInfo.value = true
+    uiState.showProjectInfo.value = true
   }
 
   protected def showJobs() {
@@ -80,9 +80,9 @@ trait UIStore extends Logger {
     uiState.showLastResults.value = true
   }
 
-  protected def hideAdapterInfo() {
-    info(s"UIStore: hide AdapterInfo")
-    uiState.showAdapterInfo.value = false
+  protected def hideProjectInfo() {
+    info(s"UIStore: hide ProjectInfo")
+    uiState.showProjectInfo.value = false
   }
 
   protected def changeJobConfigs(jobConfigs: Seq[JobConfig]): Unit = {
@@ -139,7 +139,7 @@ trait UIStore extends Logger {
     uiState.showJobs.value = false
     uiState.showClients.value = false
     uiState.showLastResults.value = false
-    uiState.showAdapterInfo.value = false
+    uiState.showProjectInfo.value = false
     uiState.logEntryDetail.value = None
   }
 }
@@ -151,7 +151,7 @@ case class UIState(logData: Vars[LogEntry] = Vars[LogEntry]()
                    , lastLogLevel: Var[Option[LogLevel]] = Var[Option[LogLevel]](None)
                    , logEntryDetail: Var[Option[LogEntry]] = Var[Option[LogEntry]](None)
                    , adapterInfo: Var[Option[ProjectInfo]] = Var[Option[ProjectInfo]](None)
-                   , showAdapterInfo: Var[Boolean] = Var(false)
+                   , showProjectInfo: Var[Boolean] = Var(false)
                    , showJobs: Var[Boolean] = Var(false)
                    , showClients: Var[Boolean] = Var(false)
                    , showLastResults: Var[Boolean] = Var(false)

@@ -196,7 +196,7 @@ private[client] case class JobProcessHeader(context: String
     <div class="ui item">
       <button class="ui basic icon button"
               onclick={_: Event =>
-                showAdapterInfo()
+                showProjectInfo()
                 setTimeout(200) {
                   jQuery(".ui.modal").modal("show")
                 }}
