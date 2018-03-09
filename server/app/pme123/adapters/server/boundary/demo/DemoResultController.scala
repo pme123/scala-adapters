@@ -6,9 +6,6 @@ import controllers.AssetsFinder
 import play.api.Configuration
 import play.api.mvc._
 import pme123.adapters.server.boundary.{AdaptersController, JobCockpitController}
-import pme123.adapters.server.entity.ProjectConfig
-import pme123.adapters.shared.CUSTOM_PAGE
-import pme123.adapters.shared.JobConfig.JobIdent
 import pme123.adapters.shared.demo.DemoJobs.demoJobIdent
 
 import scala.concurrent.ExecutionContext
