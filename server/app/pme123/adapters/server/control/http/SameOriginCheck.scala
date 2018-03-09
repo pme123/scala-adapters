@@ -36,7 +36,7 @@ trait SameOriginCheck
   /**
     * Returns true if the value of the Origin header contains an acceptable value.
     *
-    * see application.conf: wsocket.hosts.allowed for a description.
+    * see reference.conf: wsocket.hosts.allowed for a description.
     */
   def originMatches(origin: String): Boolean = {
 

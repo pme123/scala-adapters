@@ -32,4 +32,3 @@ class DemoJobCreation @Inject()(demoJob: DemoJobProcess
     case other => throw ServiceException(s"There is no Job for $other")
   }
 }
-

@@ -18,7 +18,7 @@ import scala.concurrent.ExecutionContext
 
 /**
   * retrieved from here: https://www.playframework.com/documentation/2.5.x/ScalaHttpFilters#Filters
-  * see:  play.http.filters in application.conf
+  * see:  play.http.filters in reference.conf
   * author: pascal
   */
 class Filters @Inject()(log: LoggingFilter
