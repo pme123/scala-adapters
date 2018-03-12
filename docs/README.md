@@ -5,7 +5,7 @@
 
 An implementation of a web fullstack with Scala/Play on the server and ScalaJS/Binding.scala on the client.￼Edit ￼ Add topics
 
-![use case image]({{ site.url }}/images/slide2.png)
+![use case image]({{ project.url }}/images/slide2.png)
 
 ## How to run
 Open the sbt console and run.
