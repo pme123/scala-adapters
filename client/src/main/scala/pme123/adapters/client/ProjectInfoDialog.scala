@@ -47,9 +47,9 @@ private[client] case class ProjectInfoDialog(projectInfo: ProjectInfo, uiState: 
 
   private def versionList = {
     propTable("Versions", Seq(
-      AdaptersContextProp("Project", projectInfo.projectVersion)
-      , AdaptersContextProp("Adapter", projectInfo.adaptersVersion)
+      AdaptersContextProp("This project", projectInfo.projectVersion)
       , AdaptersContextProp("Build time", projectInfo.buildTime)
+      , AdaptersContextProp("scala-adapters", projectInfo.adaptersVersion)
     ) ++ projectInfo.additionalVersions)
   }
 
