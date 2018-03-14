@@ -16,7 +16,7 @@ object Settings {
   lazy val orgId = "pme123"
   lazy val orgHomepage = Some(new URL("https://github.com/pme123"))
   lazy val projectName = "scala-adapters"
-  lazy val projectV = "0.1.1"
+  lazy val projectV = "1.0.0"
 
   // main versions
   lazy val scalaV = "2.12.4"
@@ -25,9 +25,6 @@ object Settings {
   lazy val sloggingV = "0.6.0"
   lazy val semanticV = "2.2.10"
   lazy val scalaTestV = "3.0.4"
-
-  lazy val buildVersion: String = sys.env.getOrElse("BUILD_VERSION", default = projectV)
-  lazy val buildNumber: String = sys.env.getOrElse("BUILD_NUMBER", default = s"${(System.currentTimeMillis / 1000).asInstanceOf[Int]}")
 
   lazy val organizationSettings = Seq(
     organization := orgId
@@ -119,7 +116,7 @@ object Settings {
   def sharedSettings(moduleName: Option[String] = None): Seq[Def.Setting[_]] = Seq(
     scalaVersion := scalaV
     , name := s"$projectName${moduleName.map("-" + _).getOrElse("")}"
-    , version := s"$buildVersion-$buildNumber"
+    , version := s"$projectV"
     , publishArtifact in(Compile, packageDoc) := false
     , publishArtifact in packageDoc := false
     , sources in(Compile, doc) := Seq.empty
