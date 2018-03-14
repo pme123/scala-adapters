@@ -8,7 +8,7 @@ toc: true
 
 ## Install the Theme
 
-**1.** For a **new site**, install the `minimal-mistakes-jekyll` theme gem or fork the Minimal Mistakes repo on GitHub following the steps outlined in the [*Quick-Start Guide*]({{ "/docs/quick-start-guide/" | absolute_url }}).
+**1.** For a **new site**, install the `scala-adapters-jekyll` theme gem or fork the Scala Adapters repo on GitHub following the steps outlined in the [*Quick-Start Guide*]({{ "/docs/quick-start-guide/" | absolute_url }}).
 
 If you plan to host with GitHub Pages be sure to properly setup [**jekyll-remote-theme**](https://github.com/benbalter/jekyll-remote-theme) as it is required for the theme to work properly. 
 
@@ -16,9 +16,9 @@ If you plan to host with GitHub Pages be sure to properly setup [**jekyll-remote
 
 **3.** And for those who'd like to make substantial edits to the theme, it can be downloaded as a ZIP file to customize.
 
-[<i class="fas fa-download"></i> Download Minimal Mistakes Theme](https://github.com/mmistakes/minimal-mistakes/archive/master.zip){: .btn .btn--success}
+[<i class="fas fa-download"></i> Download Scala Adapters Theme](https://github.com/pme123/scala-adapters/archive/master.zip){: .btn .btn--success}
 
-**ProTip:** Be sure to remove `/docs` and `/test` if you forked or downloaded Minimal Mistakes. These folders contain documentation and test pages for the theme and you probably don't littering up in your repo.
+**ProTip:** Be sure to remove `/docs` and `/test` if you forked or downloaded Scala Adapters. These folders contain documentation and test pages for the theme and you probably don't littering up in your repo.
 {: .notice--info}
 
 ## Theme Migration
@@ -71,7 +71,7 @@ source "https://rubygems.org"
 # To upgrade, run `bundle update`.
 
 gem "jekyll", "~> 3.5"
-gem "minimal-mistakes-jekyll"
+gem "scala-adapters-jekyll"
 
 # The following plugins are automatically loaded by the theme-gem:
 #   gem "jekyll-paginate"
@@ -86,7 +86,7 @@ group :jekyll_plugins do
 end
 ```
 
-**ProTip:** To be bleeding edge install the latest (unreleased) version of Minimal Mistakes by adding this line to your `Gemfile`: `gem "minimal-mistakes-jekyll", :github => "mmistakes/minimal-mistakes"`.
+**ProTip:** To be bleeding edge install the latest (unreleased) version of Scala Adapters by adding this line to your `Gemfile`: `gem "scala-adapters-jekyll", :github => "pme123/scala-adapters"`.
 {: .notice--info}
 
 To maintain a local Jekyll environment in sync with GitHub Pages replace the `gem "jekyll"` line with `gem "github-pages", group: :jekyll_plugins` and run the following:

@@ -7,7 +7,7 @@ last_modified_at: 2017-12-28T13:51:58-05:00
 
 Text for various UI elements, `_layouts`, and `_includes` have all been grouped together as a set of translation keys. This is by no means a full-on i18n solution, but it does help make customizing things a bit easier.
 
-Currently the English[^yaml-anchors] main keys in [`_data/ui-text.yml`](https://github.com/mmistakes/minimal-mistakes/blob/master/_data/ui-text.yml) are translated to the following languages:
+Currently the English[^yaml-anchors] main keys in [`_data/ui-text.yml`](https://github.com/pme123/scala-adapters/blob/master/_data/ui-text.yml) are translated to the following languages:
 
 - Brazilian Portuguese (Português brasileiro)
 - Chinese

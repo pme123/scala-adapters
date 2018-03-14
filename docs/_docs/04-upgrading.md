@@ -6,16 +6,16 @@ last_modified_at: 2018-01-08T20:10:30-05:00
 toc: true
 ---
 
-If you're using the [Ruby Gem]({{ "/docs/quick-start-guide/#ruby-gem-method" | absolute_url }}) or [remote theme]({{ "/docs/quick-start-guide/#github-pages-method" | absolute_url }}) versions of Minimal Mistakes, upgrading is fairly painless.
+If you're using the [Ruby Gem]({{ "/docs/quick-start-guide/#ruby-gem-method" | absolute_url }}) or [remote theme]({{ "/docs/quick-start-guide/#github-pages-method" | absolute_url }}) versions of Scala Adapters, upgrading is fairly painless.
 
 To check which version you are currently using, view the source of your built site and you should see something similar to:
 
 ```
 <!--
-  Minimal Mistakes Jekyll Theme 4.9.0 by Michael Rose
-  Copyright 2013-2018 Michael Rose - mademistakes.com | @mmistakes
+  Scala Adapters Jekyll Theme 4.9.0 by Pascal Mengelt
+  Copyright 2013-2018 Pascal Mengelt - mademistakes.com | @pme123
   Free for personal and commercial use under the MIT license
-  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE.txt
+  https://github.com/pme123/scala-adapters/blob/master/LICENSE.txt
 -->
 ```
 
@@ -23,21 +23,21 @@ At the top of every `.html` file, `/assets/css/main.css`, and `/assets/js/main.m
 
 ## Ruby Gem
 
-Simply run `bundle update` if you're using Bundler (have a `Gemfile`) or `gem update minimal-mistakes-jekyll` if you're not.
+Simply run `bundle update` if you're using Bundler (have a `Gemfile`) or `gem update scala-adapters-jekyll` if you're not.
 
-When using Bundler you can downgrade or lock the theme to a specific release ([tag](https://github.com/mmistakes/minimal-mistakes/tags)), branch, or commit. Instead of `gem "minimal-mistakes-jekyll"` you'd add the following to your `Gemfile`:
+When using Bundler you can downgrade or lock the theme to a specific release ([tag](https://github.com/pme123/scala-adapters/tags)), branch, or commit. Instead of `gem "scala-adapters-jekyll"` you'd add the following to your `Gemfile`:
 
 ```ruby
-gem "minimal-mistakes-jekyll", :git => "https://github.com/mmistakes/minimal-mistakes.git", :tag => "4.9.0"
+gem "scala-adapters-jekyll", :git => "https://github.com/pme123/scala-adapters.git", :tag => "4.9.0"
 ```
 
 For more information on [installing gems from git repositories](http://bundler.io/v1.16/guides/git.html) consult Bundler's documentation.
 
 ## Remote Theme
 
-When setting `remote_theme: "mmistakes/minimal-mistakes"` in your `_config.yml` you may also optionally specify a branch, [tag](https://github.com/mmistakes/minimal-mistakes/tags), or commit to use by appending an @ and the Git ref.
+When setting `remote_theme: "pme123/scala-adapters"` in your `_config.yml` you may also optionally specify a branch, [tag](https://github.com/pme123/scala-adapters/tags), or commit to use by appending an @ and the Git ref.
 
-For example you can roll back to release 4.8.1 with `mmistakes/minimal-mistakes@4.8.1` or a specific commit with `mmistakes/minimal-mistakes@bbf3cbc5fd64a3e1885f3f99eb90ba92af84063d`).
+For example you can roll back to release 4.8.1 with `pme123/scala-adapters@4.8.1` or a specific commit with `pme123/scala-adapters@bbf3cbc5fd64a3e1885f3f99eb90ba92af84063d`).
 
 To update the theme on GitHub Pages you'll need to push up a commit to force a rebuild. An empty commit works well if you don't have anything to push at the moment:
 

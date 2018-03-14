@@ -7,11 +7,11 @@ last_modified_at: 2018-01-03T12:03:59-05:00
 
 Nothing clever here :wink:. Layouts, data files, and includes are all placed in their default locations. Stylesheets and scripts in `assets`, and a few development related files in the project's root directory.
 
-**Please note:** If you installed Minimal Mistakes via the Ruby Gem method, theme files like `_layouts`, `_includes`, `_sass`, and `/assets/` will be missing. This is normal as they are bundled with the [`minimal-mistakes-jekyll`](https://rubygems.org/gems/minimal-mistakes-jekyll) Ruby gem.
+**Please note:** If you installed Scala Adapters via the Ruby Gem method, theme files like `_layouts`, `_includes`, `_sass`, and `/assets/` will be missing. This is normal as they are bundled with the [`scala-adapters-jekyll`](https://rubygems.org/gems/scala-adapters-jekyll) Ruby gem.
 {: .notice--info}
 
 ```bash
-minimal-mistakes
+scala-adapters
 ├── _data                      # data files for customizing the theme
 |  ├── navigation.yml          # main navigation links
 |  └── ui-text.yml             # text used throughout the theme's UI

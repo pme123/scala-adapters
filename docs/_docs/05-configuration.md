@@ -6,7 +6,7 @@ last_modified_at: 2018-02-19T08:09:39-05:00
 toc: true
 ---
 
-Settings that affect your entire site can be changed in [Jekyll's configuration file](https://jekyllrb.com/docs/configuration/): `_config.yml`, found in the root of your project. If you don't have this file you'll need to copy or create one using the theme's [default `_config.yml`](https://github.com/mmistakes/minimal-mistakes/blob/master/_config.yml) as a base.
+Settings that affect your entire site can be changed in [Jekyll's configuration file](https://jekyllrb.com/docs/configuration/): `_config.yml`, found in the root of your project. If you don't have this file you'll need to copy or create one using the theme's [default `_config.yml`](https://github.com/pme123/scala-adapters/blob/master/_config.yml) as a base.
 
 **Note:** for technical reasons, `_config.yml` is NOT reloaded automatically when used with `jekyll serve`. If you make any changes to this file, please restart the server process for them to be applied.
 {: .notice--warning}
@@ -20,7 +20,7 @@ Take a moment to look over the configuration file included with the theme. Comme
 If you're using the Ruby gem version of the theme you'll need this line to activate it:
 
 ```yaml
-theme: minimal-mistakes-jekyll
+theme: scala-adapters-jekyll
 ```
 
 ### Skin
@@ -31,7 +31,7 @@ Easily change the color scheme of the theme using one of the provided "skins":
 minimal_mistakes_skin: "default" # "air", "aqua", "contrast", "dark", "dirt", "neon", "mint", "plum" "sunrise"
 ```
 
-**Note:** If you have made edits to the theme's CSS files be sure to update [`/assets/css/main.scss`](https://github.com/mmistakes/minimal-mistakes/blob/master/assets/css/main.scss) to include `@import "minimal-mistakes/skins/{{ site.minimal_mistakes_skin | default: 'default' }}"; // skin` before the `minimal-mistakes` import.
+**Note:** If you have made edits to the theme's CSS files be sure to update [`/assets/css/main.scss`](https://github.com/pme123/scala-adapters/blob/master/assets/css/main.scss) to include `@import "scala-adapters/skins/{{ site.minimal_mistakes_skin | default: 'default' }}"; // skin` before the `scala-adapters` import.
 {: .notice--warning}
 
 #### Air skin: `air`
@@ -152,7 +152,7 @@ _Example:_ `title_separator: "|"` would produce page titles like `Sample Page | 
 
 Used to assign a site author. Don't worry, you can override the site author with different ones on specific posts, pages, or collection documents.
 
-_Example:_ `name: "Michael Rose"`.
+_Example:_ `name: "Pascal Mengelt"`.
 
 **ProTip:** If you want to get crafty with your YAML you can use [anchors](http://www.yaml.org/spec/1.2/spec.html#id2785586) to reuse values. For example `foo: &var "My String"` allows you to reuse `"My String"` elsewhere in `_config.yml` like so... `bar: *var`. You'll see a few examples of this in the provided Jekyll config.
 {: .notice--info}
@@ -165,7 +165,7 @@ _Example:_ `description: "A flexible Jekyll theme for your blog or site with a m
 
 ### Site URL
 
-The base hostname and protocol for your site. If you're hosting with GitHub Pages this will be something like `url: "https://github.io.mmistakes"` or `url: "https://mademistakes.com"` if you have a custom domain name.
+The base hostname and protocol for your site. If you're hosting with GitHub Pages this will be something like `url: "https://github.io.pme123"` or `url: "https://mademistakes.com"` if you have a custom domain name.
 
 GitHub Pages now [forces `https://` for new sites](https://help.github.com/articles/securing-your-github-pages-site-with-https/) so be mindful of that when setting your URL to avoid mixed-content warnings.
 
@@ -176,7 +176,7 @@ GitHub Pages now [forces `https://` for new sites](https://help.github.com/artic
 
 This little option causes all kinds of confusion in the Jekyll community. If you're not hosting your site as a GitHub Pages Project or in a subfolder (eg: `/blog`), then don't mess with it.
 
-In the case of the Minimal Mistakes demo site it's hosted on GitHub at <https://mmistakes.github.io/minimal-mistakes>. To correctly set this base path I'd use `url: "https://mmistakes.github.io"` and `baseurl: "/minimal-mistakes"`.
+In the case of the Scala Adapters demo site it's hosted on GitHub at <https://pme123.github.io/scala-adapters>. To correctly set this base path I'd use `url: "https://pme123.github.io"` and `baseurl: "/scala-adapters"`.
 
 For more information on how to properly use `site.url` and `site.baseurl` as intended by the Jekyll maintainers, check [Parker Moore's post on the subject](https://byparker.com/blog/2014/clearing-up-confusion-around-baseurl/).
 
@@ -191,7 +191,7 @@ Add your repository name with organization to your site's configuration file, `_
 repository: "username/repo-name"
 ```
 
-"NWO" stands for "name with owner." It is GitHub lingo for the username of the owner of the repository plus a forward slash plus the name of the repository, e.g. `mmistakes/minimal-mistakes`, where **mmistakes** is the owner and **minimal-mistakes** is the repository name.
+"NWO" stands for "name with owner." It is GitHub lingo for the username of the owner of the repository plus a forward slash plus the name of the repository, e.g. `pme123/scala-adapters`, where **pme123** is the owner and **scala-adapters** is the repository name.
 
 Your `site.github.*` fields should fill in like normal. If you run Jekyll with the --verbose flag, you should be able to see all the API calls made.
 
@@ -360,7 +360,7 @@ Transform user comments into `_data` files that live inside of your GitHub repos
 
 **Staticman v2**
 
-Default settings have been provided in [`staticman.yml`](https://github.com/mmistakes/minimal-mistakes/blob/master/staticman.yml) and are commented to guide you through setup. View the [full list of configurations](https://staticman.net/docs/configuration).
+Default settings have been provided in [`staticman.yml`](https://github.com/pme123/scala-adapters/blob/master/staticman.yml) and are commented to guide you through setup. View the [full list of configurations](https://staticman.net/docs/configuration).
 
 ```yaml
 # staticman.yml (defaults)
@@ -386,7 +386,7 @@ These settings need to be added to your `_config.yml` file as well:
 
 ```yaml
 # _config.yml (defaults)
-repository  : # GitHub username/repo-name e.g. "mmistakes/minimal-mistakes"
+repository  : # GitHub username/repo-name e.g. "pme123/scala-adapters"
 comments:
   provider  : "staticman_v2"
 staticman:
@@ -463,7 +463,7 @@ atom_feed:
   path: "http://feeds.feedburner.com/youFeedname"
 ```
 
-**Note:** By default the site feed is linked in two locations: inside the [`<head>` element](https://github.com/mmistakes/minimal-mistakes/blob/master/_includes/head.html) and at the bottom of every page in the [site footer](https://github.com/mmistakes/minimal-mistakes/blob/master/_includes/footer.html).
+**Note:** By default the site feed is linked in two locations: inside the [`<head>` element](https://github.com/pme123/scala-adapters/blob/master/_includes/head.html) and at the bottom of every page in the [site footer](https://github.com/pme123/scala-adapters/blob/master/_includes/footer.html).
 {: .notice--info}
 
 ### Site Search
@@ -481,7 +481,7 @@ The default search uses [**Lunr**](https://lunrjs.com/) to build a search index 
 
 #### Algolia
 
-For faster and more relevant search ([see demo](https://mmistakes.github.io/minimal-mistakes-algolia-search/)):
+For faster and more relevant search ([see demo](https://pme123.github.io/scala-adapters-algolia-search/)):
 
 1. Add the [`jekyll-algolia`](https://github.com/algolia/jekyll-algolia) gem to your `Gemfile`, in the `:jekyll_plugins` section.
 
@@ -598,14 +598,14 @@ To improve the appearance of links shared from your site to social networks like
 
 Twitter username for the site. For pages that have custom author Twitter accounts assigned in their YAML Front Matter or data file, they will be attributed as a **creator** in the Twitter Card.
 
-For example if my site's Twitter account is `@mmistakes-theme` I would add the following to `_config.yml`
+For example if my site's Twitter account is `@pme123-theme` I would add the following to `_config.yml`
 
 ```yaml
 twitter:
-  username: "mmistakes-theme"
+  username: "pme123-theme"
 ```
 
-And if I assign `@mmistakes` as an author account it will appear in the Twitter Card along with `@mmistakes-theme`, attributed as a creator of the page being shared.
+And if I assign `@pme123` as an author account it will appear in the Twitter Card along with `@pme123-theme`, attributed as a creator of the page being shared.
 
 **Note**: You need to [apply for Twitter Cards](https://dev.twitter.com/docs/cards) and validate they're working on your site before they will begin showing up.
 {: .notice--warning}
@@ -773,7 +773,7 @@ defaults:
       layout: single
 ```
 
-And of course any default value can be overridden by settings in a post, page, or collection file. All you need to do is specify the settings in the YAML Front Matter. For more examples be sure to check out the demo site's [`_config.yml`](https://github.com/mmistakes/minimal-mistakes/blob/master/_config.yml).
+And of course any default value can be overridden by settings in a post, page, or collection file. All you need to do is specify the settings in the YAML Front Matter. For more examples be sure to check out the demo site's [`_config.yml`](https://github.com/pme123/scala-adapters/blob/master/_config.yml).
 
 ## Outputting
 

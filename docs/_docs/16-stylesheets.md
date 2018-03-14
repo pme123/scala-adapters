@@ -6,12 +6,12 @@ last_modified_at: 2018-01-09T09:59:16-05:00
 toc: true
 ---
 
-The theme's `assets/css/main.css` file is built from several SCSS partials located in [`_sass/`](https://github.com/mmistakes/minimal-mistakes/tree/master/_sass) and is structured as follows:
+The theme's `assets/css/main.css` file is built from several SCSS partials located in [`_sass/`](https://github.com/pme123/scala-adapters/tree/master/_sass) and is structured as follows:
 
 ```bash
-minimal-mistakes
+scala-adapters
 ├── _sass
-|  └── minimal-mistakes
+|  └── scala-adapters
 |     ├── vendor               # vendor SCSS partials
 |     |   ├── breakpoint       # media query mixins
 |     |   ├── magnific-popup   # Magnific Popup lightbox
@@ -43,17 +43,17 @@ minimal-mistakes
 To override the default [Sass](http://sass-lang.com/guide) (located in theme's 
 `_sass` directory), do one of the following:
 
-1. Copy directly from the Minimal Mistakes theme gem
+1. Copy directly from the Scala Adapters theme gem
 
-   - Go to your local Minimal Mistakes gem installation directory (run 
-     `bundle show minimal-mistakes-jekyll` to get the path to it).
+   - Go to your local Scala Adapters gem installation directory (run 
+     `bundle show scala-adapters-jekyll` to get the path to it).
    - Copy the contents of `/assets/css/main.scss` from there to 
      `<your_project>`.
    - Customize what you want inside `<your_project>/assets/css/main.scss`.
 
 2. Copy from this repo.
 
-   - Copy the contents of [assets/css/main.scss](https://github.com/mmistakes/minimal-mistakes/blob/master/assets/css/main.scss) 
+   - Copy the contents of [assets/css/main.scss](https://github.com/pme123/scala-adapters/blob/master/assets/css/main.scss) 
      to `<your_project>`.
    - Customize what you want inside `<your_project/assets/css/main.scss`.
 
@@ -102,7 +102,7 @@ Sans-serif fonts have been used for most of the type, with serifs reserved for c
 
 Not a fan of the refreshed typography of the theme and want to revert back an older version? Easy enough.
 
-**1.** Add this Google Fonts script to [`_includes/head/custom.html`](https://github.com/mmistakes/minimal-mistakes/blob/master/_includes/head/custom.html):
+**1.** Add this Google Fonts script to [`_includes/head/custom.html`](https://github.com/pme123/scala-adapters/blob/master/_includes/head/custom.html):
 
 ```html
 <link href="https://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700|PT+Serif:400,700,400italic" rel="stylesheet" type="text/css">

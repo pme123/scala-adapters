@@ -13,7 +13,7 @@ toc_label: "Included Layouts"
 toc_icon: "columns"
 ---
 
-The bread and butter of any theme. Below you'll find the layouts included with Minimal Mistakes, what they look like and the type of content they've been built for.
+The bread and butter of any theme. Below you'll find the layouts included with Scala Adapters, what they look like and the type of content they've been built for.
 
 ## Default Layout
 
@@ -206,8 +206,8 @@ If you're not using the `jekyll-archives` plugin then you need to create archive
 
 | Name                 | HTML Source |
 | -------------------- | --- |
-| [Categories Archive](https://mmistakes.github.io/minimal-mistakes/categories/) | [category-archive.html](https://github.com/mmistakes/minimal-mistakes/blob/master/docs/_pages/category-archive.html) |
-| [Tags Archive](https://mmistakes.github.io/minimal-mistakes/tags/) | [tag-archive.html](https://github.com/mmistakes/minimal-mistakes/blob/master/docs/_pages/tag-archive.html) |
+| [Categories Archive](https://pme123.github.io/scala-adapters/categories/) | [category-archive.html](https://github.com/pme123/scala-adapters/blob/master/docs/_pages/category-archive.html) |
+| [Tags Archive](https://pme123.github.io/scala-adapters/tags/) | [tag-archive.html](https://github.com/pme123/scala-adapters/blob/master/docs/_pages/tag-archive.html) |
 
 The **Tags Archive** page that responds to urls such as `/tags/#tips` looks something like this:
 
@@ -283,7 +283,7 @@ Feature blocks can be assigned and aligned to the `left`, `right`, or `center` w
 
 ## Search Page Layout
 
-A page with a search form. Add `layout: search` to the YAML Front Matter similar to [this example](https://github.com/mmistakes/minimal-mistakes/blob/master/docs/_pages/search.md) on the demo site.
+A page with a search form. Add `layout: search` to the YAML Front Matter similar to [this example](https://github.com/pme123/scala-adapters/blob/master/docs/_pages/search.md) on the demo site.
 
 ![search page layout example]({{ "/assets/images/search-layout-example.png" | absolute_url }})
 
@@ -455,9 +455,9 @@ defaults:
 
 The theme comes pre-built with a selection of links for the most common social media networks. These are all optional and can be [assigned in `_config.yml`]({{ "/docs/configuration/" | absolute_url }}).
 
-To add more links you'll need to crack open [`_includes/author-profile-custom-links.html`](https://github.com/mmistakes/minimal-mistakes/blob/master/_includes/author-profile-custom-links.html) and add the appropriate `<li>` markup shown below. 
+To add more links you'll need to crack open [`_includes/author-profile-custom-links.html`](https://github.com/pme123/scala-adapters/blob/master/_includes/author-profile-custom-links.html) and add the appropriate `<li>` markup shown below. 
 
-**Please note:** Links added here will appear after the ones in [`_includes/author-profile.html`](https://github.com/mmistakes/minimal-mistakes/blob/master/_includes/author-profile.html). If you'd like to change the order of appearance you'll need to edit that file directly.
+**Please note:** Links added here will appear after the ones in [`_includes/author-profile.html`](https://github.com/pme123/scala-adapters/blob/master/_includes/author-profile.html). If you'd like to change the order of appearance you'll need to edit that file directly.
 {: .notice--info}
 
 #### Social network link example
@@ -508,7 +508,7 @@ To end up with:
 
 To add a touch of color to the default black (`#000`) icon a few more steps are necessary.
 
-Start by copying [`_utilities.scss`](https://github.com/mmistakes/minimal-mistakes/blob/master/_sass/minimal-mistakes/_utilities.scss) `<site root>/_sass`. Open it up to the icon section (it's near the bottom) and nest a new class beneath `.social-icons` that matches the one used to declare the Font Awesome icon. In our case `.fa-reddit`.
+Start by copying [`_utilities.scss`](https://github.com/pme123/scala-adapters/blob/master/_sass/scala-adapters/_utilities.scss) `<site root>/_sass`. Open it up to the icon section (it's near the bottom) and nest a new class beneath `.social-icons` that matches the one used to declare the Font Awesome icon. In our case `.fa-reddit`.
 
 Simply add a `color` declaration and the corresponding hex code.
 
@@ -523,7 +523,7 @@ Simply add a `color` declaration and the corresponding hex code.
 
 ![Reddit link in author profile with color]({{ "/assets/images/mm-author-profile-reddit-color.png" | absolute_url }})
 
-**ProTip:** For bonus points you can add it as a Sass `$variable` that you set in [`_variables.scss`](https://github.com/mmistakes/minimal-mistakes/blob/master/_sass/minimal-mistakes/_variables.scss) like the other ["brand" colors](http://brandcolors.net/). You'll need to add this file to `/_sass/` as well if you're using the Ruby Gem version of the theme.
+**ProTip:** For bonus points you can add it as a Sass `$variable` that you set in [`_variables.scss`](https://github.com/pme123/scala-adapters/blob/master/_sass/scala-adapters/_variables.scss) like the other ["brand" colors](http://brandcolors.net/). You'll need to add this file to `/_sass/` as well if you're using the Ruby Gem version of the theme.
 {: .notice--info}
 
 **Please please please** don't submit [pull requests]({{ "/docs/contributing/" | absolute_url }}) adding in support for "missing" social media links. I'm trying to keep things down to the minimum (hence the theme's name) and have no interest in merging such PRs :expressionless:.
@@ -657,7 +657,7 @@ The `single` layout has an option to enable social links at the bottom of posts 
 
 To enable these links add `share: true` to a post or page's YAML Front Matter or use a [default](https://jekyllrb.com/docs/configuration/#front-matter-defaults) in your `_config.yml` to apply more globally.
 
-If you'd like to add, remove, or change the order of these default links you can do so by editing [`_includes/social-share.html`](https://github.com/mmistakes/minimal-mistakes/blob/master/_includes/social-share.html).
+If you'd like to add, remove, or change the order of these default links you can do so by editing [`_includes/social-share.html`](https://github.com/pme123/scala-adapters/blob/master/_includes/social-share.html).
 
 Let's say you wanted to replace the Google+ button with a Reddit one. Simply replace the HTML with the following:
 
