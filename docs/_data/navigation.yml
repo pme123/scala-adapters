@@ -20,7 +20,7 @@ foo:
 
 # main links
 main:
-  - title: "Business"
+  - title: "Business View"
     url: /docs/business-view/
   - title: "About"
     url: /about/
@@ -34,7 +34,8 @@ main:
 
 # documentation links
 docs:
-  - title: Getting Started
+  - title: "Business View"
+    url: /docs/business-view/
     children:
       - title: "Business"
         url: /docs/business-view/
@@ -44,7 +45,7 @@ docs:
         url: /docs/installation/
       - title: "Upgrading"
         url: /docs/upgrading/
-  - title: Customization
+  - title: "Architecture View"
     children:
       - title: "Configuration"
         url: /docs/configuration/
@@ -58,7 +59,7 @@ docs:
         url: /docs/authors/
       - title: "Layouts"
         url: /docs/layouts/
-  - title: Content
+  - title: "Development View"
     children:
       - title: "Working with Posts"
         url: /docs/posts/
@@ -70,7 +71,7 @@ docs:
         url: /docs/helpers/
       - title: "Utility Classes"
         url: /docs/utility-classes/
-  - title: Extras
+  - title: "Deployment View"
     children:
       - title: "Stylesheets"
         url: /docs/stylesheets/

@@ -6,3 +6,5 @@ tmp
 dist
 .cache
 
+docs/_site
+docs/.sass-cache
