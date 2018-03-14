@@ -137,7 +137,6 @@ And then drop-in the gallery include in the body where you'd like it to appear.
 
 {% include gallery caption="This is a sample gallery with **Markdown support**." %}
 
-**More Gallery Goodness:** A few more examples and [source code](https://github.com/{{ site.repository }}/blob/master/docs/_posts/2010-09-09-post-gallery.md) can be seen in [this sample gallery post]({{ "" | absolute_url }}{% post_url 2010-09-09-post-gallery %}).
 {: .notice--info}
 
 ## Feature Row

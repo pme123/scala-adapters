@@ -14,7 +14,7 @@ locale                   : "en-US"
 title                    : "Scala Adapters"
 title_separator          : "-"
 name                     : &name "Pascal Mengelt" # &name is a YAML anchor which can be *referenced later
-description              : &description "A flexible Jekyll theme for your blog or site with a minimalist aesthetic."
+description              : &description "A simple framework to implement batch jobs - provides standard UI-clients to monitor and test them."
 url                      : https://pme123.github.io # the base hostname & protocol for your site e.g. "https://pme123.github.io"
 baseurl                  : "/scala-adapters" # the subpath of your site, e.g. "/blog"
 repository               : "pme123/scala-adapters"
@@ -27,8 +27,7 @@ comments:
     shortname            :
   discourse:
     server               : # https://meta.discourse.org/t/embedding-discourse-comments-via-javascript/31963 , e.g.: meta.discourse.org
-  facebook:
-    # https://developers.facebook.com/docs/plugins/comments
+  facebook:    # https://developers.facebook.com/docs/plugins/comments
     appid                :
     num_posts            : # 5 (default)
     colorscheme          : # "light" (default), "dark"
@@ -67,7 +66,7 @@ algolia:
     - _posts/2017-11-28-post-exclude-search.md
 
 # SEO Related
-google_site_verification : "UQj93ERU9zgECodaaXgVpkjrFn9UrDMEzVamacSoQ8Y" # Replace this with your ID, or delete
+google_site_verification : # Replace this with your ID, or delete
 bing_site_verification   :
 yandex_site_verification :
 naver_site_verification  :

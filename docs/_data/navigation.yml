@@ -36,55 +36,18 @@ main:
 docs:
   - title: "Business View"
     url: /docs/business-view/
-    children:
-      - title: "Business"
-        url: /docs/business-view/
-      - title: "Structure"
-        url: /docs/structure/
-      - title: "Installation"
-        url: /docs/installation/
-      - title: "Upgrading"
-        url: /docs/upgrading/
   - title: "Architecture View"
-    children:
-      - title: "Configuration"
-        url: /docs/configuration/
-      - title: "Overriding Theme Defaults"
-        url: /docs/overriding-theme-defaults/
-      - title: "Navigation"
-        url: /docs/navigation/
-      - title: "UI Text"
-        url: /docs/ui-text/
-      - title: "Authors"
-        url: /docs/authors/
-      - title: "Layouts"
-        url: /docs/layouts/
+    url: /docs/architecture-view/
   - title: "Development View"
-    children:
-      - title: "Working with Posts"
-        url: /docs/posts/
-      - title: "Working with Pages"
-        url: /docs/pages/
-      - title: "Working with Collections"
-        url: /docs/collections/
-      - title: "Helpers"
-        url: /docs/helpers/
-      - title: "Utility Classes"
-        url: /docs/utility-classes/
+    url: /docs/development-view/
   - title: "Deployment View"
-    children:
-      - title: "Stylesheets"
-        url: /docs/stylesheets/
-      - title: "JavaScript"
-        url: /docs/javascript/
+    url: /docs/deployment-view/
   - title: Meta
     children:
       - title: "History"
         url: /docs/history/
       - title: "Contributing"
         url: /docs/contributing/
-      - title: "Old 2.2 Docs"
-        url: /docs/docs-2-2/
       - title: "License"
         url: /docs/license/
       - title: "Terms &amp; Privacy Policy"
