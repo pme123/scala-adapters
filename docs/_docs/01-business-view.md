@@ -1,6 +1,6 @@
 ---
-title: "Quick-Start Guide"
-permalink: /docs/quick-start-guide/
+title: "Business"
+permalink: /docs/business-view/
 excerpt: "How to quickly install and setup Scala Adapters for use with GitHub Pages."
 last_modified_at: 2018-01-02T16:28:04-05:00
 redirect_from:

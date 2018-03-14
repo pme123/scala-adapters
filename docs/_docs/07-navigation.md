@@ -14,8 +14,8 @@ To define these links add titles and URLs under the `main` key in `_data/navigat
 
 ```yaml
 main:
-  - title: "Quick-Start Guide"
-    url: /docs/quick-start-guide/
+  - title: "Business"
+    url: /docs/business-view/
   - title: "Posts"
     url: /year-archive/
   - title: "Categories"

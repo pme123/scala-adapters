@@ -20,7 +20,7 @@ Scala Adapters is a flexible two-column Jekyll theme. Perfect for hosting your p
 
 {% include gallery id="layouts_gallery" caption="Examples of included layouts `splash`, `single`, and `archive`." %}
 
-[Install the Theme]({{ "/docs/quick-start-guide/" | absolute_url }}){: .btn .btn--success .btn--large}
+[Install the Theme]({{ "/docs/business-view/" | absolute_url }}){: .btn .btn--success .btn--large}
 
 ## Notable Features
 

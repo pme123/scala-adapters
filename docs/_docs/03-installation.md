@@ -8,11 +8,11 @@ toc: true
 
 ## Install the Theme
 
-**1.** For a **new site**, install the `scala-adapters-jekyll` theme gem or fork the Scala Adapters repo on GitHub following the steps outlined in the [*Quick-Start Guide*]({{ "/docs/quick-start-guide/" | absolute_url }}).
+**1.** For a **new site**, install the `scala-adapters-jekyll` theme gem or fork the Scala Adapters repo on GitHub following the steps outlined in the [*Business*]({{ "/docs/business-view/" | absolute_url }}).
 
 If you plan to host with GitHub Pages be sure to properly setup [**jekyll-remote-theme**](https://github.com/benbalter/jekyll-remote-theme) as it is required for the theme to work properly. 
 
-**2.** For an **existing site** follow the steps outlined in the [*Quick-Start Guide*]({{ "/docs/quick-start-guide/" | absolute_url }}). Then work through the guidelines below for migration and setup.
+**2.** For an **existing site** follow the steps outlined in the [*Business*]({{ "/docs/business-view/" | absolute_url }}). Then work through the guidelines below for migration and setup.
 
 **3.** And for those who'd like to make substantial edits to the theme, it can be downloaded as a ZIP file to customize.
 

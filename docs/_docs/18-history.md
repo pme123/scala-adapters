@@ -178,7 +178,7 @@ toc: true
 * Clarify documentation around taxonomy page and index generation. [#1207](https://github.com/pme123/scala-adapters/pull/1207)
 * Fix "Posts by tag" grammar in documentation. [#1209](https://github.com/pme123/scala-adapters/pull/1209)
 * Improve Chinese `date_label` and `minute_read` translations in `ui-text.yml`. [#1205](https://github.com/pme123/scala-adapters/pull/1205) [#1211](https://github.com/pme123/scala-adapters/pull/1211)
-* Add note to Quick-Start Guide about GitHub Pages hosting alternatives that allow 3rd party gem themes and Jekyll plugins.
+* Add note to Business about GitHub Pages hosting alternatives that allow 3rd party gem themes and Jekyll plugins.
 * Add note to configuration documentation about Cloudflare minification as an alternative to `layout: compress`. [#1217](https://github.com/pme123/scala-adapters/pull/1217)
 * Show 4 latest posts in "You May Also Enjoy" module when `related: true` and no related posts are found due to `lsi` ([latent semantic indexing](https://en.wikipedia.org/wiki/Latent_semantic_analysis#Latent_semantic_indexing)) being disabled on GitHub Pages. [#554](https://github.com/pme123/scala-adapters/issues/554)
 * Truncate archive item titles' that overflow with an ellipsis. [#1213](https://github.com/pme123/scala-adapters/issues/1213)
@@ -894,7 +894,7 @@ toc: true
 * Replaced grid system with [Susy](http://susy.oddbird.net/).
 * Replaced Grunt tasks with `npm` scripts.
 * Removed Google Fonts and replaced with system fonts to improve performance (they can be [added back](https://pme123.github.io/scala-adapters/docs/stylesheets/) if desired)
-* Greatly improved [theme documentation](https://pme123.github.io/scala-adapters/docs/quick-start-guide/).
+* Greatly improved [theme documentation](https://pme123.github.io/scala-adapters/docs/business-view/).
 * Increased the amount of sample posts, sample pages, and sample collections to throughly test the theme and edge-cases.
 * Moved all sample content and assets out of `master` to keep it as clean as possible for forking.
 * Added new layouts for `splash` pages, archives for [`jekyll-archives`](https://github.com/jekyll/jekyll-archives) if enabled, and [`compress.html`](https://github.com/penibelst/jekyll-compress-html) to improve performance.

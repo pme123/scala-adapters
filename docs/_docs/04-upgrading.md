@@ -6,7 +6,7 @@ last_modified_at: 2018-01-08T20:10:30-05:00
 toc: true
 ---
 
-If you're using the [Ruby Gem]({{ "/docs/quick-start-guide/#ruby-gem-method" | absolute_url }}) or [remote theme]({{ "/docs/quick-start-guide/#github-pages-method" | absolute_url }}) versions of Scala Adapters, upgrading is fairly painless.
+If you're using the [Ruby Gem]({{ "/docs/business-view/#ruby-gem-method" | absolute_url }}) or [remote theme]({{ "/docs/business-view/#github-pages-method" | absolute_url }}) versions of Scala Adapters, upgrading is fairly painless.
 
 To check which version you are currently using, view the source of your built site and you should see something similar to:
 
