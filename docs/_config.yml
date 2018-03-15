@@ -81,7 +81,7 @@ social:
 
 # Analytics
 analytics:
-  provider               :  # false (default), "google", "google-universal", "custom"
+  provider               :  false # false (default), "google", "google-universal", "custom"
 
 # Site Author
 author:
@@ -266,7 +266,7 @@ plugins:
   - jekyll-paginate
   - jekyll-sitemap
   - jekyll-gist
-  - jekyll-feed
+ # - jekyll-feed
   - jemoji
 
 # mimic GitHub Pages with --safe
@@ -274,7 +274,7 @@ whitelist:
   - jekyll-paginate
   - jekyll-sitemap
   - jekyll-gist
-  - jekyll-feed
+ # - jekyll-feed
   - jemoji
 
 
