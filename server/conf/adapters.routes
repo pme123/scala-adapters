@@ -3,10 +3,13 @@
 # ~~~~
 
 # Index file for the JobCockpit.
-GET        /                             pme123.adapters.server.boundary.demo.DemoResultController.index
+GET        /                             pme123.adapters.server.boundary.JobCockpitController.index()
 
+GET        /jobProcess                   pme123.adapters.server.boundary.JobCockpitController.defaultJobProcess()
 GET        /jobProcess/:jobIdent         pme123.adapters.server.boundary.JobCockpitController.jobProcess(jobIdent)
+GET        /jobResults                   pme123.adapters.server.boundary.JobCockpitController.defaultJobResults()
 GET        /jobResults/:jobIdent         pme123.adapters.server.boundary.JobCockpitController.jobResults(jobIdent)
+GET        /customPage                   pme123.adapters.server.boundary.JobCockpitController.defaultCustomPage()
 GET        /customPage/:jobIdent         pme123.adapters.server.boundary.JobCockpitController.customPage(jobIdent)
 # Index file for the Demo (this is needed because of local environment - wich differs from usual setup).
 GET        /demo/customPage              pme123.adapters.server.boundary.demo.DemoResultController.defaultResults

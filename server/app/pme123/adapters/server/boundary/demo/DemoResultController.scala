@@ -22,9 +22,6 @@ class DemoResultController @Inject()(jobController: JobCockpitController
   extends AbstractController(cc)
     with AdaptersController {
 
-
-  def index: Action[AnyContent] = jobController.jobProcess(demoJobIdent)
-
   // Home page that renders template
   def defaultResults: Action[AnyContent] = jobController.customPage(demoJobIdent)
 

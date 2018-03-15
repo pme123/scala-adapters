@@ -11,9 +11,10 @@ import play.api.libs.json._
 import play.api.mvc._
 import pme123.adapters.server.control.ClientParentActor.GetClientConfigs
 import pme123.adapters.server.control.JobParentActor.GetAllJobConfigs
-import pme123.adapters.server.entity.ProjectConfig
+import pme123.adapters.server.entity.{ObjectExpectedException, ProjectConfig}
 import pme123.adapters.shared._
 import pme123.adapters.shared.JobConfig.JobIdent
+import pme123.adapters.server.entity.AdaptersContext.settings
 
 import scala.concurrent.ExecutionContext
 
@@ -37,16 +38,26 @@ class JobCockpitController @Inject()(@Named("clientParentActor")
     with AdaptersController
     with Secured {
 
+  private lazy val firstJobConfig = settings.jobConfigs.keys.headOption.getOrElse(throw ObjectExpectedException("There is no Job Configuration!"))
+
+  def index(): Action[AnyContent] = defaultJobProcess()
+
+  def defaultJobProcess(): Action[AnyContent] = jobProcess(firstJobConfig)
+
   def jobProcess(jobIdent: JobIdent) = AuthenticatedAction { implicit request: Request[AnyContent] =>
     // uses the AssetsFinder API
     Ok(template(ProjectConfig(context, JOB_PROCESS, s"/$jobIdent", env.isDev)
       , assetsFinder))
   }
 
+  def defaultJobResults(): Action[AnyContent] = jobResults(firstJobConfig)
+
   def jobResults(jobIdent: JobIdent) = AuthenticatedAction { implicit request: Request[AnyContent] =>
     Ok(template(ProjectConfig(context, JOB_RESULTS, s"/$jobIdent", env.isDev)
       , assetsFinder))
   }
+
+  def defaultCustomPage(): Action[AnyContent] = customPage(firstJobConfig)
 
   def customPage(jobIdent: JobIdent) = AuthenticatedAction { implicit request: Request[AnyContent] =>
     Ok(template(ProjectConfig(context, CUSTOM_PAGE, s"/$jobIdent", env.isDev)
