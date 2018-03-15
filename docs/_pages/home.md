@@ -3,7 +3,7 @@ layout: splash
 permalink: /
 header:
   overlay_color: "#5e616c"
-  overlay_image: /assets/images/mm-home-page-feature.jpg
+  overlay_image: /assets/images/main-splash.png
   cta_label: "<i class='fas fa-download'></i> Install Now"
   cta_url: "https://jitpack.io/#pme123/scala-adapters"
   caption:
@@ -31,5 +31,30 @@ feature_row:
     btn_class: "btn--primary"
     btn_label: "Learn More"
 ---
+
+**This is work in progress! So there is a lot stuff missing and may not be totally accurate.**
+
+As a server developer I am looking for an easy way to provide a GUI for my server projects. 
+This projects uses a **Scala full-stack**, that is for now the best way do achieve that. 
+
+**This Project has the following purpose:**
+* Try this Scala full-stack in a productive project.
+* Get some experience in moving to open source.
+* Using free open source tools and technologies (like Jekyll and this theme;). 
+
+**The focus is on:**
+* the interaction between the server and the client (shared).
+* the client
+
+For the server part just check the Play documentation.
+
+**The documentation is organized in 4 views:**
+1. [Business View](docs/business-view/)
+1. [Architecture & Design View](docs/architecture-view/)
+1. [Development View](docs/development-view/)
+1. [Deployment View](docs/deployment-view/)
+
+
+![image](https://user-images.githubusercontent.com/3437927/35779088-f61630e4-09c7-11e8-8bad-599e2d5aeb4b.png)
 
 {% include feature_row %}

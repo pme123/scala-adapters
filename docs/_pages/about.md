@@ -59,7 +59,7 @@ For even more demo pages check the [posts archive][year-archive].
 - [Font Awesome](http://fontawesome.io/)
 - [Unsplash](https://unsplash.com/)
 
-### Other:
+### This page:
 
 - [Jekyll](https://jekyllrb.com/)
 - [jQuery](https://jquery.com/)
@@ -73,4 +73,4 @@ For even more demo pages check the [posts archive][year-archive].
 
 ---
 
-Scala Adapters is designed, developed, and maintained by Pascal Mengelt. Just another boring, tattooed, designer from Buffalo New York.
+Scala Adapters is designed, developed, and maintained by Pascal Mengelt. {{ author.bio }}
