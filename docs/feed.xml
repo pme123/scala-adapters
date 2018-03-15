@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0">
+
+    <channel>
+        <title>Scala Adapters Home Page</title>
+        <link>pme123.github.io/scala-adapters</link>
+        <description>A simple framework to implement batch jobs - provides standard UI-clients to monitor and test them.</description>
+        <item>
+            <title>Setting up the documentation webpage</title>
+            <link>https://pme123.github.io/scala-adapters</link>
+            <description>Work in progress - to get a webpage.</description>
+        </item>
+    </channel>
+
+</rss>
