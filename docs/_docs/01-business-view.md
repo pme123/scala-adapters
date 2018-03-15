@@ -10,7 +10,8 @@ sidebar:
 This page is the entry page for all aspects that relate with the business side, like:
 * Use Cases / Features
 * Domain Model
-# Use Case
+
+## Use Case
 The Use Case comes from my daily job with [screenfoodnet](https://www.screenfoodnet.com/de/).
 We have a CMS to manage the content of the customer's digital signage projects. Now we provide a small infrastructure to allow customers extensions to the CMS, like:
 * Import Data from the customers systems.
