@@ -1,5 +1,7 @@
 package pme123.adapters.client
 
+import com.thoughtworks.binding.{Binding, dom}
+import org.scalajs.dom.raw.HTMLElement
 import pme123.adapters.client.demo.DemoResultClient.warn
 import pme123.adapters.shared._
 import slogging.{ConsoleLoggerFactory, LoggerConfig}
@@ -30,11 +32,23 @@ object DefaultClient {
       case JOB_PROCESS =>
         JobProcessView(context, websocketPath).create()
       case CUSTOM_PAGE =>
-        warn("there is no custom page defined")
+        DefaultView("there is no custom page defined").create()
       case JOB_RESULTS =>
-        warn("there is no JobResults page defined")
+        DefaultView("there is no JobResults page defined").create()
       case other => warn(s"Unexpected ClientType: $other")
     }
 
   }
+}
+
+case class DefaultView(message: String)
+  extends AdaptersClient {
+
+  @dom
+  protected def render: Binding[HTMLElement] =
+    <h3>
+      <b>
+        {message}
+      </b>
+    </h3>
 }
