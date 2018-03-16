@@ -12,3 +12,5 @@ For an example - see [scala-adapters-example](scala-adapters-example)
     server
     shared
     
+## Further Reading
+{% include pages-list.md %}

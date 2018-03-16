@@ -1,0 +1,39 @@
+---
+permalink: /categories/
+title: "Content by Category"
+author_profile: true
+---
+<h2>Posts per Categories</h2>
+{% include group-by-array collection=site.posts field="categories" %}
+
+{% for category in group_names %}
+  {% assign posts = group_items[forloop.index0] %}
+  <h3 id="{{ category | slugify }}" class="archive__subtitle">{{ category }}</h3>
+  {% for post in posts %}
+    {% include archive-single.html %}
+  {% endfor %}
+{% endfor %}
+<hr/>
+<h2>Pages per Categories</h2>
+{% include group-by-array collection=site.pages field="categories" %}
+
+{% for category in group_names %}
+{% assign posts = group_items[forloop.index0] %}
+<hr/>
+<h3 id="{{ category | slugify }}">[{{ category }}]</h3>
+{% for post in posts %}
+{% include archive-single.html %}
+{% endfor %}
+{% endfor %}
+<hr/>
+<h2>Docs per Categories</h2>
+{% include group-by-array collection=site.docs field="categories" %}
+
+{% for category in group_names %}
+{% assign posts = group_items[forloop.index0] %}
+<hr/>
+<h3 id="{{ category | slugify }}">[{{ category }}]</h3>
+{% for post in posts %}
+{% include archive-single.html %}
+{% endfor %}
+{% endfor %}

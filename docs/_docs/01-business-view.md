@@ -36,3 +36,5 @@ This Wiki is only about the generic adapters to demonstrate the Scala fullstack:
 * **adapters**
 * **customer adapter** > will be the examples.
 
+## Further Reading
+{% include pages-list.md %}
