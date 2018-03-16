@@ -36,8 +36,30 @@ project_url [https://github.com/pme123/get-started]:
 
 Template applied in ./get-started
 
-$ cd get-started/
+$ cd ``
 $
 {% endhighlight %}
 
-## Minimal Project structure
+## Running the Project
+Make sure you are in the project directory, e.g. `get-started/`
+{% highlight terminal %}
+$ sbt run
+{% endhighlight %}
+
+Open your Browser and open:
+
+`http://localhost:9000`
+
+This will open the default Job in the Job Cockpit. 
+Hit the Run button (red cycle) to start the dummy Job!
+
+The content should look like:
+{:.fiftyPercent}
+![Screenshot Job Cockpit]({{ "/assets/images/03/screenshot_cockpit.png" | absolute_url }})
+
+## Project structure
+After opening and initializing with Intellij, it should look like:
+
+{:.fiftyPercent}
+![Project File structure]({{ "/assets/images/03/file_structure.png" | absolute_url }})
+
