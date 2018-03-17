@@ -4,7 +4,7 @@ permalink: /docs/03/get-started/
 
 date:   2015-11-17 16:16:01 -0600
 categories:
-  - business
+  - development
 excerpt: "How to setup a new Project and get started."
 ---
 To start and create a new Project should only take a few minutes!
@@ -55,11 +55,19 @@ Hit the Run button (red cycle) to start the dummy Job!
 
 The content should look like:
 {:.fiftyPercent}
-![Screenshot Job Cockpit]({{ "/assets/images/03/screenshot_cockpit.png" | absolute_url }})
+![Screenshot Job Cockpit][screenshot_cockpit]
 
 ## Project structure
 After opening and initializing with Intellij, it should look like:
 
 {:.fiftyPercent}
-![Project File structure]({{ "/assets/images/03/file_structure.png" | absolute_url }})
+![Project File structure][file_structure]
 
+You can see now the 3 modules:
+
+{:.fiftyPercent}
+![Architecture Tiers][arch_tiers]
+
+As mentioned for the default setup there is nothing in the shared- and client-module.
+
+{% include web-links.md %}

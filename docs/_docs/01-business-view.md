@@ -4,8 +4,7 @@ permalink: /docs/business-view/
 excerpt: "Business aspects of the project."
 last_modified_at: 2018-01-02T16:28:04-05:00
 toc: true
-sidebar:
-  nav: docs
+category: business
 ---
 This page is the entry page for all aspects that relate with the business side, like:
 * Use Cases / Features
@@ -17,7 +16,7 @@ We have a CMS to manage the content of the customer's digital signage projects. 
 * Import Data from the customers systems.
 * Custom Process - e.g. with Chat Bots
 
-![image](https://user-images.githubusercontent.com/3437927/35923565-e83ce1e2-0c20-11e8-911f-c255323a5cee.png)
+![Use Case][use_case]
 
 As you can see Batman makes sure that there goes no customer code into the CMS system. For that we provide services to the customer specific adapters.
 All the other creatures stay for customers and there adapter.
@@ -38,3 +37,4 @@ This Wiki is only about the generic adapters to demonstrate the Scala fullstack:
 
 ## Further Reading
 {% include pages-list.md %}
+{% include web-links.md %}

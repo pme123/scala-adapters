@@ -15,12 +15,20 @@ docs:
     url: /docs/business-view/
   - title: "Architecture View"
     url: /docs/architecture-view/
+    children:
+      - title: "Technologies"
+        url: /docs/02/technologies/
   - title: "Development View"
     url: /docs/development-view/
+    children:
+      - title: "Get started"
+        url: /docs/03/get-started/
   - title: "Deployment View"
     url: /docs/deployment-view/
   - title: Meta
     children:
+      - title: "About"
+        url: /about/
       - title: "History"
         url: /docs/history/
       - title: "Contributing"

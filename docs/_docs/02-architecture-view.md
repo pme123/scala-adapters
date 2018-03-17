@@ -13,14 +13,16 @@ A Full Stack projects always consists of 3 modules:
 * **shared**: Code that runs in the browser and on the server.
 * **server**: Code that runs on the server.
 
-![Architecture Tiers]({{ "/assets/images/02/arch_tiers.png" | absolute_url }})
+{:.fiftyPercent}
+![Architecture Tiers][arch_tiers]
 
 ## Use Case Architecture
 Coming from the Use Case we have the following setup:
 
-![image](https://user-images.githubusercontent.com/3437927/35976310-01a7bdcc-0ce0-11e8-846a-f3ec1eb914cb.png)
+![Architecture Use Case][arch_use_case]
 
 This allows us also to have a look on reusability of server and client code (over the project borders).
 
 ## Further Reading
 {% include pages-list.md %}
+{% include web-links.md %}

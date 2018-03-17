@@ -2,75 +2,48 @@
 permalink: /about/
 title: "About"
 excerpt: "A simple framework to implement batch jobs - provides standard UI-clients to monitor and test them."
-layouts_gallery:
-  - url: /assets/images/mm-layout-splash.png
-    image_path: /assets/images/mm-layout-splash.png
-    alt: "splash layout example"
-  - url: /assets/images/mm-layout-single-meta.png
-    image_path: /assets/images/mm-layout-single-meta.png
-    alt: "single layout with comments and related posts"
-  - url: /assets/images/mm-layout-archive.png
-    image_path: /assets/images/mm-layout-archive.png
-    alt: "archive layout example"
 last_modified_at: 2018-01-10T11:22:24-05:00
 toc: true
 ---
 
-Scala Adapters is a flexible two-column Jekyll theme. Perfect for hosting your personal site, blog, or portfolio on GitHub or self-hosting on your own server. As the name implies --- styling is purposely minimalistic to be enhanced and customized by you :smile:.
+Scala Adapters is a simple framework to implement batch jobs written in Scala. 
 
-{% include gallery id="layouts_gallery" caption="Examples of included layouts `splash`, `single`, and `archive`." %}
-
-[Install the Theme]({{ "/docs/business-view/" | absolute_url }}){: .btn .btn--success .btn--large}
+**Opinionated** as it defines:
+* The technology stack
+* The project setup
 
 ## Notable Features
 
-- Bundled as a "theme gem" for easier install/upgrading.
-- Compatible with GitHub Pages.
-- Support for Jekyll's built-in Sass/SCSS preprocessor.
-- Nine different skins (color variations).
-- Several responsive layout options (single, archive index, search, splash, and paginated home page).
-- Optimized for search engines with support for [Twitter Cards](https://dev.twitter.com/cards/overview) and [Open Graph](http://ogp.me/) data
-- Optional [header images](https://pme123.github.io/scala-adapters/docs/layouts/#headers), [custom sidebars](https://pme123.github.io/scala-adapters/docs/layouts/#sidebars), [table of contents](https://pme123.github.io/scala-adapters/docs/helpers/#table-of-contents), [galleries](https://pme123.github.io/scala-adapters/docs/helpers/#gallery), related posts, [breadcrumb links](https://pme123.github.io/scala-adapters/docs/configuration/#breadcrumb-navigation-beta), [navigation lists](https://pme123.github.io/scala-adapters/docs/helpers/#navigation-list), and more.
-- Commenting support (powered by [Disqus](https://disqus.com/), [Facebook](https://developers.facebook.com/docs/plugins/comments), Google+, [Discourse](https://www.discourse.org/), static-based via [Staticman v1 and v2](https://staticman.net/), and custom).
-- [Google Analytics](https://www.google.com/analytics/) support.
-- UI localized text in English (default), Brazilian Portuguese (Português brasileiro), Chinese, Danish, Dutch, French (Français), German (Deutsch), Greek, Indonesian, Italian (Italiano), Japanese, Korean, Nepali (Nepalese), Polish, Russian, Spanish (Español), Swedish, Turkish (Türkçe), and Vietnamese.
+- Setup and running in 5 minutes.
+- Compatible with a Scala/ Play project.
+- By default no shared- and client implementation needed.
+- Styling with [Semantic-UI][Semantic] is setup and ready to use.
+- Binding.scala allows you to work with type-safe XHTML tags.
 
-## Demo Pages
+## Examples
 
-| Name                                        | Description                                           |
-| ------------------------------------------- | ----------------------------------------------------- |
-| [Post with Header Image][header-image-post] | A post with a large header image. |
-| [HTML Tags and Formatting Post][html-tags-post] | A variety of common markup showing how the theme styles them. |
-| [Syntax Highlighting Post][syntax-post] | Post displaying highlighted code. |
-| [Post with a Gallery][gallery-post] | A post showing several images wrapped in `<figure>` elements. |
-| [Sample Collection Page][sample-collection] | Single page from a collection. |
-| [Categories Archive][categories-archive] | Posts grouped by category. |
-| [Tags Archive][tags-archive] | Posts grouped by tag. |
+| Github                                           | Demo                                                                                                | Description                                                                                          |
+| ------------------------------------------------ | --------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| [scala-adapters][scala-adapters]                 | [demo][demo] :: [cockpit-demo][demo_cockpit] :: [results-demo][demo_results]                            | scala-adapters includes a demo project that shows the main features.                                 |
+| [scala-adapters-example][scala-adapters-example] | [demo-example][demo_example]                                                                        | scala-adapters-example shows a minimal project that is identical to a newly one created with giter8. |
+| [scala-adapters-images][scala-adapters-images]   | [images][demo_images] :: [cockpit-images][demo_images_cockpit] :: [results-images][demo_images_results] | scala-adapters-images has a simple process that sends a flag to switch the page (Emojis or Photos).  |
 
-For even more demo pages check the [posts archive][year-archive].
 
 ---
 
 ## Credits
 
-### Icons + Demo Images:
+### scala-adapters:
 
-- [The Noun Project](https://thenounproject.com) -- Garrett Knoll, Arthur Shlain, and [tracy tam](https://thenounproject.com/tracytam)
-- [Font Awesome](http://fontawesome.io/)
-- [Unsplash](https://unsplash.com/)
+- see [Technologies][technologies]
 
 ### This page:
 
 - [Jekyll](https://jekyllrb.com/)
-- [jQuery](https://jquery.com/)
-- [Susy](http://susy.oddbird.net/)
-- [Breakpoint](http://breakpoint-sass.com/)
-- [Magnific Popup](http://dimsemenov.com/plugins/magnific-popup/)
-- [FitVids.JS](http://fitvidsjs.com/)
-- Greedy Navigation - [lukejacksonn](https://codepen.io/lukejacksonn/pen/PwmwWV)
-- [jQuery Smooth Scroll](https://github.com/kswedberg/jquery-smooth-scroll)
-- [Lunr](http://lunrjs.com)
+- [Minimal Mistakes](https://mmistakes.github.io/minimal-mistakes/about/)
 
 ---
 
 Scala Adapters is designed, developed, and maintained by Pascal Mengelt. {{ author.bio }}
+
+{% include web-links.md %}
