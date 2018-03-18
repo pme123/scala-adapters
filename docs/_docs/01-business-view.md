@@ -1,14 +1,24 @@
 ---
 title: "Business View"
 permalink: /docs/business-view/
-excerpt: "Business aspects of the project."
-last_modified_at: 2018-01-02T16:28:04-05:00
+excerpt: "This part describes WHAT scala-adapters does."
+last_modified_at: 2018-03-17
 toc: true
 category: business
 ---
-This page is the entry page for all aspects that relate with the business side, like:
-* Use Cases / Features
+{{page.excerpt}}
+
+This content should support the **collaboration** between:
+* Developers 
+* Architects
+* Testers
+* Product Owners
+* Project Managers
+
+**Topics:**
+* Feature Breakdown Structure 
 * Domain Model
+* New Requirements
 
 ## Use Case
 The Use Case comes from my daily job with [screenfoodnet](https://www.screenfoodnet.com/de/).

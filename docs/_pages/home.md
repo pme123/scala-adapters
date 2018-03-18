@@ -7,7 +7,7 @@ header:
   cta_label: "<i class='fas fa-download'></i> Start Now"
   cta_url: "/docs/03/get-started/"
   caption:
-excerpt: 'A simple framework to implement batch jobs - provides standard UI-clients to monitor and test them.<br /> <small><a href="https://github.com/pme123/scala-adapters/releases/tag/1.0.3">Latest release 1.0.3</a></small><br /><br /> {::nomarkdown}<iframe style="display: inline-block;" src="https://ghbtns.com/github-btn.html?user=pme123&repo=scala-adapters&type=star&count=true&size=large" frameborder="0" scrolling="0" width="160px" height="30px"></iframe> <iframe style="display: inline-block;" src="https://ghbtns.com/github-btn.html?user=pme123&repo=scala-adapters&type=fork&count=true&size=large" frameborder="0" scrolling="0" width="158px" height="30px"></iframe>{:/nomarkdown}'
+excerpt: 'A simple framework to implement your server jobs - providing a standard UI-client to monitor and test them.<br /> <small><a href="https://github.com/pme123/scala-adapters/releases/tag/1.0.3">Latest release 1.0.3</a></small><br /><br /> {::nomarkdown}<iframe style="display: inline-block;" src="https://ghbtns.com/github-btn.html?user=pme123&repo=scala-adapters&type=star&count=true&size=large" frameborder="0" scrolling="0" width="160px" height="30px"></iframe> <iframe style="display: inline-block;" src="https://ghbtns.com/github-btn.html?user=pme123&repo=scala-adapters&type=fork&count=true&size=large" frameborder="0" scrolling="0" width="158px" height="30px"></iframe>{:/nomarkdown}'
 feature_row:
   - image_path: /assets/images/mm-customizable-feature.png
     alt: "minimal implementation"
@@ -36,6 +36,8 @@ feature_row:
 
 **This is work in progress! So there is a lot stuff missing and may not be totally accurate.**
 
+{% include feature_row %}
+
 As a server developer I am looking for an easy way to provide a GUI for my server projects. 
 This projects uses a **Scala full-stack**, that is for now the best way do achieve that. 
 
@@ -55,8 +57,3 @@ For the server part just check the Play documentation.
 1. [Architecture & Design View](docs/architecture-view/)
 1. [Development View](docs/development-view/)
 1. [Deployment View](docs/deployment-view/)
-
-
-![image](https://user-images.githubusercontent.com/3437927/35779088-f61630e4-09c7-11e8-8bad-599e2d5aeb4b.png)
-
-{% include feature_row %}

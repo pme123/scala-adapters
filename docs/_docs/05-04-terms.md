@@ -7,4 +7,4 @@ toc: true
 
 ## Privacy Policy
 
-At the moment there is no data used in any way.
+There is no data used in any way.

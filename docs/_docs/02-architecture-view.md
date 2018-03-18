@@ -1,12 +1,27 @@
 ---
 title: "Architecture View"
 permalink: /docs/architecture-view/
-excerpt: "The Architecture and important Design aspects of the project. This page explains **HOW** scala-adapters is implemented."
+excerpt: "This content explains **HOW** scala-adapters is implemented."
 last_modified_at: 2018-01-02T16:28:04-05:00
 toc: true
 category: architecture
 ---
 {{page.excerpt}}
+
+This content should support the **collaboration** between:
+
+* Developers 
+* Architects
+
+**Topics:**
+
+* System Architecture
+* Design Pattern
+* Implementation Guidelines
+* Technical Decisions
+* Non-functional Requirements
+* Quality Assurance QA
+
 ## Main Structure
 A Full Stack projects always consists of 3 modules:
 * **client**: Code that runs in the browser.
