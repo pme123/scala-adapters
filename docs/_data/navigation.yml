@@ -18,6 +18,8 @@ docs:
     children:
       - title: "Technologies"
         url: /docs/02/technologies/
+      - title: "Architecture explained"
+        url: /docs/02/architecture/
   - title: "Development View"
     url: /docs/development-view/
     children:

@@ -29,7 +29,7 @@ We have a CMS to manage the content of the customer's digital signage projects. 
 ![Use Case][use_case]
 
 As you can see Batman makes sure that there goes no customer code into the CMS system. For that we provide services to the customer specific adapters.
-All the other creatures stay for customers and there adapter.
+All the other creatures stay for customers and their adapter (smaller and bigger ones).
 
 In tiers we have:
 
@@ -42,7 +42,7 @@ In tiers we have:
 * customer system: The system we want to integrate with.
 
 This Wiki is only about the generic adapters to demonstrate the Scala fullstack:
-* **adapters**
+* **adapters** > this project (scala-adapters)
 * **customer adapter** > will be the examples.
 
 ## Further Reading

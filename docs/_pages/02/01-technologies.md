@@ -4,8 +4,10 @@ permalink: /docs/02/technologies/
 date:   2018-03-16
 categories:
   - architecture
-excerpt: "What technologies are in use in this Scala full-stack implementation"
+excerpt: "What technologies are in use in this Scala full-stack implementation."
 ---
+{{page.excerpt}}
+
 We structure the technologies by the Architecture Tiers.
 
 {:.fiftyPercent}
