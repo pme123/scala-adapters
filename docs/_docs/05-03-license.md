@@ -2,7 +2,7 @@
 title: "License"
 permalink: /docs/license/
 excerpt: "License for Scala Adapters Jekyll Theme."
-last_modified_at: 2018-01-10T11:22:01-05:00
+last_modified_at: 2018-03-18
 ---
 
 Apache License, Version 2.0, January 2004
@@ -20,5 +20,9 @@ Copyright 2013-{{ site.time | date: '%Y' }} Pascal Mengelt
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-   
-**Please check the licenses of the libraries used by the framework and this page.**
+  
+---
+ 
+Please check the licenses of the libraries used by the framework and this page:
+
+{% include credits.md %} 

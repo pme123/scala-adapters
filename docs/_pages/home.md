@@ -36,24 +36,9 @@ feature_row:
 
 **This is work in progress! So there is a lot stuff missing and may not be totally accurate.**
 
+If you are interested in something missing - create an issue on [Github][scala-adapters].
+
 {% include feature_row %}
+{% include web-links.md %}
 
-As a server developer I am looking for an easy way to provide a GUI for my server projects. 
-This projects uses a **Scala full-stack**, that is for now the best way do achieve that. 
 
-**This Project has the following purpose:**
-* Try this Scala full-stack in a productive project.
-* Get some experience in moving to open source.
-* Using free open source tools and technologies (like Jekyll and this theme;). 
-
-**The focus is on:**
-* the interaction between the server and the client (shared).
-* the client
-
-For the server part just check the Play documentation.
-
-**The documentation is organized in 4 views:**
-1. [Business View](docs/business-view/)
-1. [Architecture & Design View](docs/architecture-view/)
-1. [Development View](docs/development-view/)
-1. [Deployment View](docs/deployment-view/)

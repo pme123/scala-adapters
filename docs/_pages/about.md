@@ -1,16 +1,32 @@
 ---
 permalink: /about/
 title: "About"
-excerpt: "A simple framework to implement batch jobs - provides standard UI-clients to monitor and test them."
+excerpt: "This is an overview on **WHY** I did this framework."
 last_modified_at: 2018-01-10T11:22:24-05:00
 toc: true
 ---
 
-Scala Adapters is a simple framework to implement batch jobs written in Scala. 
+As a server developer I am looking for an easy way to provide a GUI for my server projects. 
+This projects uses a **Scala full-stack**, that is for now the best way do achieve that. 
 
-**Opinionated** as it defines:
-* The technology stack
-* The project setup
+**This Project has the following purpose:**
+* Try this Scala full-stack in a productive project.
+* Get some experience in moving to open source.
+* Using free open source tools and technologies (like Jekyll and this theme;). 
+
+**The focus is on:**
+* the interaction between the server and the client (shared).
+* the client
+
+For the server part just check the Play documentation.
+
+**The documentation is organized in 4 views:**
+1. [Business View](docs/business-view/)
+1. [Architecture & Design View](docs/architecture-view/)
+1. [Development View](docs/development-view/)
+1. [Deployment View](docs/deployment-view/)
+
+This is how I always organize the docs for the different stack holders that are involved.
 
 ## Notable Features
 
@@ -28,21 +44,8 @@ Scala Adapters is a simple framework to implement batch jobs written in Scala.
 | [scala-adapters-example][scala-adapters-example] | [demo-example][demo_example]                                                                        | scala-adapters-example shows a minimal project that is identical to a newly one created with giter8. |
 | [scala-adapters-images][scala-adapters-images]   | [images][demo_images] :: [cockpit-images][demo_images_cockpit] :: [results-images][demo_images_results] | scala-adapters-images has a simple process that sends a flag to switch the page (Emojis or Photos).  |
 
-
----
-
 ## Credits
-
-### scala-adapters:
-
-- see [Technologies][technologies]
-
-### This page:
-
-- [Jekyll](https://jekyllrb.com/)
-- [Minimal Mistakes](https://mmistakes.github.io/minimal-mistakes/about/)
-
----
+{% include credits.md %}
 
 Scala Adapters is designed, developed, and maintained by Pascal Mengelt. {{ author.bio }}
 
