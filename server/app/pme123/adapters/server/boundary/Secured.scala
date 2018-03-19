@@ -49,9 +49,9 @@ trait Secured {
       }
     }
 
-    override def parser: BodyParser[AnyContent] = cc.parsers.defaultBodyParser
+    def parser: BodyParser[AnyContent] = cc.parsers.defaultBodyParser
 
-    override protected def executionContext: ExecutionContext = cc.executionContext
+    protected def executionContext: ExecutionContext = cc.executionContext
   }
 
   class UserRequest[A](val username: Option[String], request: Request[A]) extends WrappedRequest[A](request)
