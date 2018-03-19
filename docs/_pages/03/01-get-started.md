@@ -46,6 +46,8 @@ Make sure you are in the project directory, e.g. `get-started/`
 $ sbt run
 {% endhighlight %}
 
+See also [local-deployment][local-deployment]
+
 Open your Browser and open:
 
 `http://localhost:9000`

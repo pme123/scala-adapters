@@ -26,6 +26,7 @@
 
 [architecture-view]: {{ "/docs/architecture-view/" | absolute_url }}
 [technologies]: {{ "/docs/02/technologies/" | absolute_url }}
+[local-deployment]: {{ "/docs/04/local-deployment/" | absolute_url }}
 
 {::comment} Demos {:/comment}
 
@@ -41,4 +42,6 @@
 
 [scala-adapters]: https://github.com/pme123/scala-adapters
 [scala-adapters-example]: https://github.com/pme123/scala-adapters-example
+[scala-adapters-g8]: https://github.com/pme123/scala-adapters-g8
 [scala-adapters-images]: https://github.com/pme123/scala-adapters-images
+[scala-adapters-pages]: https://pme123.github.io/scala-adapters/

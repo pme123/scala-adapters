@@ -3,17 +3,6 @@
 [![](https://jitpack.io/v/pme123/scala-adapters.svg)](https://jitpack.io/#pme123/scala-adapters)
 [![Heroku](http://heroku-badge.herokuapp.com/?app=tranquil-reef-73468)](https://tranquil-reef-73468.herokuapp.com)
 
-An implementation of a web fullstack with Scala/Play on the server and ScalaJS/Binding.scala on the client.￼Edit ￼ Add topics
+An implementation of a web fullstack with Scala/Play on the server and ScalaJS/Binding.scala on the client.
 
-## How to run
-Open the sbt console and run.
-```
-sbt
-...
->run -Dconfig.file=server/conf/demo.conf
-```
-
-## Heroku
-After `git push` you run `git push heroku master` to publish the changes to Heroku.
-
-With `heroku open` you will see the result in the browser.
+Check the documentation: **[pme123.github.io/scala-adapters/](https://pme123.github.io/scala-adapters/)**
