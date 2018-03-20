@@ -160,6 +160,8 @@ class GetStartedProcess @Inject()()
 ## Register Factory
 Now you have to tell Guice (Dependency Injection) what class is responsible for the Job creation.
 
+In your [get-started] Project this already done in `Module`.
+
 {% highlight scala %}
 
 ```
@@ -174,8 +176,15 @@ class Module extends AbstractModule with AkkaGuiceSupport {
   }
 }
 ```
-In your [get-started] Project this already done in `Module`.
-
 {% endhighlight %}
+
+## Check the Result
+Run the Project, as described here [get-started::run]
+
+If you have **only one Job**, then [http://localhost:9000](http://localhost:9000) is all you need.
+
+If you have **more than one Job**, you use `http://localhost:9000/jobProcess/JOB_NAME`.
+
+By default it takes the first Job of the configuration.
 
 {% include web-links.md %}

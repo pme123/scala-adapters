@@ -31,10 +31,10 @@ object DefaultClient {
     ClientType.fromString(clientType) match {
       case JOB_PROCESS =>
         JobProcessView(context, websocketPath).create()
-      case CUSTOM_PAGE =>
-        DefaultView("there is no custom page defined").create()
       case JOB_RESULTS =>
         DefaultView("there is no JobResults page defined").create()
+      case CUSTOM_PAGE =>
+        DefaultView("there is no custom page defined").create()
       case other => warn(s"Unexpected ClientType: $other")
     }
 

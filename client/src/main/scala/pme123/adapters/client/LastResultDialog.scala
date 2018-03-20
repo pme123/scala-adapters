@@ -23,7 +23,7 @@ private[client] case class LastResultDialog(uiState: UIState)
 
   @dom
   private def detailHeader = <div class="header">
-    Last Result (as raw JSON)
+    Last Result
   </div>
 
   @dom

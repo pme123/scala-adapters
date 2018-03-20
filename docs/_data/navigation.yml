@@ -27,8 +27,13 @@ docs:
         url: /docs/03/get-started/
       - title: "Server Jobs"
         url: /docs/03/server-jobs/
+      - title: "Job Results"
+        url: /docs/03/job-results/
   - title: "Deployment View"
     url: /docs/deployment-view/
+    children:
+      - title: "Manual Deployment"
+        url: /docs/04/manual-deployment/
   - title: Meta
     children:
       - title: "About"

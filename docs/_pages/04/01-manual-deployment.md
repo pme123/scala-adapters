@@ -1,6 +1,6 @@
 ---
 title:  "Manual Deployment"
-permalink: /docs/04/local-deployment/
+permalink: /docs/04/manual-deployment/
 date:   2018-03-18
 categories:
   - deployment

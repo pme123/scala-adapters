@@ -43,12 +43,14 @@ case class DemoResultClient(context: String, websocketPath: String)
 }
 
 object DemoResultClient
-  extends ClientImplicits
+  extends ClientUtils
     with Logger {
 
   LoggerConfig.factory = ConsoleLoggerFactory()
 
-  // type class instance for ImageElem
+  // @JSExportTopLevel exposes this function with the defined name in Javascript.
+  // this is called by the index.scala.html of the server.
+  // the only connection that is not type-safe!
   @JSExportTopLevel("client.DemoClient.main")
   def main(context: String, websocketPath: String, clientType: String): Unit = {
     info(s"JobCockpitClient $clientType: $context$websocketPath")
@@ -71,10 +73,6 @@ object DemoResultClient
       case other => warn(s"Unexpected ClientType: $other")
     }
   }
-}
-
-trait ClientImplicits
-  extends ClientUtils {
 
   implicit object DemoResultForJobResultsRow extends ConcreteResult[JobResultsRow] {
 
@@ -92,6 +90,6 @@ trait ClientImplicits
       {jsLocalTime(dateTimeStr)}
     </li>
     </td>
-
 }
+
 

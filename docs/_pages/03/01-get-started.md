@@ -6,6 +6,7 @@ date:   2015-11-17 16:16:01 -0600
 categories:
   - development
 excerpt: "How to setup a new Project and get started."
+toc: true
 ---
 {{page.excerpt}}
 

@@ -10,7 +10,7 @@ case class DemoResults(results: Seq[DemoResult])
   extends AConcreteResult
     with Logger {
 
-  // type class instance for ImageElem
+  // type class instance for DemoResult
   implicit object filterableDemoResult extends Filterable[DemoResult] {
     def sortBy(filterable: DemoResult): String = filterable.name
 
@@ -23,6 +23,7 @@ case class DemoResults(results: Seq[DemoResult])
 
   }
 
+  // method to filter the results for a ClientConfig
   def clientFiltered(clientConfig: ClientConfig): Seq[JsValue] =
     ClientConfig.filterResults(results, clientConfig)
       .map(dr => Json.toJson(dr))

@@ -20,14 +20,19 @@
 [arch_modules]: {{ "/assets/images/02/arch_modules.png" | absolute_url }}
 [arch_use_case]: {{ "/assets/images/02/arch_use_case.png" | absolute_url }}
 [screenshot_cockpit]: {{ "/assets/images/03/screenshot_cockpit.png" | absolute_url }}
+[screenshot_job_results]: {{ "/assets/images/03/screenshot_job_results.png" | absolute_url }}
 [file_structure]: {{ "/assets/images/03/file_structure.png" | absolute_url }}
 [use_case]: {{ "/assets/images/01/use_case.png" | absolute_url }}
 [local_environment]: {{ "/assets/images/04/local_environment.png" | absolute_url }}
 {::comment} Pages {:/comment}
 
 [architecture-view]: {{ "/docs/architecture-view/" | absolute_url }}
-[get-started]: {{ "/docs/03/get-started/" | absolute_url }}
 [technologies]: {{ "/docs/02/technologies/" | absolute_url }}
+
+[get-started]: {{ "/docs/03/get-started/" | absolute_url }}
+[get-started::run]: {{ "/docs/03/get-started/#running-the-project" | absolute_url }}
+[server-jobs]: {{ "/docs/03/server-jobs/" | absolute_url }}
+
 [local-deployment]: {{ "/docs/04/local-deployment/" | absolute_url }}
 
 {::comment} Demos {:/comment}

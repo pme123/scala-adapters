@@ -181,7 +181,7 @@ object ToConcreteResults
         case JsSuccess(cResult: A, _) if clazz.isInstance(cResult) =>
           List(cResult)
         case JsError(errors) =>
-          error(s"Problem parsing DemoResult: ${errors.map(e => s"${e._1} -> ${e._2}")}")
+          error(s"Problem parsing ConcreteResult: ${errors.map(e => s"${e._1} -> ${e._2}")}")
           Nil
       }
     }
@@ -190,9 +190,9 @@ object ToConcreteResults
       concreteResults.value.clear()
     }
     else if (lastResults.size - concreteResults.value.size == 1) {
-      val iElem = toConcreteResult(lastResults.last)
-      info(s"added another ImageElem: $iElem")
-      concreteResults.value ++= iElem
+      val cRes = toConcreteResult(lastResults.last)
+      info(s"added another ConcreteResult: $cRes")
+      concreteResults.value ++= cRes
     }
     else {
       info("update all last results")
