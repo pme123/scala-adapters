@@ -3,7 +3,6 @@ title: "Business View"
 permalink: /docs/business-view/
 excerpt: "This part describes WHAT scala-adapters does."
 last_modified_at: 2018-03-17
-toc: true
 category: business
 ---
 {{page.excerpt}}

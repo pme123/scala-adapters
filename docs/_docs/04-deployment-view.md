@@ -3,7 +3,6 @@ title: "Deployment View"
 permalink: /docs/deployment-view/
 excerpt: "This part describes **WHERE** scala-adapters runs. "
 last_modified_at: 2018-01-02T16:28:04-05:00
-toc: true
 category: deployment
 ---
 {{page.excerpt}}

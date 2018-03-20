@@ -2,6 +2,7 @@
 {::comment} Web-pages {:/comment}
 
 [Binding]: https://github.com/ThoughtWorksInc/Binding.scala
+[g8]: http://www.foundweekends.org/giter8/
 [Play]: https://www.playframework.com
 [PlayJson]: https://www.playframework.com/documentation/2.6.x/ScalaJson 
 [PlayJsonCodecs]: https://github.com/julienrf/play-json-derived-codecs
@@ -25,6 +26,7 @@
 {::comment} Pages {:/comment}
 
 [architecture-view]: {{ "/docs/architecture-view/" | absolute_url }}
+[get-started]: {{ "/docs/03/get-started/" | absolute_url }}
 [technologies]: {{ "/docs/02/technologies/" | absolute_url }}
 [local-deployment]: {{ "/docs/04/local-deployment/" | absolute_url }}
 

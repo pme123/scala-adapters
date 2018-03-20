@@ -11,7 +11,7 @@ excerpt: "What technologies are in use in this Scala full-stack implementation."
 We structure the technologies by the Architecture Tiers.
 
 {:.fiftyPercent}
-![Architecture Tiers][arch_tiers]
+[Architecture Tiers][arch_tiers]
 
 ## client
 ### [ScalaJS][ScalaJS]

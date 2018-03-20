@@ -4,6 +4,7 @@ title: "About"
 excerpt: "This is an overview on **WHY** I did this framework."
 last_modified_at: 2018-01-10T11:22:24-05:00
 toc: true
+author_profile: true
 ---
 
 As a server developer I am looking for an easy way to provide a GUI for my server projects. 

@@ -7,13 +7,15 @@ categories:
   - development
 excerpt: "How to setup a new Project and get started."
 ---
+{{page.excerpt}}
+
 To start and create a new Project should only take a few minutes!
 
-## Requirements
+## Constraints
 `sbt` is installed.
 
 ## Create a new Project
-We provide a [Giter8]( [g8]: http://www.foundweekends.org/giter8/) to create a new Project.
+We provide a [Giter8][g8] to create a new Project.
 
 Go to a directory of your choice and type:
 

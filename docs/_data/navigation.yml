@@ -25,6 +25,8 @@ docs:
     children:
       - title: "Get started"
         url: /docs/03/get-started/
+      - title: "Server Jobs"
+        url: /docs/03/server-jobs/
   - title: "Deployment View"
     url: /docs/deployment-view/
   - title: Meta

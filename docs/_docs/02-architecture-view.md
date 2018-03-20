@@ -2,8 +2,7 @@
 title: "Architecture View"
 permalink: /docs/architecture-view/
 excerpt: "This content explains **HOW** scala-adapters is implemented."
-last_modified_at: 2018-01-02T16:28:04-05:00
-toc: true
+last_modified_at: 2018-03-19
 category: architecture
 ---
 {{page.excerpt}}
