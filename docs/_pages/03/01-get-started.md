@@ -6,7 +6,6 @@ date:   2015-11-17 16:16:01 -0600
 categories:
   - development
 excerpt: "How to setup a new Project and get started."
-toc: true
 ---
 {{page.excerpt}}
 
@@ -48,6 +47,10 @@ Make sure you are in the project directory, e.g. `get-started/`
 {% highlight terminal %}
 $ sbt run
 {% endhighlight %}
+
+**SBT remark:** You don't have to restart your server after changing the code, just refresh the Browser window. 
+SBT will take care of the rest.
+{: .notice--info}
 
 See also [local-deployment][local-deployment]
 

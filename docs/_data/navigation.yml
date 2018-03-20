@@ -29,6 +29,8 @@ docs:
         url: /docs/03/server-jobs/
       - title: "Job Results"
         url: /docs/03/job-results/
+      - title: "Custom Page"
+        url: /docs/03/custom-page/
   - title: "Deployment View"
     url: /docs/deployment-view/
     children:

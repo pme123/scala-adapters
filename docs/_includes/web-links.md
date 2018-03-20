@@ -20,6 +20,7 @@
 [arch_modules]: {{ "/assets/images/02/arch_modules.png" | absolute_url }}
 [arch_use_case]: {{ "/assets/images/02/arch_use_case.png" | absolute_url }}
 [screenshot_cockpit]: {{ "/assets/images/03/screenshot_cockpit.png" | absolute_url }}
+[screenshot_custom_page]: {{ "/assets/images/03/screenshot_custom_page.png" | absolute_url }}
 [screenshot_job_results]: {{ "/assets/images/03/screenshot_job_results.png" | absolute_url }}
 [file_structure]: {{ "/assets/images/03/file_structure.png" | absolute_url }}
 [use_case]: {{ "/assets/images/01/use_case.png" | absolute_url }}
@@ -31,6 +32,7 @@
 
 [get-started]: {{ "/docs/03/get-started/" | absolute_url }}
 [get-started::run]: {{ "/docs/03/get-started/#running-the-project" | absolute_url }}
+[job-results]: {{ "/docs/03/job-results/" | absolute_url }}
 [server-jobs]: {{ "/docs/03/server-jobs/" | absolute_url }}
 
 [local-deployment]: {{ "/docs/04/local-deployment/" | absolute_url }}
@@ -47,8 +49,10 @@
 
 {::comment} Github {:/comment}
 
+[binding-google-maps]: https://github.com/pme123/Binding.scala-Google-Maps
 [scala-adapters]: https://github.com/pme123/scala-adapters
 [scala-adapters-example]: https://github.com/pme123/scala-adapters-example
 [scala-adapters-g8]: https://github.com/pme123/scala-adapters-g8
 [scala-adapters-images]: https://github.com/pme123/scala-adapters-images
 [scala-adapters-pages]: https://pme123.github.io/scala-adapters/
+[scala-type-classes]: https://github.com/pme123/scala-type-classes

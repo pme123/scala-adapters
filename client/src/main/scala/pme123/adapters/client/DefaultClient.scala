@@ -2,7 +2,7 @@ package pme123.adapters.client
 
 import com.thoughtworks.binding.{Binding, dom}
 import org.scalajs.dom.raw.HTMLElement
-import pme123.adapters.client.demo.DemoResultClient.warn
+import pme123.adapters.client.demo.DemoClient.warn
 import pme123.adapters.shared._
 import slogging.{ConsoleLoggerFactory, LoggerConfig}
 

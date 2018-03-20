@@ -19,7 +19,7 @@ The example is based on `DemoResultClient` from [scala-adapters].
 ## Shared Data
 One of the big advantages of having Scala on the server and the client is that you have to define the data you exchange only once!
 
-So lets create `/shared/src/main/scala/GetStartedResult`
+So lets create `/shared/src/main/scala/shared/GetStartedResult`
 
 {% highlight scala %}
 case class GetStartedResult(name: String, imgUrl: String, created: DateTimeString)
@@ -178,6 +178,7 @@ Second: A small change in the JobProcess:
 {% highlight scala %}
 import akka.pattern.ask
 ...
+      jobActor ? LastResult(GetStartedResults(Nil)) // reset last result
       // replace results.foreach(doSomeWork) with:
       results.foreach { dr =>
         doSomeWork(dr)
