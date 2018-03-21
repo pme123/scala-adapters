@@ -31,6 +31,8 @@ docs:
         url: /docs/03/job-results/
       - title: "Custom Page"
         url: /docs/03/custom-page/
+      - title: "Custom Controller"
+        url: /docs/03/custom-controller/
   - title: "Deployment View"
     url: /docs/deployment-view/
     children:

@@ -30,6 +30,7 @@
 [architecture-view]: {{ "/docs/architecture-view/" | absolute_url }}
 [technologies]: {{ "/docs/02/technologies/" | absolute_url }}
 
+[custom-page]: {{ "/docs/03/custom-page/" | absolute_url }}
 [get-started]: {{ "/docs/03/get-started/" | absolute_url }}
 [get-started::run]: {{ "/docs/03/get-started/#running-the-project" | absolute_url }}
 [job-results]: {{ "/docs/03/job-results/" | absolute_url }}

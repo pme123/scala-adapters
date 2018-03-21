@@ -2,7 +2,7 @@
 title:  "Job Results"
 permalink: /docs/03/job-results/
 
-date:   2015-11-19
+date:   2018-03-20
 categories:
   - development
 excerpt: "Create and use Job Results."

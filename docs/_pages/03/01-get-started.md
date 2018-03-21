@@ -2,7 +2,7 @@
 title:  "Get Started"
 permalink: /docs/03/get-started/
 
-date:   2015-11-17 16:16:01 -0600
+date:   2018-03-20
 categories:
   - development
 excerpt: "How to setup a new Project and get started."

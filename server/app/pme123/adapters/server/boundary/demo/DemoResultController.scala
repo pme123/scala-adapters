@@ -9,10 +9,7 @@ import pme123.adapters.server.boundary.{AdaptersController, JobCockpitController
 import pme123.adapters.shared.demo.DemoJobs.demoJobIdent
 
 import scala.concurrent.ExecutionContext
-/**
-  * This class creates the actions and the websocket needed.
-  * Original see here: https://github.com/playframework/play-scala-websocket-example
-  */
+
 @Singleton
 class DemoResultController @Inject()(jobController: JobCockpitController
                                      , assetsFinder: AssetsFinder
