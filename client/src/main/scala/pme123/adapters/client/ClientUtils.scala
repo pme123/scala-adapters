@@ -9,6 +9,7 @@ import play.api.libs.json.{JsValue, Json}
 import pme123.adapters.shared.{LogEntry, Logger}
 
 import scala.language.implicitConversions
+import scala.scalajs.concurrent.JSExecutionContext.Implicits.queue
 import scala.scalajs.js
 import scala.util.{Failure, Success}
 
