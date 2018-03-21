@@ -2,15 +2,19 @@ package pme123.adapters.client
 
 import java.time.Instant
 
-import com.thoughtworks.binding.{Binding, dom}
+import com.thoughtworks.binding.{Binding, FutureBinding, dom}
+import org.scalajs.dom.ext.Ajax
 import org.scalajs.dom.raw.HTMLElement
-import pme123.adapters.shared.LogEntry
+import play.api.libs.json.{JsValue, Json}
+import pme123.adapters.shared.{LogEntry, Logger}
 
 import scala.language.implicitConversions
 import scala.scalajs.js
+import scala.util.{Failure, Success}
 
 trait ClientUtils
-  extends IntellijImplicits {
+  extends IntellijImplicits
+    with Logger {
 
   def jsLocalDateTime(instant:Instant):String = {
     val date = new js.Date(1000.0 * instant.getEpochSecond)
@@ -45,6 +49,27 @@ trait ClientUtils
   @dom
   def tdImg(imageUrl: String): Binding[HTMLElement] =
     <td> <img class="defaultImage" src={imageUrl}/></td>
+
+  @dom def callService(apiPath: String, toEntity: (JsValue) => String): Binding[HTMLElement] = {
+    FutureBinding(Ajax.get(apiPath))
+      .bind match {
+      case None =>
+        <div class="ui active inverted dimmer front">
+          <div class="ui large text loader">Loading</div>
+        </div>
+      case Some(Success(response)) =>
+        val json: JsValue = Json.parse(response.responseText)
+        info(s"Json received from $apiPath: ${json.toString().take(20)}")
+        <div>
+          {toEntity(json)}
+        </div>
+      case Some(Failure(exception)) =>
+        error(exception, s"Problem accessing $apiPath")
+        <div>
+          {exception.getMessage}
+        </div>
+    }
+  }
 
 }
 

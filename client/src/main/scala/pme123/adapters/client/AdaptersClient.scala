@@ -3,12 +3,12 @@ package pme123.adapters.client
 import com.thoughtworks.binding.{Binding, dom}
 import org.scalajs.dom.document
 import org.scalajs.dom.raw.HTMLElement
-import slogging.{ConsoleLoggerFactory, LoggerConfig}
 
 import scala.scalajs.js.timers.setTimeout
 
-trait AdaptersClient extends UIStore
-  with ClientUtils {
+trait AdaptersClient
+  extends UIStore
+    with ClientUtils {
 
   val uiState = UIState()
 

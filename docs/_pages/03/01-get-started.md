@@ -38,7 +38,7 @@ project_url [https://github.com/pme123/get-started]:
 
 Template applied in ./get-started
 
-$ cd ``
+$ cd get-started
 $
 {% endhighlight %}
 
