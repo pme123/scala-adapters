@@ -3,15 +3,17 @@ package pme123.adapters.client
 import java.time.Instant
 
 import com.thoughtworks.binding.{Binding, FutureBinding, dom}
-import org.scalajs.dom.ext.Ajax
+import org.scalajs.dom.ext.{Ajax, AjaxException}
 import org.scalajs.dom.raw.HTMLElement
 import play.api.libs.json.{JsValue, Json}
 import pme123.adapters.shared.{LogEntry, Logger}
 
 import scala.language.implicitConversions
 import scala.scalajs.concurrent.JSExecutionContext.Implicits.queue
+import scala.scalajs.js.Dynamic.{global => g}
 import scala.scalajs.js
 import scala.util.{Failure, Success}
+import scala.xml.Elem
 
 trait ClientUtils
   extends IntellijImplicits
@@ -39,6 +41,16 @@ trait ClientUtils
     }
   }
 
+  // get Assets from the servers /public folder
+  def staticAsset(path: String): String =
+    "" + g.jsRoutes.controllers.Assets.versioned(path).url
+
+  @dom
+  def faviconElem: Binding[HTMLElement] =
+    <div class="ui item">
+      <img src={staticAsset("images/favicon.png")}></img>
+    </div>
+
   @dom
   def logLevelIcon(entry: LogEntry): Binding[HTMLElement] =
     <i class={"large middle aligned " + SemanticUI.levelClass(entry.level)}></i>
@@ -64,13 +76,26 @@ trait ClientUtils
         <div>
           {toEntity(json)}
         </div>
-      case Some(Failure(exception)) =>
-        error(exception, s"Problem accessing $apiPath")
-        <div>
-          {exception.getMessage}
-        </div>
+      case Some(Failure(exception: AjaxException)) =>
+        val msg = s"Problem accessing $apiPath > ${exception.xhr.status}: ${exception.xhr.statusText}"
+        error(exception, msg) //
+        <span>{
+          errorMessage(msg).bind
+        }</span>
     }
   }
+
+  @dom
+  def errorMessage(msg: String): Binding[HTMLElement] =
+  //TODO check Message - Semantic-UI (add close button)
+    <div class="ui negative floating message">
+      <div class="header">
+        We're sorry there was an exception on the server!
+      </div>
+      <p>
+        {msg}
+      </p>
+    </div>
 
 }
 

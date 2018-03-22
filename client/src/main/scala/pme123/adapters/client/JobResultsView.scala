@@ -55,10 +55,8 @@ case class JobResultsView(context: String
   @dom
   private def adapterHeader = {
     <div class="ui main fixed borderless menu">
-      <div class="ui item">
-        <img src={"" + g.jsRoutes.controllers.Assets.versioned("images/favicon.png").url}></img>
-      </div>
-      {headerTitle.bind}
+      {faviconElem.bind}{//
+      headerTitle.bind}
       <div class="right menu">
         {resultCountField.bind}{//
         filterField.bind}{//

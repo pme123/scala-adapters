@@ -23,9 +23,8 @@ private[client] case class JobProcessHeader(context: String
   @dom
   private[client] def showHeader(): Binding[HTMLElement] = {
     <div class="ui main fixed borderless menu">
-      <div class="ui item">
-        <img src={"" + g.jsRoutes.controllers.Assets.versioned("images/favicon.png").url}></img>
-      </div>{title.bind //
+      {faviconElem.bind}{//
+      title.bind //
       }<div class="right menu">
       {lastLevel.bind}{//
       textFilter.bind}{//

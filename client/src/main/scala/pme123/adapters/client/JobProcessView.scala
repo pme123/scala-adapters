@@ -19,7 +19,6 @@ case class JobProcessView(context: String, websocketPath: String)
     socket.connectWS(Some(websocketPath))
     <div>
       {JobProcessHeader(context, websocketPath, uiState, socket).showHeader().bind}{//
-      ServerServices(uiState, context).jobConfigs().bind}{//
       adapterContainer.bind}{//
       renderDetail.bind}{//
       renderLogEntryDetail.bind}{//
