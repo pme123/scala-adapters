@@ -18,6 +18,7 @@ object SemanticUI {
     def dropdown(params: js.Any*): SemanticJQuery = js.native
     def popup(params: js.Any*): SemanticJQuery = js.native
     def modal(params: js.Any*): SemanticJQuery = js.native
+    def checkbox(params: js.Any*): SemanticJQuery = js.native
   }
 
   // Monkey patching JQuery with implicit conversion
