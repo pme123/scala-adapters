@@ -38,19 +38,13 @@ case class JobResultsView(context: String
   def render: Binding[HTMLElement] = {
     socket.connectWS(Some(websocketPath))
     <div>
-      {detailHeader.bind}{//
-      adapterHeader.bind}{//
+      {adapterHeader.bind}{//
       resultsTable.bind}
     </div>
   }
 
   // 2. level of abstraction
   // **************************
-
-  @dom
-  private def detailHeader = <div class="header">
-    Last Result (as raw JSON)
-  </div>
 
   @dom
   private def adapterHeader = {
