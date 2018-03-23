@@ -15,6 +15,8 @@
         <title>@projConfig.pageTitle</title>
         <link rel="shortcut icon" type="image/png" href="@icon">
         @Html(webJarsUtil.css("semantic.min.css"))
+        @Html(webJarsUtil.script("jquery.min.js"))
+        @Html(webJarsUtil.script("semantic.min.js"))
         @if(projConfig.isDemo) {
             @Html("<link rel=\"stylesheet\" type=\"text/css\" href=\"" + assets.withUrlPrefix(projConfig.context).path("assets/stylesheets/main.css") + "\">")
         } else {
