@@ -1,8 +1,10 @@
 package pme123.adapters.server.control
 
-import org.scalatestplus.play.ConfiguredApp
+import akka.util.Timeout
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
+import play.api.libs.ws.WSClient
 
+import scala.concurrent.duration._
 import scala.reflect.ClassTag
 
 /**
@@ -12,8 +14,10 @@ trait GuiceAcceptanceSpec
   extends AcceptanceSpec
     // if you want to test only one Test you need:
     with GuiceOneServerPerSuite {
-    // if you want to test all:
-  //  with ConfiguredApp {
+
+  implicit val timeout: Timeout = Timeout(1.second)
+
+  implicit lazy val wsClient: WSClient = inject[WSClient]
 
   def inject[A](implicit tag: ClassTag[A]): A =
     app.injector.instanceOf(tag)

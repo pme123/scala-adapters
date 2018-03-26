@@ -1,7 +1,7 @@
 package pme123.adapters.server.boundary
 
 import javax.inject.Inject
-
+import play.Environment
 import play.api.Logger
 import play.api.mvc._
 
@@ -25,6 +25,8 @@ trait Secured {
 
   def cc: ControllerComponents
 
+  def env: Environment
+
   def accessControl: AccessControl
 
   /**
@@ -37,16 +39,19 @@ trait Secured {
 
     def invokeBlock[A](request: Request[A], block: Request[A] => Future[Result]): Future[Result] = {
       accessLogger.info(s"method=${request.method} uri=${request.uri} remote-address=${request.remoteAddress}")
-      request.headers.get("Authorization").flatMap { authorization =>
-        authorization.split(" ").drop(1).headOption.filter { encoded =>
-          new String(org.apache.commons.codec.binary.Base64.decodeBase64(encoded.getBytes)).split(":").toList match {
-            case u :: p :: Nil if accessControl.isValidUser(u, p) => true
-            case _ => false
-          }
-        }.map(_ => block(request))
-      }.getOrElse {
-        Future.successful(Results.Unauthorized.withHeaders("WWW-Authenticate" -> """Basic realm="Secured""""))
-      }
+      if (env.isTest) {
+        block(request)
+      } else
+        request.headers.get("Authorization").flatMap { authorization =>
+          authorization.split(" ").drop(1).headOption.filter { encoded =>
+            new String(org.apache.commons.codec.binary.Base64.decodeBase64(encoded.getBytes)).split(":").toList match {
+              case u :: p :: Nil if accessControl.isValidUser(u, p) => true
+              case _ => false
+            }
+          }.map(_ => block(request))
+        }.getOrElse {
+          Future.successful(Results.Unauthorized.withHeaders("WWW-Authenticate" -> """Basic realm="Secured""""))
+        }
     }
 
     def parser: BodyParser[AnyContent] = cc.parsers.defaultBodyParser
