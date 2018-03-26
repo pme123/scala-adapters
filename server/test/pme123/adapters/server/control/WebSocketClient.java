@@ -49,22 +49,17 @@ public class WebSocketClient {
         }
 
         public void onOpen(WebSocket websocket) {
-            //logger.info("onClose: ");
-            //websocket.sendMessage("hello");
         }
 
         public void onClose(WebSocket websocket) {
-            //logger.info("onClose: ");
         }
 
         public void onError(Throwable t) {
-            //logger.error("onError: ", t);
             throwableFound = t;
         }
 
         @Override
         public void onMessage(String s) {
-            //logger.info("onMessage: s = " + s);
             onMessageCallback.accept(s);
         }
     }

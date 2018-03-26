@@ -8,16 +8,20 @@ import org.scalatest.concurrent.ScalaFutures
 import play.api.libs.json.{JsSuccess, JsValue, Json}
 import play.api.test.Helpers
 import play.shaded.ahc.org.asynchttpclient.AsyncHttpClient
+import play.shaded.ahc.org.asynchttpclient.ws.WebSocket
 import pme123.adapters.server.control.{GuiceAcceptanceSpec, WebSocketClient}
 import pme123.adapters.shared._
 import pme123.adapters.shared.demo.DemoJobs
 
 import scala.compat.java8.FutureConverters
 import scala.concurrent.duration._
+import scala.concurrent.{ExecutionContext, Future}
 
 class JobCockpitControllerSpec
   extends GuiceAcceptanceSpec
     with ScalaFutures {
+
+  implicit val ec: ExecutionContext = inject[ExecutionContext]
 
   "There must not be any ClientConfigs" in {
     assert(clientConfigs().isEmpty)
@@ -32,16 +36,9 @@ class JobCockpitControllerSpec
 
 
   "Creating a WebSocket should return several AdapterMsgs over the WebSocket" in {
-    val myPublicAddress = s"localhost:$port"
-    val serverURL = s"ws://$myPublicAddress/ws/demoJob"
-
-    val asyncHttpClient: AsyncHttpClient = wsClient.underlying[AsyncHttpClient]
-    val webSocketClient = new WebSocketClient(asyncHttpClient)
     val queue = new ArrayBlockingQueue[String](10)
-    val origin = serverURL
-    val listener = new WebSocketClient.LoggingListener(message => queue.put(message))
-    val completionStage = webSocketClient.call(serverURL, origin, listener)
-    val f = FutureConverters.toScala(completionStage)
+
+    val f = createWebSocket(queue)
 
     whenReady(f, timeout = Timeout(1.second)) { webSocket =>
       await().until(() => webSocket.isOpen && queue.peek() != null)
@@ -50,7 +47,35 @@ class JobCockpitControllerSpec
       checkClientConfig(queue.take())
       checkProjectInfo(queue.take())
       assert(queue.isEmpty)
+      webSocket.close()
     }
+  }
+
+  "Creating several WebSockets should create the same number of ClientConfigs" in {
+    val result: Future[Seq[WebSocket]] = Future.sequence((1 to 10).map(_ => createWebSocket(new ArrayBlockingQueue[String](10))))
+
+    whenReady(result, timeout = Timeout(1.second)) { webSockets =>
+
+      assert(webSockets.size == 10)
+      assert(clientConfigs().size == 10)
+      assert(clientConfigs().head.jobConfig.jobIdent == DemoJobs.demoJobIdent)
+
+      // after closing all
+      webSockets.foreach(_.close())
+      assert(clientConfigs().isEmpty)
+    }
+  }
+
+  private def createWebSocket(queue: ArrayBlockingQueue[String]) = {
+    val myPublicAddress = s"localhost:$port"
+    val serverURL = s"ws://$myPublicAddress/ws/demoJob"
+
+    val asyncHttpClient: AsyncHttpClient = wsClient.underlying[AsyncHttpClient]
+    val webSocketClient = new WebSocketClient(asyncHttpClient)
+    val origin = serverURL
+    val listener = new WebSocketClient.LoggingListener(message => queue.put(message))
+    val completionStage = webSocketClient.call(serverURL, origin, listener)
+    FutureConverters.toScala(completionStage)
   }
 
   private def clientConfigs() = {
