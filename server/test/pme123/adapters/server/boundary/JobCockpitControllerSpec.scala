@@ -5,7 +5,7 @@ import java.util.concurrent.ArrayBlockingQueue
 import org.awaitility.Awaitility.await
 import org.scalatest.concurrent.PatienceConfiguration.Timeout
 import org.scalatest.concurrent.ScalaFutures
-import play.api.libs.json.{JsSuccess, JsValue, Json}
+import play.api.libs.json.{JsResult, JsSuccess, JsValue, Json}
 import play.api.test.Helpers
 import play.shaded.ahc.org.asynchttpclient.AsyncHttpClient
 import play.shaded.ahc.org.asynchttpclient.ws.WebSocket
@@ -28,12 +28,8 @@ class JobCockpitControllerSpec
   }
 
   "There must be 3 static JobConfigs (demoJobs)" in {
-    val response = Helpers.await(wsCall(routes.JobCockpitController.jobConfigs())
-      .get())
-    val jobConfigs = response.json.validate[Seq[JobConfig]]
-    assert(jobConfigs.get.size == 3)
+    assert(jobConfigs().size == 3)
   }
-
 
   "Creating a WebSocket should return several AdapterMsgs over the WebSocket" in {
     val queue = new ArrayBlockingQueue[String](10)
@@ -66,9 +62,33 @@ class JobCockpitControllerSpec
     }
   }
 
-  private def createWebSocket(queue: ArrayBlockingQueue[String]) = {
+  "Creating a WebSocket with a dynamic JobConfig should return several AdapterMsgs over the WebSocket" in {
+    val queue = new ArrayBlockingQueue[String](10)
+
+    val filter = "subject%3D123"
+    val count = 3
+    val subWebPath = "/dynamicPath"
+    val f = createWebSocket(queue, s"/jobProcess$subWebPath?resultCount=$count&resultFilter=$filter")
+
+    whenReady(f, timeout = Timeout(1.second)) { webSocket =>
+      await().until(() => webSocket.isOpen && queue.peek() != null)
+
+      checkRunning(queue.take())
+      val clientConfig = checkClientConfig(queue.take())
+      assert(clientConfig.jobConfig.subWebPath == subWebPath)
+      assert(clientConfig.resultCount == count)
+      assert(clientConfig.resultFilter.contains("subject=123"))
+      checkProjectInfo(queue.take())
+      assert(queue.isEmpty)
+      // another JobConfig should be registered
+      assert(jobConfigs().size == 4)
+      webSocket.close()
+    }
+  }
+
+  private def createWebSocket(queue: ArrayBlockingQueue[String], path: String = "/demoJob") = {
     val myPublicAddress = s"localhost:$port"
-    val serverURL = s"ws://$myPublicAddress/ws/demoJob"
+    val serverURL = s"ws://$myPublicAddress/ws$path"
 
     val asyncHttpClient: AsyncHttpClient = wsClient.underlying[AsyncHttpClient]
     val webSocketClient = new WebSocketClient(asyncHttpClient)
@@ -85,6 +105,13 @@ class JobCockpitControllerSpec
     clientConfigs.get
   }
 
+  private def jobConfigs() = {
+    val response = Helpers.await(wsCall(routes.JobCockpitController.jobConfigs())
+      .get())
+    val jobConfigs = response.json.validate[Seq[JobConfig]]
+    jobConfigs.get
+  }
+
   private def checkRunning(msg: String) {
     val json: JsValue = Json.parse(msg)
     json.validate[AdapterMsg] match {
@@ -93,16 +120,18 @@ class JobCockpitControllerSpec
     }
   }
 
-  private def checkClientConfig(clientConfigMsg: String) {
+  private def checkClientConfig(clientConfigMsg: String) = {
     val json: JsValue = Json.parse(clientConfigMsg)
-    json.validate[AdapterMsg] match {
-      case JsSuccess(ClientConfigMsg(clientConfig), _) =>
-        assert(clientConfig.jobConfig.jobIdent == DemoJobs.demoJobIdent)
+    val clientConfig = json.validate[AdapterMsg] match {
+      case JsSuccess(ClientConfigMsg(clConfig), _) =>
+        assert(clConfig.jobConfig.jobIdent == DemoJobs.demoJobIdent)
+        clConfig
       case other => fail(s"Unexpected result: $other")
     }
     // the service should now return the ClientConfig as well
     assert(clientConfigs().size == 1)
     assert(clientConfigs().head.jobConfig.jobIdent == DemoJobs.demoJobIdent)
+    clientConfig
   }
 
   private def checkProjectInfo(msg: String) {

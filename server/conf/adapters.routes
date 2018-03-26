@@ -3,24 +3,25 @@
 # ~~~~
 
 # Index file for the JobCockpit.
-GET        /                             pme123.adapters.server.boundary.JobCockpitController.index()
+GET        /                                   pme123.adapters.server.boundary.JobCockpitController.index()
 
-GET        /jobProcess                   pme123.adapters.server.boundary.JobCockpitController.defaultJobProcess()
-GET        /jobProcess/:jobIdent         pme123.adapters.server.boundary.JobCockpitController.jobProcess(jobIdent)
-GET        /jobResults                   pme123.adapters.server.boundary.JobCockpitController.defaultJobResults()
-GET        /jobResults/:jobIdent         pme123.adapters.server.boundary.JobCockpitController.jobResults(jobIdent)
-GET        /customPage                   pme123.adapters.server.boundary.JobCockpitController.defaultCustomPage()
-GET        /customPage/:jobIdent         pme123.adapters.server.boundary.JobCockpitController.customPage(jobIdent)
+GET        /jobProcess                         pme123.adapters.server.boundary.JobCockpitController.defaultJobProcess()
+GET        /jobProcess/:jobIdent               pme123.adapters.server.boundary.JobCockpitController.jobProcess(jobIdent)
+GET        /jobResults                         pme123.adapters.server.boundary.JobCockpitController.defaultJobResults()
+GET        /jobResults/:jobIdent               pme123.adapters.server.boundary.JobCockpitController.jobResults(jobIdent)
+GET        /customPage                         pme123.adapters.server.boundary.JobCockpitController.defaultCustomPage()
+GET        /customPage/:jobIdent               pme123.adapters.server.boundary.JobCockpitController.customPage(jobIdent)
 # Index file for the Demo (this is only here for demo purposes).
-GET        /demo/customPage              pme123.adapters.server.boundary.demo.DemoResultController.defaultResults
+GET        /demo/customPage                    pme123.adapters.server.boundary.demo.DemoResultController.defaultResults
+GET        /ws/jobProcess/:dynamicIdent        pme123.adapters.server.boundary.demo.DemoResultController.ws(dynamicIdent: String, resultCount: Option[Int], resultFilter: Option[String])
 # Websocket for live updates (LogEntries) on Jobs
-GET        /ws/:jobIdent                 pme123.adapters.server.boundary.WebsocketController.ws(jobIdent, subWebpath: Option[String], resultCount: Option[Int], resultFilter: Option[String])
+GET        /ws/:jobIdent                       pme123.adapters.server.boundary.WebsocketController.ws(jobIdent, subWebpath: Option[String], resultCount: Option[Int], resultFilter: Option[String])
 # API to get all the Jobs that are provided
-GET        /jobConfigs                   pme123.adapters.server.boundary.JobCockpitController.jobConfigs()
+GET        /jobConfigs                         pme123.adapters.server.boundary.JobCockpitController.jobConfigs()
 # API to get all the Client Configs that are registered for a jobConfig
-GET        /clientConfigs                pme123.adapters.server.boundary.JobCockpitController.clientConfigs()
+GET        /clientConfigs                      pme123.adapters.server.boundary.JobCockpitController.clientConfigs()
 # Map static resources from the /public folder to the /assets URL path
-GET        /assets/*file                 controllers.Assets.at(file)
-GET        /versionedAssets/*file        controllers.Assets.versioned(file)
+GET        /assets/*file                       controllers.Assets.at(file)
+GET        /versionedAssets/*file              controllers.Assets.versioned(file)
 
-->         /webjars                      webjars.Routes
+->         /webjars                            webjars.Routes
