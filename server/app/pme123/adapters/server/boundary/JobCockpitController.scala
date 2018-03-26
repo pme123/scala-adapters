@@ -29,7 +29,7 @@ class JobCockpitController @Inject()(@Named("clientParentActor")
                                      jobParentActor: ActorRef
                                      , template: views.html.adapters.index
                                      , assetsFinder: AssetsFinder
-                                     , env: Environment
+                                     , val env: Environment
                                      , val cc: ControllerComponents
                                      , val config: Configuration
                                      , val accessControl: AccessControl)
