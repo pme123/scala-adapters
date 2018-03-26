@@ -195,9 +195,10 @@ defaults:
   # _pages
   - scope:
       path: "_pages"
-      type: docs
+      type: pages
     values:
       layout: single
+      read_time: false
       author_profile: false
       classes: wide
       sidebar:
