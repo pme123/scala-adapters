@@ -20,6 +20,10 @@ addSbtPlugin("com.typesafe.sbt" % "sbt-gzip" % "1.0.2")
 
 addSbtPlugin("com.typesafe.sbt" % "sbt-digest" % "1.1.3")
 
+// older versions due problem with Play
+addSbtPlugin("org.scoverage" % "sbt-scoverage" % "1.0.1")
+addSbtPlugin("org.scoverage" % "sbt-coveralls" % "1.0.0")
+
 // see https://github.com/portable-scala/sbt-crossproject
 addSbtPlugin("org.scala-js"     % "sbt-scalajs"              % "0.6.21")
 addSbtPlugin("org.portable-scala" % "sbt-crossproject"         % "0.3.1")  // (1)

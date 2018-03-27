@@ -10,6 +10,7 @@ import sbt.Keys._
 import sbt.{Def, ExclusionRule, URL, _}
 import sbtbuildinfo.BuildInfoPlugin.autoImport._
 import webscalajs.WebScalaJS.autoImport.scalaJSPipeline
+import scoverage.ScoverageSbtPlugin.autoImport._
 
 object Settings {
 
@@ -47,6 +48,7 @@ object Settings {
     , DigestKeys.indexPath := Some("javascripts/versioned.js")
     // Assign the asset index to a global versioned var
     , DigestKeys.indexWriter ~= { writer => index => s"var versioned = ${writer(index)};" }
+    , coverageEnabled := true
   )
 
   lazy val serverDependencies: Seq[Def.Setting[_]] = Def.settings(libraryDependencies ++= Seq(
@@ -107,6 +109,10 @@ object Settings {
 
   lazy val jsSettings: Seq[Def.Setting[_]] = Seq(
     scalaJSStage in Global := testStage
+  )
+
+  lazy val jvmSettings: Seq[Def.Setting[_]] = Seq(
+    coverageEnabled := true
   )
 
   lazy val sharedJsDependencies: Seq[Def.Setting[_]] = Def.settings(libraryDependencies ++= Seq(
