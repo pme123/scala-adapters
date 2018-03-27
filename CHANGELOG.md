@@ -1,7 +1,13 @@
 # Change Log
 
-## [1.0.8](https://github.com/pme123/scala-adapters/tree/1.0.8) (2018-03-23)
-[Full Changelog](https://github.com/pme123/scala-adapters/compare/1.0.7...1.0.8)
+## [1.1.0](https://github.com/pme123/scala-adapters/tree/1.1.0) (2018-03-27)
+[Full Changelog](https://github.com/pme123/scala-adapters/compare/0.0.1...1.1.0)
+
+**Merged pull requests:**
+
+- Provide default index page [\#3](https://github.com/pme123/scala-adapters/pull/3) ([pme123](https://github.com/pme123))
+- Generic job results 1 [\#2](https://github.com/pme123/scala-adapters/pull/2) ([pme123](https://github.com/pme123))
+- Csser 3308 factory as actor [\#1](https://github.com/pme123/scala-adapters/pull/1) ([pme123](https://github.com/pme123))
 
 
 
