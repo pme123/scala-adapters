@@ -9,6 +9,8 @@ resolvers += Resolver.url("heroku-sbt-plugin-releases",
 
 resolvers += "jitpack" at "https://jitpack.io"
 
+resolvers += Resolver.sbtPluginRepo("releases")
+
 // Sbt plugins
 addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.6.6")
 
@@ -19,6 +21,9 @@ addSbtPlugin("com.vmunier" % "sbt-web-scalajs" % "1.0.6")
 addSbtPlugin("com.typesafe.sbt" % "sbt-gzip" % "1.0.2")
 
 addSbtPlugin("com.typesafe.sbt" % "sbt-digest" % "1.1.3")
+
+addSbtPlugin("org.scoverage" % "sbt-scoverage" % "1.5.1")
+addSbtPlugin("org.scoverage" % "sbt-coveralls" % "1.2.2")
 
 // see https://github.com/portable-scala/sbt-crossproject
 addSbtPlugin("org.scala-js"     % "sbt-scalajs"              % "0.6.21")

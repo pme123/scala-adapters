@@ -1,6 +1,9 @@
 language: scala
 script:
-  - sbt ++$TRAVIS_SCALA_VERSION clean sharedJVM/test sharedJS/test server/test 'set scalaJSStage in Global := FullOptStage'
+  - sbt ++$TRAVIS_SCALA_VERSION clean coverage sharedJVM/test sharedJS/test server/test coverageReport 'set scalaJSStage in Global := FullOptStage' &&
+    sbt coverageAggregate
+after_success:
+  - sbt coveralls
 scala:
    - 2.12.4
 jdk:

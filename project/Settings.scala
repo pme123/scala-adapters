@@ -10,13 +10,14 @@ import sbt.Keys._
 import sbt.{Def, ExclusionRule, URL, _}
 import sbtbuildinfo.BuildInfoPlugin.autoImport._
 import webscalajs.WebScalaJS.autoImport.scalaJSPipeline
+import scoverage.ScoverageSbtPlugin.autoImport._
 
 object Settings {
 
   lazy val orgId = "pme123"
   lazy val orgHomepage = Some(new URL("https://github.com/pme123"))
   lazy val projectName = "scala-adapters"
-  lazy val projectV = "1.0.8"
+  lazy val projectV = "1.1.0"
 
   // main versions
   lazy val scalaV = "2.12.4"
@@ -107,6 +108,12 @@ object Settings {
 
   lazy val jsSettings: Seq[Def.Setting[_]] = Seq(
     scalaJSStage in Global := testStage
+    , coverageEnabled := false
+  )
+
+  lazy val jvmSettings: Seq[Def.Setting[_]] = Seq(
+    coverageEnabled := true
+    , coverageExcludedPackages := ".*\\.Reverse*;views.*;adapters.*;controllers.*;.*\\.javascript.*"
   )
 
   lazy val sharedJsDependencies: Seq[Def.Setting[_]] = Def.settings(libraryDependencies ++= Seq(

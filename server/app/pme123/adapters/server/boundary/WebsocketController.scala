@@ -40,12 +40,12 @@ class WebsocketController @Inject()(@Named("clientParentActor")
   def ws(jobIdent: JobIdent
          , subWebpath: Option[String]
          , resultCount: Option[Int]
-         , calendarFilter: Option[String]): WebSocket =
+         , resultFilter: Option[String]): WebSocket =
     websocket(
       settings.jobConfigs(jobIdent).copy(subWebPath =
         subWebpath.getOrElse(""))
       , resultCount.getOrElse(ClientConfig.defaultResultCount)
-      , calendarFilter
+      , resultFilter
     )
 
   def websocket(jobConfig: JobConfig

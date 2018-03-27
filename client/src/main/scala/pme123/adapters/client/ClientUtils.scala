@@ -80,8 +80,14 @@ trait ClientUtils
         val msg = s"Problem accessing $apiPath > ${exception.xhr.status}: ${exception.xhr.statusText}"
         error(exception, msg) //
         <span>{
-          errorMessage(msg).bind
-        }</span>
+          errorMessage(msg).bind}
+        </span>
+      case Some(Failure(exception: Throwable)) =>
+        val msg = s"Problem accessing $apiPath > ${exception.getMessage}"
+        error(exception, msg) //
+        <span>
+          {errorMessage(msg).bind}
+        </span>
     }
   }
 

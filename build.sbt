@@ -20,6 +20,7 @@ lazy val server = (project in file("server"))
   .settings(sharedSettings(Some("server")))
   .settings(serverSettings)
   .settings(serverDependencies)
+  .settings(jvmSettings)
   .enablePlugins(PlayScala, BuildInfoPlugin)
   .dependsOn(sharedJvm)
 
@@ -39,7 +40,7 @@ lazy val shared = crossProject(JSPlatform, JVMPlatform)
   .settings(sharedDependencies)
   .jsSettings(jsSettings)
   .jsSettings(sharedJsDependencies) // defined in sbt-scalajs-crossproject
-  .jvmSettings(/* ... */)
+  .jvmSettings(jvmSettings)
   .jsConfigure(_ enablePlugins ScalaJSWeb)
 
 lazy val sharedJvm = shared.jvm
