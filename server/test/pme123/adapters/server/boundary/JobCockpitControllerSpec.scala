@@ -5,7 +5,7 @@ import java.util.concurrent.ArrayBlockingQueue
 import org.awaitility.Awaitility.await
 import org.scalatest.concurrent.PatienceConfiguration.Timeout
 import org.scalatest.concurrent.ScalaFutures
-import play.api.libs.json.{JsResult, JsSuccess, JsValue, Json}
+import play.api.libs.json.{JsSuccess, JsValue, Json}
 import play.api.test.Helpers
 import play.shaded.ahc.org.asynchttpclient.AsyncHttpClient
 import play.shaded.ahc.org.asynchttpclient.ws.WebSocket
@@ -39,9 +39,9 @@ class JobCockpitControllerSpec
     whenReady(f, timeout = Timeout(1.second)) { webSocket =>
       await().until(() => webSocket.isOpen && queue.peek() != null)
 
-      checkRunning(queue.take())
+      checkNotRunning(queue.take())
       checkClientConfig(queue.take())
-      checkProjectInfo(queue.take())
+      checkAdapterMsg(queue.take(), (aMsg: AdapterMsg) => aMsg.isInstanceOf[ProjectInfo])
       assert(queue.isEmpty)
       webSocket.close()
     }
@@ -73,15 +73,34 @@ class JobCockpitControllerSpec
     whenReady(f, timeout = Timeout(1.second)) { webSocket =>
       await().until(() => webSocket.isOpen && queue.peek() != null)
 
-      checkRunning(queue.take())
+      checkNotRunning(queue.take())
       val clientConfig = checkClientConfig(queue.take())
       assert(clientConfig.jobConfig.subWebPath == subWebPath)
       assert(clientConfig.resultCount == count)
       assert(clientConfig.resultFilter.contains("subject=123"))
-      checkProjectInfo(queue.take())
+      checkAdapterMsg(queue.take(), (aMsg: AdapterMsg) => aMsg.isInstanceOf[ProjectInfo])
       assert(queue.isEmpty)
       // another JobConfig should be registered
       assert(jobConfigs().size == 4)
+      webSocket.close()
+    }
+  }
+
+  "Sending RunJob with WebSocket should return a RunStarted and a LogEntry immediately" in {
+    val queue = new ArrayBlockingQueue[String](30)
+
+    val f = createWebSocket(queue)
+
+    whenReady(f, timeout = Timeout(1.second)) { webSocket =>
+      await().until(() => webSocket.isOpen && queue.peek() != null)
+      webSocket.sendMessage(Json.toJson(RunJob("Tester")).toString())
+      while (queue.peek() != null) {
+        info(s"From Queue: ${queue.take()}")
+      }
+      webSocket.sendMessage(Json.toJson(RunJob("Tester")).toString())
+      await().until(() => queue.peek() != null)
+      checkAdapterMsg(queue.take(), (aMsg: AdapterMsg) => aMsg == RunStarted)
+      checkAdapterMsg(queue.take(), (aMsg: AdapterMsg) => aMsg.isInstanceOf[LogEntryMsg])
       webSocket.close()
     }
   }
@@ -112,7 +131,7 @@ class JobCockpitControllerSpec
     jobConfigs.get
   }
 
-  private def checkRunning(msg: String) {
+  private def checkNotRunning(msg: String) {
     val json: JsValue = Json.parse(msg)
     json.validate[AdapterMsg] match {
       case JsSuccess(AdapterNotRunning(None), _) => // ok
@@ -134,10 +153,10 @@ class JobCockpitControllerSpec
     clientConfig
   }
 
-  private def checkProjectInfo(msg: String) {
+  private def checkAdapterMsg(msg: String, typeCheck: AdapterMsg => Boolean) {
     val json: JsValue = Json.parse(msg)
     json.validate[AdapterMsg] match {
-      case JsSuccess(_:ProjectInfo, _) => // ok
+      case JsSuccess(aMsg, _) => assert(typeCheck(aMsg))
       case other => fail(s"Unexpected result: $other")
     }
   }

@@ -9,6 +9,8 @@ resolvers += Resolver.url("heroku-sbt-plugin-releases",
 
 resolvers += "jitpack" at "https://jitpack.io"
 
+resolvers += Resolver.sbtPluginRepo("releases")
+
 // Sbt plugins
 addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.6.6")
 
