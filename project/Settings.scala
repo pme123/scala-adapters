@@ -48,7 +48,6 @@ object Settings {
     , DigestKeys.indexPath := Some("javascripts/versioned.js")
     // Assign the asset index to a global versioned var
     , DigestKeys.indexWriter ~= { writer => index => s"var versioned = ${writer(index)};" }
-    , coverageEnabled := true
   )
 
   lazy val serverDependencies: Seq[Def.Setting[_]] = Def.settings(libraryDependencies ++= Seq(
@@ -109,6 +108,7 @@ object Settings {
 
   lazy val jsSettings: Seq[Def.Setting[_]] = Seq(
     scalaJSStage in Global := testStage
+    , coverageEnabled := false
   )
 
   lazy val jvmSettings: Seq[Def.Setting[_]] = Seq(

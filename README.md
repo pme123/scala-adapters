@@ -1,5 +1,6 @@
 # scala-adapters
 [![Build Status](https://travis-ci.org/pme123/scala-adapters.svg?branch=master)](https://travis-ci.org/pme123/scala-adapters)
+[![Coverage Status](https://coveralls.io/repos/github/pme123/scala-adapters/badge.svg?branch=master)](https://coveralls.io/github/pme123/scala-adapters?branch=master)
 [![](https://jitpack.io/v/pme123/scala-adapters.svg)](https://jitpack.io/#pme123/scala-adapters)
 [![Heroku](http://heroku-badge.herokuapp.com/?app=tranquil-reef-73468)](https://tranquil-reef-73468.herokuapp.com)
 
