@@ -113,7 +113,7 @@ object Settings {
 
   lazy val jvmSettings: Seq[Def.Setting[_]] = Seq(
     coverageEnabled := true
-    , coverageExcludedPackages := ".*\\.Reverse*;views.*;adapters.*;controllers.*;.*\\.javascript.*"
+    , coverageExcludedPackages := ".*\\.Reverse.*;views.*;adapters.*;controllers.*;.*\\.javascript.*"
   )
 
   lazy val sharedJsDependencies: Seq[Def.Setting[_]] = Def.settings(libraryDependencies ++= Seq(
