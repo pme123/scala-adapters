@@ -15,16 +15,30 @@
 
 {::comment} Images {:/comment}
 
+{::comment} 01 Business {:/comment}
+
+[business_activities]: {{ "/assets/images/01/business_activities.png" | absolute_url }}
+[job_client_handling]: {{ "/assets/images/01/job_client_handling.png" | absolute_url }}
+[use_case]: {{ "/assets/images/01/use_case.png" | absolute_url }}
+
+{::comment} 03 Development {:/comment}
+
 [arch_tiers]: {{ "/assets/images/02/arch_tiers.png" | absolute_url }}
 [arch_important_classes]: {{ "/assets/images/02/arch_important_classes.png" | absolute_url }}
 [arch_modules]: {{ "/assets/images/02/arch_modules.png" | absolute_url }}
 [arch_use_case]: {{ "/assets/images/02/arch_use_case.png" | absolute_url }}
+[job_creation]: {{ "/assets/images/02/job_creation.png" | absolute_url }}
+[websocket_creation]: {{ "/assets/images/02/websocket_creation.png" | absolute_url }}
+
 [screenshot_cockpit]: {{ "/assets/images/03/screenshot_cockpit.png" | absolute_url }}
 [screenshot_custom_page]: {{ "/assets/images/03/screenshot_custom_page.png" | absolute_url }}
 [screenshot_job_results]: {{ "/assets/images/03/screenshot_job_results.png" | absolute_url }}
 [file_structure]: {{ "/assets/images/03/file_structure.png" | absolute_url }}
-[use_case]: {{ "/assets/images/01/use_case.png" | absolute_url }}
+
+{::comment} 04 Deployment {:/comment}
+
 [local_environment]: {{ "/assets/images/04/local_environment.png" | absolute_url }}
+
 {::comment} Pages {:/comment}
 
 [architecture-view]: {{ "/docs/architecture-view/" | absolute_url }}

@@ -7,3 +7,10 @@
 An implementation of a web fullstack with Scala/Play on the server and ScalaJS/Binding.scala on the client.
 
 Check the documentation: **[pme123.github.io/scala-adapters/](https://pme123.github.io/scala-adapters/)**
+
+## Documentation
+
+Run Jekyll locally for working on the docs:
+
+`cd PROJECT_DIR/docs` 
+`bundle exec jekyll serve --config _config.yml,_config.dev.yml`

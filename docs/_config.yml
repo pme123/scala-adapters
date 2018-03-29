@@ -211,6 +211,7 @@ defaults:
       layout: single
       read_time: false
       author_profile: false
+      classes: wide
       share: false
       comments: false
       sidebar:
