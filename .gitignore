@@ -8,3 +8,7 @@ dist
 
 docs/_site
 docs/.sass-cache
+classes/
+docs/creation/scala-adapters-uml.mdzip.bak
+docs/creation/~$scala-fullstack.pptx
+server/build
