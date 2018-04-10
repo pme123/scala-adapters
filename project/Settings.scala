@@ -108,6 +108,7 @@ object Settings {
 
   lazy val jsSettings: Seq[Def.Setting[_]] = Seq(
     scalaJSStage in Global := testStage
+    , coverageEnabled := false
   )
 
   lazy val jvmSettings: Seq[Def.Setting[_]] = Seq(

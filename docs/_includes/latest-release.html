@@ -1,0 +1,19 @@
+<script>
+    var user = 'pme123'; // Replace with your user/repo
+    var repo = 'scala-adapters';
+
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function() {
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+            var myArr = JSON.parse(xmlhttp.responseText);
+            populateRelease(myArr);
+        }
+    }
+    xmlhttp.open("GET", "https://api.github.com/repos/" + user + "/" + repo + "/releases", true);
+    xmlhttp.send();
+
+    function populateRelease(arr) {
+        var release = arr[0].tag_name;
+        document.getElementById("latest_release").innerHTML = release;
+    }
+</script>
