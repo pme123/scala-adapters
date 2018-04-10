@@ -1,19 +1,17 @@
 package pme123.adapters.server.control
 
-import javax.inject.{Inject, Named}
-
 import akka.actor._
 import akka.event.LoggingReceive
 import akka.pattern.{ask, pipe}
 import akka.stream.scaladsl._
 import akka.util.Timeout
+import javax.inject.{Inject, Named}
 import play.api.Configuration
 import play.api.libs.concurrent.InjectedActorSupport
 import play.api.libs.json.JsValue
 import pme123.adapters.server.control.ClientActor.GetClientConfig
 import pme123.adapters.server.control.JobParentActor.CreateJobActor
 import pme123.adapters.server.entity.ActorMessages.InitActor
-import pme123.adapters.server.entity.AdaptersContext.settings.jobConfigs
 import pme123.adapters.shared.{ClientConfig, Logger}
 
 import scala.concurrent.duration._
