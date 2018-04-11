@@ -3,7 +3,7 @@ logLevel := Level.Warn
 
 // Resolvers
 resolvers += "Typesafe repository" at "https://repo.typesafe.com/typesafe/releases/"
-
+resolvers += Resolver.sonatypeRepo("snapshots")
 resolvers += Resolver.url("heroku-sbt-plugin-releases",
   url("https://dl.bintray.com/heroku/sbt-plugins/"))(Resolver.ivyStylePatterns)
 
@@ -21,7 +21,7 @@ addSbtPlugin("com.typesafe.sbt" % "sbt-gzip" % "1.0.2")
 addSbtPlugin("com.typesafe.sbt" % "sbt-digest" % "1.1.3")
 
 addSbtPlugin("org.scoverage" % "sbt-scoverage" % "1.5.1")
-addSbtPlugin("org.scoverage" % "sbt-coveralls" % "1.2.3")
+addSbtPlugin("org.scoverage" % "sbt-coveralls" % "1.2.4-SNAPSHOT")
 
 // see https://github.com/portable-scala/sbt-crossproject
 addSbtPlugin("org.scala-js"     % "sbt-scalajs"              % "0.6.21")
