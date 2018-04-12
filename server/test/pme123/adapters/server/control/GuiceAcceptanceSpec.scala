@@ -15,7 +15,7 @@ trait GuiceAcceptanceSpec
     // if you want to test only one Test you need:
     with GuiceOneServerPerSuite {
 
-  implicit val timeout: Timeout = Timeout(1.second)
+  implicit val timeout: Timeout = Timeout(2.second)
 
   implicit lazy val wsClient: WSClient = inject[WSClient]
 
