@@ -8,7 +8,7 @@ import play.api.libs.json._
 import play.api.libs.ws.WSResponse
 import play.mvc.Http.Status
 import pme123.adapters.server.control.http.{WebAccessForbiddenException, WebBadStatusException, WebNotAcceptableException, WebNotFoundException}
-import pme123.adapters.server.entity.{AdaptersException, JsonParseException, ObjectExpectedException}
+import pme123.adapters.server.entity.{AdaptersException, JsonParseException}
 import pme123.adapters.shared.LogLevel.DEBUG
 import pme123.adapters.shared.{LogLevel, Logger}
 
@@ -76,10 +76,6 @@ trait StreamsHelper
   }
 
   private def supervisionDecider(label: String)(implicit logService: LogService): Supervision.Decider = {
-    case exc: AdaptersException if exc.getCause.isInstanceOf[ObjectExpectedException] =>
-      logService.warn(exc.getMessage, Some(exc.allErrorMsgs))
-      error(exc, s"$label - stream resumed: Exception from the warning above.")
-      Supervision.Resume
     case exc: AdaptersException =>
       logService.warn(s"$label - stream resumed: ${exc.msg}", Some(exc.allErrorMsgs))
       error(exc, "Exception from the warning above.")

@@ -11,7 +11,7 @@ import scala.concurrent.duration._
 case class JobSchedules(schedules: Map[JobIdent, JobSchedule]) {
 
   def jobSchedule(ident: JobIdent): JobSchedule =
-    schedules.getOrElse(ident, throw BadArgumentException(s"There is no Schedule for the JobIdent: $ident"))
+    schedules.getOrElse(ident, throw ConfigException(s"There is no Schedule for the JobIdent: $ident"))
 }
 
 object JobSchedules {

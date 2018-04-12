@@ -21,7 +21,7 @@ class JobSchedulesTest
     schedules.jobSchedule(demoJobIdent).jobIdent should be(demoJobIdent)
   }
   it should "throw a BadArgumentException for a JobConfig that has no Schedule" in {
-    intercept[BadArgumentException](schedules.jobSchedule(demoJobWithoutSchedulerIdent).jobIdent should be(demoJobIdent))
+    intercept[ConfigException](schedules.jobSchedule(demoJobWithoutSchedulerIdent).jobIdent should be(demoJobIdent))
   }
 
   s"The first time of  $expectedStartHour" should "be correct without Weekday configured" in {

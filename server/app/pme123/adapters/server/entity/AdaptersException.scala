@@ -28,23 +28,13 @@ trait AdaptersException
   }
 }
 
-case class MissingArgumentException(msg: String)
-  extends AdaptersException
-
-case class BadArgumentException(msg: String)
-  extends AdaptersException
-
-case class ObjectExpectedException(msg: String)
-  extends AdaptersException {
-}
-
 case class JsonParseException(msg: String, override val cause: Option[Throwable] = None)
   extends AdaptersException {
 }
 
-case class UploadDataException(msg: String)
+case class ServiceException(msg: String, override val cause: Option[Throwable] = None)
   extends AdaptersException
 
-case class ServiceException(msg: String, override val cause: Option[Throwable] = None)
+case class ConfigException(msg: String, override val cause: Option[Throwable] = None)
   extends AdaptersException
 
