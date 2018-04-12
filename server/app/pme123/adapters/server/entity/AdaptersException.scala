@@ -21,7 +21,8 @@ trait AdaptersException
       if (throwable == null || throwable == last) ""
       else {
         val causeMsg = inner(throwable.getCause, throwable)
-        throwable.getMessage + (if (causeMsg.nonEmpty) s"\n - Cause: $causeMsg" else "")
+        val msg = s"${throwable.getMessage} [${throwable.getStackTrace.headOption.map(_.toString).getOrElse("No stack trace")}]"
+        msg + (if (causeMsg.nonEmpty) s"\n - Cause: $causeMsg" else "")
       }
 
     inner(this, null)

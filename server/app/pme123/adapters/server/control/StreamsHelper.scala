@@ -13,6 +13,7 @@ import pme123.adapters.shared.LogLevel.DEBUG
 import pme123.adapters.shared.{LogLevel, Logger}
 
 import scala.concurrent.{ExecutionContext, Future}
+import scala.util.control.NonFatal
 import scala.util.{Failure, Success, Try}
 
 /**
@@ -80,8 +81,11 @@ trait StreamsHelper
       logService.warn(s"$label - stream resumed: ${exc.msg}", Some(exc.allErrorMsgs))
       error(exc, "Exception from the warning above.")
       Supervision.Resume
+    case NonFatal(exc) =>
+      logService.error(exc, s"$label - stream resumed: $exc")
+      Supervision.Resume
     case exc: Exception =>
-      logService.error(exc, s"$label - stream stopped: $exc")
+      logService.error(exc, s"$label - stream resumed: $exc")
       Supervision.Stop
   }
 

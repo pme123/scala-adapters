@@ -20,7 +20,7 @@ class JobSchedulesTest
   it should "return the correct JobSchedule for a JobIdent" in {
     schedules.jobSchedule(demoJobIdent).jobIdent should be(demoJobIdent)
   }
-  it should "throw a BadArgumentException for a JobConfig that has no Schedule" in {
+  it should "throw a ConfigException for a JobConfig that has no Schedule" in {
     intercept[ConfigException](schedules.jobSchedule(demoJobWithoutSchedulerIdent).jobIdent should be(demoJobIdent))
   }
 
