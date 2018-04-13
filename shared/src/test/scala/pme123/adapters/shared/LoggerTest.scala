@@ -86,7 +86,7 @@ class LoggerTest extends UnitTest {
 
   "AllErrorMsgs for a AdaptersException" should "be formatted in an expected format" in {
     exceptionToString(new Exception("configException")) should startWith(
-      "configException [pme123.adapters.shared.LoggerTest."
+      "configException ["
     )
   }
 
@@ -94,9 +94,9 @@ class LoggerTest extends UnitTest {
   it should "be formatted also correct for Exceptions with causes" in {
     val msg = exceptionToString(new Exception("configException", new Exception("firstCause", new Exception("secondCause"))))
       .split("\\n")
-    msg.head should startWith("configException [pme123.adapters.shared.LoggerTest.")
-    msg.tail.head should startWith(" - Cause: firstCause [pme123.adapters.shared.LoggerTest.")
-    msg.last should startWith(" - Cause: secondCause [pme123.adapters.shared.LoggerTest.")
+    msg.head should startWith("configException [")
+    msg.tail.head should startWith(" - Cause: firstCause [")
+    msg.last should startWith(" - Cause: secondCause [")
   }
   // LogEntry.asString
   {
