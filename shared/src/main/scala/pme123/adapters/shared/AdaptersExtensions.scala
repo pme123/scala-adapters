@@ -1,5 +1,8 @@
 package pme123.adapters.shared
 
+import scala.language.implicitConversions
+
+
 // add useful extensions here
 object AdaptersExtensions {
 

@@ -35,11 +35,21 @@ trait Logger {
 
   def error(msg: String, detail: Option[String] = None): LogEntry = LogEntry(ERROR, msg, detail).log()
 
-  def error(exc: Throwable, msg: String): LogEntry = LogEntry(ERROR, msg, exceptionToString(exc)).log()
+  def error(exc: Throwable, msg: String): LogEntry = LogEntry(ERROR, msg, Some(exceptionToString(exc))).log()
 
-  def error(exc: Throwable): LogEntry = LogEntry(ERROR, exc.getMessage, exceptionToString(exc)).log()
+  def error(exc: Throwable): LogEntry = LogEntry(ERROR, exc.getMessage, Some(exceptionToString(exc))).log()
 
-  private def exceptionToString(exc: Throwable) = Some(exc.getStackTrace.map(_.toString).mkString("\n"))
+  def exceptionToString(exc: Throwable): String = {
+    def inner(throwable: Throwable, last: Throwable): String =
+      if (throwable == null || throwable == last) ""
+      else {
+        val causeMsg = inner(throwable.getCause, throwable)
+        val msg = s"${throwable.getMessage} [${throwable.getStackTrace.headOption.map(_.toString).getOrElse("No stack trace")}]"
+        msg + (if (causeMsg.nonEmpty) s"\n - Cause: $causeMsg" else "")
+      }
+
+    inner(exc, null)
+  }
 
 
   def startLog(msg: String): Instant = {
@@ -52,6 +62,8 @@ trait Logger {
     LogEntry(INFO, s"Finished after ${Instant.now().toEpochMilli - startDate.toEpochMilli} ms: $msg").log()
   }
 }
+
+object Logger extends Logger
 
 /**
   * Created by pascal.mengelt on 05.03.2015.

@@ -25,7 +25,7 @@ class LoggerTest extends UnitTest {
   }
   // Logger.info
   {
-    val logEntry = info(logMsg)
+    val logEntry = Logger.info(logMsg)
     "A logged info" should "return a LogEntry of level info" in {
       logEntry.level should be(INFO)
     }
@@ -83,14 +83,30 @@ class LoggerTest extends UnitTest {
     matchLogMsg(logEntry)
     checkGenericLog(logEntry)
   }
+
+  "AllErrorMsgs for a AdaptersException" should "be formatted in an expected format" in {
+    exceptionToString(new Exception("configException")) should be(
+      "configException [pme123.adapters.shared.LoggerTest.$anonfun$new$10(LoggerTest.scala:88)]"
+    )
+  }
+
+
+  it should "be formatted also correct for Exceptions with causes" in {
+    exceptionToString(new Exception("configException", new Exception("firstCause", new Exception("secondCause")))) should be(
+      """configException [pme123.adapters.shared.LoggerTest.$anonfun$new$11(LoggerTest.scala:95)]
+        | - Cause: firstCause [pme123.adapters.shared.LoggerTest.$anonfun$new$11(LoggerTest.scala:95)]
+        | - Cause: secondCause [pme123.adapters.shared.LoggerTest.$anonfun$new$11(LoggerTest.scala:95)]""".stripMargin
+
+    )
+  }
   // LogEntry.asString
   {
-    val logEntry = info(logMsg)
+    val logEntry = Logger.info(logMsg)
     "A LogEntry as string" should "be a nice readable text preceeded by the LogLevel" in {
       logEntry.asString should be(s"INFO: $logMsgPrefix $logParam1 $logParam2")
     }
     it should "have no problems with UTF-8 encodings" in {
-      info("12%\u00e4Tafelgetr\u00e4nke\nw").asString should be("INFO: 12%\u00e4Tafelgetr\u00e4nke\nw")
+      Logger.info("12%\u00e4Tafelgetr\u00e4nke\nw").asString should be("INFO: 12%\u00e4Tafelgetr\u00e4nke\nw")
     }
   }
   // LogLevel.fromLevel

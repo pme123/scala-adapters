@@ -15,6 +15,7 @@ import pme123.adapters.shared.{LogLevel, Logger}
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.control.NonFatal
 import scala.util.{Failure, Success, Try}
+import pme123.adapters.shared.AdaptersExtensions._
 
 /**
   * Created by pascal.mengelt on 11.10.2016.
@@ -78,7 +79,7 @@ trait StreamsHelper
 
   private def supervisionDecider(label: String)(implicit logService: LogService): Supervision.Decider = {
     case exc: AdaptersException =>
-      logService.warn(s"$label - stream resumed: ${exc.msg}", Some(exc.allErrorMsgs))
+      logService.warn(s"$label - stream resumed: ${exc.msg}", Some(exceptionToString(exc)))
       error(exc, "Exception from the warning above.")
       Supervision.Resume
     case NonFatal(exc) =>

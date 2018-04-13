@@ -15,18 +15,11 @@ trait AdaptersException
   override def getCause: Throwable = {
     cause.orNull
   }
+}
 
-  lazy val allErrorMsgs: String = {
-    def inner(throwable: Throwable, last: Throwable): String =
-      if (throwable == null || throwable == last) ""
-      else {
-        val causeMsg = inner(throwable.getCause, throwable)
-        val msg = s"${throwable.getMessage} [${throwable.getStackTrace.headOption.map(_.toString).getOrElse("No stack trace")}]"
-        msg + (if (causeMsg.nonEmpty) s"\n - Cause: $causeMsg" else "")
-      }
+object AdaptersException {
 
-    inner(this, null)
-  }
+
 }
 
 case class JsonParseException(msg: String, override val cause: Option[Throwable] = None)
