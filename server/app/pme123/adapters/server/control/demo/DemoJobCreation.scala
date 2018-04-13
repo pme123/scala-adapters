@@ -12,6 +12,7 @@ import pme123.adapters.shared.demo.DemoJobs._
 
 import scala.concurrent.ExecutionContext
 import pme123.adapters.shared.AdaptersExtensions._
+
 // the Factory must be a Singleton
 @Singleton
 class DemoJobCreation @Inject()(demoJob: DemoJobProcess // each JobProcess is injected
@@ -19,8 +20,8 @@ class DemoJobCreation @Inject()(demoJob: DemoJobProcess // each JobProcess is in
                                 , demoJobWithoutScheduler: DemoJobWithoutSchedulerActor
                                 , @Named("actorSchedulers") val actorSchedulers: ActorRef // needed to create Schedules
                                 , actorSystem: ActorSystem // needed to create the JobActors
-                              )(implicit val mat: Materializer
-                                , val ec: ExecutionContext) // needed for async processing
+                               )(implicit val mat: Materializer
+                                 , val ec: ExecutionContext) // needed for async processing
   extends JobCreation {
 
   // create all JobActors
@@ -32,10 +33,10 @@ class DemoJobCreation @Inject()(demoJob: DemoJobProcess // each JobProcess is in
   def createJobActor(jobConfig: JobConfig): ActorRef =
     if (jobConfig.subWebPath.isBlank)
       jobConfig.jobIdent match {
-    case "demoJob" => demoJobRef
-    case "demoJobWithDefaultScheduler" => demoJobWithDefaultSchedulerRef
-    case "demoJobWithoutScheduler" => demoJobWithoutSchedulerRef
-    case other => throw ServiceException(s"There is no Job for $other")
+        case x if x == demoJobIdent => demoJobRef
+        case x if x == demoJobWithDefaultSchedulerIdent => demoJobWithDefaultSchedulerRef
+        case x if x == demoJobWithoutSchedulerIdent => demoJobWithoutSchedulerRef
+        case other => throw ServiceException(s"There is no Job for $other")
       } else {
       actorSystem.actorOf(JobActor.props(jobConfig, demoJob))
     }

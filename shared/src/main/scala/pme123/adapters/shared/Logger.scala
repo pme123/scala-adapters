@@ -35,9 +35,13 @@ trait Logger {
 
   def error(msg: String, detail: Option[String] = None): LogEntry = LogEntry(ERROR, msg, detail).log()
 
-  def error(exc: Throwable, msg: String): LogEntry = LogEntry(ERROR, msg, Some(exceptionToString(exc))).log()
+  def error(exc: Throwable): LogEntry = error(exc, exc.getMessage).log()
 
-  def error(exc: Throwable): LogEntry = LogEntry(ERROR, exc.getMessage, Some(exceptionToString(exc))).log()
+  def error(exc: Throwable, msg: String): LogEntry = {
+    // log the whole stack / return only a concise stack
+    ERROR.log(exc: Throwable, msg: String)
+    LogEntry(ERROR, msg, Some(exceptionToString(exc)))
+  }
 
   def exceptionToString(exc: Throwable): String = {
     def inner(throwable: Throwable, last: Throwable): String =
@@ -50,7 +54,6 @@ trait Logger {
 
     inner(exc, null)
   }
-
 
   def startLog(msg: String): Instant = {
     val dateTime = Instant.now
@@ -182,6 +185,10 @@ object LogLevel {
 
     def log(msg: String) {
       logger.error(msg)
+    }
+
+    def log(exc:Throwable, msg: String) {
+      logger.error(msg, exc)
     }
 
     override def checkEnabled(): Boolean = logger.underlying.isErrorEnabled
