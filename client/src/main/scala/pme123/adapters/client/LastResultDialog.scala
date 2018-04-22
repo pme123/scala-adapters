@@ -5,9 +5,8 @@ import com.thoughtworks.binding.{Binding, dom}
 import org.scalajs.dom.raw.HTMLElement
 import play.api.libs.json.JsValue
 
-private[client] case class LastResultDialog(uiState: UIState)
-  extends UIStore
-    with IntellijImplicits {
+private[client] case class LastResultDialog()
+  extends ClientUtils {
 
   // 1. level of abstraction
   // **************************
@@ -28,7 +27,7 @@ private[client] case class LastResultDialog(uiState: UIState)
 
   @dom
   private def resultsTable = {
-    val lastResults = uiState.lastResults.bind
+    val lastResults = UIStore.uiState.lastResults.bind
     <div class="content">
       <table class="ui padded table">
         <thead>

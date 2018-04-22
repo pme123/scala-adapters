@@ -2,16 +2,15 @@ package pme123.adapters.client.demo
 
 import com.thoughtworks.binding.Binding.Vars
 import play.api.libs.json._
+import pme123.adapters.client.ToConcreteResults
 import pme123.adapters.client.ToConcreteResults.ConcreteResult
-import pme123.adapters.client.{ToConcreteResults, UIStore}
 import pme123.adapters.shared.demo.DemoResult
 
 import scala.language.implicitConversions
 
-trait DemoUIStore
-  extends UIStore {
+object DemoUIStore {
 
-  protected def demoUIState: DemoUIState
+  val demoUIState = DemoUIState()
 
   // type class instance for ImageElem
   implicit object concreteResultForImageElem extends ConcreteResult[ImageElem] {

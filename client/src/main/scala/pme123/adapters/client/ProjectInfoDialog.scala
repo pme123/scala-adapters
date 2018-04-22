@@ -5,9 +5,8 @@ import com.thoughtworks.binding.{Binding, dom}
 import org.scalajs.dom.raw.HTMLElement
 import pme123.adapters.shared.{AdaptersContextProp, ProjectInfo}
 
-private[client] case class ProjectInfoDialog(projectInfo: ProjectInfo, uiState: UIState)
-  extends UIStore
-    with ClientUtils {
+private[client] case class ProjectInfoDialog(projectInfo: ProjectInfo)
+  extends ClientUtils {
 
   // 1. level of abstraction
   // **************************

@@ -7,116 +7,116 @@ import pme123.adapters.shared._
 import scala.language.implicitConversions
 import scala.reflect.ClassTag
 
-trait UIStore extends Logger {
-  protected def uiState: UIState
+object UIStore extends Logger {
+  val uiState = UIState()
 
-  protected def clearLogData() {
+  def clearLogData() {
     info("UIStore: clearLogData")
     uiState.logData.value.clear()
   }
 
-  protected def addLogReport(logReport: LogReport) {
+  def addLogReport(logReport: LogReport) {
     info(s"UIStore: addLogReport")
     uiState.logData.value ++= logReport.logEntries
   }
 
-  protected def addLogEntry(logEntry: LogEntry) {
+  def addLogEntry(logEntry: LogEntry) {
     info(s"UIStore: addLogEntry ${logEntry.level}: ${logEntry.msg}")
     uiState.logData.value += logEntry
   }
 
-  protected def changeFilterText(text: String) {
+  def changeFilterText(text: String) {
     info(s"UIStore: changeFilterText $text")
     uiState.filterText.value = text
   }
 
-  protected def changeFilterLevel(logLevel: LogLevel) {
+  def changeFilterLevel(logLevel: LogLevel) {
     info(s"UIStore: changeFilterLevel $logLevel")
     uiState.filterLevel.value = logLevel
   }
 
-  protected def changeIsRunning(running: Boolean) {
+  def changeIsRunning(running: Boolean) {
     info(s"UIStore: changeIsRunning $running")
     uiState.isRunning.value = running
   }
 
-  protected def changeLastLogLevel(report: LogReport) {
+  def changeLastLogLevel(report: LogReport) {
     info(s"UIStore: changeLastLogLevel ${report.maxLevel()}")
     uiState.lastLogLevel.value = Some(report.maxLevel())
   }
 
-  protected def changeLogEntryDetail(detail: Option[LogEntry] = None) {
+  def changeLogEntryDetail(detail: Option[LogEntry] = None) {
     info(s"UIStore: changeLogEntryDetail ${detail.map(_.msg)}")
     hideAllDialogs()
     uiState.logEntryDetail.value = detail
   }
 
-  protected def changeProjectInfo(adapterInfo: ProjectInfo) {
+  def changeProjectInfo(adapterInfo: ProjectInfo) {
     info(s"UIStore: change ProjectInfo")
     uiState.adapterInfo.value = Some(adapterInfo)
   }
 
-  protected def showProjectInfo() {
+  def showProjectInfo() {
     info(s"UIStore: show ProjectInfo")
     hideAllDialogs()
     uiState.showProjectInfo.value = true
   }
 
-  protected def showJobs() {
+  def showJobs() {
     info(s"UIStore: showJobs")
     hideAllDialogs()
     uiState.showJobs.value = true
   }
 
-  protected def showClients() {
+  def showClients() {
     info(s"UIStore: showClients")
     hideAllDialogs()
     uiState.showClients.value = true
   }
 
-  protected def showLastResults() {
+  def showLastResults() {
     info(s"UIStore: showLastResults")
     hideAllDialogs()
     uiState.showLastResults.value = true
   }
 
-  protected def hideProjectInfo() {
+  def hideProjectInfo() {
     info(s"UIStore: hide ProjectInfo")
     uiState.showProjectInfo.value = false
   }
 
-  protected def changeJobConfigs(jobConfigs: Seq[JobConfig]): Unit = {
+  def changeJobConfigs(jobConfigs: Seq[JobConfig]): Unit = {
     info(s"UIStore: changeJobConfigs ${jobConfigs.map(_.jobIdent).mkString(", ")}")
     uiState.allJobs.value.clear()
     uiState.allJobs.value ++= jobConfigs
   }
 
-  protected def changeSelectedClientConfig(clientConfig: Option[ClientConfig]): Unit = {
+  def changeSelectedClientConfig(clientConfig: Option[ClientConfig]): Unit = {
     info(s"UIStore: changeSelectedClientConfig ${clientConfig.map(_.jobConfig.jobIdent)}")
     uiState.selectedClientConfig.value = clientConfig
   }
 
-  protected def replaceLastResults(lastResults: Seq[JsValue], append: Boolean) {
+  def replaceLastResults(lastResults: Seq[JsValue], append: Boolean) {
     info(s"UIStore: replaceLastResults")
     if (!append)
       uiState.lastResults.value.clear()
     uiState.lastResults.value ++= lastResults
   }
 
-  protected def replaceLastResult(lastResult: JsValue, append: Boolean) {
+  def replaceLastResult(lastResult: JsValue, append: Boolean) {
     info(s"UIStore: addLastResult: $lastResult")
     if (!append)
       uiState.lastResults.value.clear()
     uiState.lastResults.value += lastResult
   }
 
-  protected def replaceAllClients(clientConfigs: Seq[ClientConfig]) {
+  def replaceAllClients(clientConfigs: Seq[ClientConfig]) {
     info(s"UIStore: replaceAllClients")
     uiState.allClients.value.clear()
     uiState.allClients.value ++= clientConfigs
   }
 
-  protected def changeResultCount(countStr: String) {
+  def changeResultCount(countStr: String) {
     info(s"UIStore: changeResultCount $countStr")
     val clientConfig = uiState.selectedClientConfig.value
     uiState.selectedClientConfig.value =
@@ -125,7 +125,7 @@ trait UIStore extends Logger {
           if (countStr.trim.isEmpty) ClientConfig.defaultResultCount else countStr.toInt))
   }
 
-  protected def changeResultFilter(filterStr: String) {
+  def changeResultFilter(filterStr: String) {
     info(s"UIStore: changeResultFilter $filterStr")
     val newFilter = if (filterStr.trim.isEmpty) None else Some(filterStr)
     val clientConfig = uiState.selectedClientConfig.value

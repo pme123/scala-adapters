@@ -8,9 +8,8 @@ import pme123.adapters.shared.{AdapterMsg, RunJob, RunStarted, _}
 
 import scala.scalajs.js.timers.setTimeout
 
-case class ClientWebsocket(uiState: UIState
-                           , context: String)
-  extends UIStore {
+case class ClientWebsocket(context: String)
+  extends ClientUtils {
 
   private lazy val wsURL = s"${window.location.protocol.replace("http", "ws")}//${window.location.host}$context/ws"
 
@@ -30,29 +29,29 @@ case class ClientWebsocket(uiState: UIState
           val message = Json.parse(e.data.toString)
           message.validate[AdapterMsg] match {
             case JsSuccess(AdapterRunning(logReport), _) =>
-              changeIsRunning(true)
-              addLogReport(logReport)
+              UIStore.changeIsRunning(true)
+              UIStore.addLogReport(logReport)
             case JsSuccess(AdapterNotRunning(logReport), _) =>
-              changeIsRunning(false)
+              UIStore.changeIsRunning(false)
               logReport.foreach { lr =>
-                changeLastLogLevel(lr)
-                addLogReport(lr)
+                UIStore.changeLastLogLevel(lr)
+                UIStore.addLogReport(lr)
               }
             case JsSuccess(LogEntryMsg(le), _) =>
-              addLogEntry(le)
+              UIStore.addLogEntry(le)
             case JsSuccess(RunStarted, _) =>
-              changeIsRunning(true)
+              UIStore.changeIsRunning(true)
             case JsSuccess(RunFinished(logReport), _) =>
-              changeIsRunning(false)
-              changeLastLogLevel(logReport)
+              UIStore.changeIsRunning(false)
+              UIStore.changeLastLogLevel(logReport)
             case JsSuccess(adapterInfo: ProjectInfo, _) =>
-              changeProjectInfo(adapterInfo)
+              UIStore.changeProjectInfo(adapterInfo)
             case JsSuccess(ClientConfigMsg(clientConfig), _) =>
-              changeSelectedClientConfig(Some(clientConfig))
+              UIStore.changeSelectedClientConfig(Some(clientConfig))
             case JsSuccess(GenericResult(payload, append), _) =>
-              replaceLastResult(payload, append)
+              UIStore.replaceLastResult(payload, append)
             case JsSuccess(GenericResults(payload, append), _) =>
-              replaceLastResults(payload,append)
+              UIStore.replaceLastResults(payload,append)
             case JsSuccess(other, _) =>
               info(s"Other message: $other")
             case JsError(errors) =>
@@ -65,7 +64,7 @@ case class ClientWebsocket(uiState: UIState
       }
       socket.onopen = { (_: Event) =>
         info("websocket open!")
-        clearLogData()
+        UIStore.clearLogData()
       }
       socket.onclose = { (e: CloseEvent) =>
         info("closed socket" + e.reason)

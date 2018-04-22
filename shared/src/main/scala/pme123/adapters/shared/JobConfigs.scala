@@ -6,7 +6,8 @@ import pme123.adapters.shared.JobConfig.JobIdent
 
 case class JobConfig(jobIdent: JobIdent
                      , jobSchedule: Option[ScheduleConfig] = None
-                     , subWebPath: String = "") {
+                     , subWebPath: String = ""
+                    ) {
 
   def webPath: String = s"/$jobIdent$subWebPath"
 }
@@ -22,6 +23,4 @@ case class ScheduleConfig(firstTime: String, intervalInMin: Int, firstWeekDay: O
 
 object ScheduleConfig {
   implicit val jsonFormat: OFormat[ScheduleConfig] = derived.oformat[ScheduleConfig]()
-
-
 }

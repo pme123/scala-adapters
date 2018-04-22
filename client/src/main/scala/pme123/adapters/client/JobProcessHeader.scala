@@ -13,10 +13,8 @@ import scala.scalajs.js.timers.setTimeout
 
 private[client] case class JobProcessHeader(context: String
                                             , websocketPath: String
-                                            , uiState: UIState
                                             , socket: ClientWebsocket)
-  extends UIStore
-    with ClientUtils {
+  extends ClientUtils {
 
   // 1. level of abstraction
   // **************************
@@ -44,14 +42,14 @@ private[client] case class JobProcessHeader(context: String
 
   @dom
   private def title = {
-    val clientConfig = uiState.selectedClientConfig.bind
+    val clientConfig = UIStore.uiState.selectedClientConfig.bind
     <div class="ui header item">
       {s"Job Cockpit: ${clientConfig.map(_.jobConfig.jobIdent).getOrElse("")}"}
     </div>
   }
   @dom
   private def lastLevel = {
-    val logLevel = uiState.lastLogLevel.bind
+    val logLevel = UIStore.uiState.lastLogLevel.bind
 
     @dom
     def logImage(levelClass: String): Binding[HTMLElement] =
@@ -87,7 +85,7 @@ private[client] case class JobProcessHeader(context: String
                type="text"
                placeholder="Filter..."
                onkeyup={_: Event =>
-                 changeFilterText(s"${filterInput.value}")}>
+                 UIStore.changeFilterText(s"${filterInput.value}")}>
         </input>
       </div>
     </div>
@@ -105,7 +103,7 @@ private[client] case class JobProcessHeader(context: String
         <select id="filterSelect"
                 class="ui compact dropdown"
                 onchange={_: Event =>
-                  changeFilterLevel(LogLevel.fromLevel(s"${filterSelect.value}").get)}>
+                  UIStore.changeFilterLevel(LogLevel.fromLevel(s"${filterSelect.value}").get)}>
           <option value="ERROR">ERROR</option>
           <option value="WARN">WARN</option>
           <option value="INFO" selected={true}>INFO</option>
@@ -117,7 +115,7 @@ private[client] case class JobProcessHeader(context: String
 
   @dom
   private def runAdapterButton = {
-    val runDisabled = uiState.isRunning.bind
+    val runDisabled = UIStore.uiState.isRunning.bind
 
     <div class="ui item">
       <button class="ui basic icon button"
@@ -135,7 +133,7 @@ private[client] case class JobProcessHeader(context: String
     <div class="ui item">
       <button class="ui basic icon button"
               onclick={_: Event =>
-                showJobs()
+                UIStore.showJobs()
                 setTimeout(200) {
                   jQuery(".ui.modal").modal("show")
                 }}
@@ -151,7 +149,7 @@ private[client] case class JobProcessHeader(context: String
     <div class="ui item">
       <button class="ui basic icon button"
               onclick={_: Event =>
-                showClients()
+                UIStore.showClients()
                 setTimeout(200) {
                   jQuery(".ui.modal").modal("show")
                 }}
@@ -167,7 +165,7 @@ private[client] case class JobProcessHeader(context: String
     <div class="ui item">
       <button class="ui basic icon button"
               onclick={_: Event =>
-                showLastResults()
+                UIStore.showLastResults()
                 setTimeout(200) {
                   jQuery(".ui.modal").modal("show")
                 }}
@@ -182,7 +180,7 @@ private[client] case class JobProcessHeader(context: String
   private def clearButton = {
     <div class="ui item">
       <button class="ui basic icon button"
-              onclick={_: Event => clearLogData()}
+              onclick={_: Event => UIStore.clearLogData()}
               data:data-tooltip="Clear the console"
               data:data-position="bottom right">
         <i class="remove circle outline icon large"></i>
@@ -195,7 +193,7 @@ private[client] case class JobProcessHeader(context: String
     <div class="ui item">
       <button class="ui basic icon button"
               onclick={_: Event =>
-                showProjectInfo()
+                UIStore.showProjectInfo()
                 setTimeout(200) {
                   jQuery(".ui.modal").modal("show")
                 }}

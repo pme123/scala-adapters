@@ -10,6 +10,9 @@ Check the documentation: **[pme123.github.io/scala-adapters/](https://pme123.git
 
 ## Documentation
 
+Run Demo app locally:
+`sbt run -Dconfig.file=./server/conf/demo.conf`
+
 Run Jekyll locally for working on the docs:
 
 `cd PROJECT_DIR/docs` 

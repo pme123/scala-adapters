@@ -12,13 +12,13 @@ import scala.scalajs.js.timers.setTimeout
 case class JobProcessView(context: String, websocketPath: String)
   extends AdaptersClient {
 
-  private lazy val socket = ClientWebsocket(uiState, context)
+  private lazy val socket = ClientWebsocket(context)
 
   @dom
   protected def render: Binding[HTMLElement] = {
     socket.connectWS(Some(websocketPath))
     <div>
-      {JobProcessHeader(context, websocketPath, uiState, socket).showHeader().bind}{//
+      {JobProcessHeader(context, websocketPath, socket).showHeader().bind}{//
       adapterContainer.bind}{//
       renderDetail.bind}{//
       renderLogEntryDetail.bind}{//
@@ -31,9 +31,9 @@ case class JobProcessView(context: String, websocketPath: String)
 
   @dom
   private lazy val adapterContainer = {
-    val logEntries = uiState.logData.bind
-    val text = uiState.filterText.bind
-    val level = uiState.filterLevel.bind
+    val logEntries = UIStore.uiState.logData.bind
+    val text = UIStore.uiState.filterText.bind
+    val level = UIStore.uiState.filterLevel.bind
     val filteredLE =
       logEntries
         .filter(le => le.level >= level)
@@ -66,7 +66,7 @@ case class JobProcessView(context: String, websocketPath: String)
     <div class="right floated content">
       <button class="ui basic icon button"
               onclick={_: Event =>
-                changeLogEntryDetail(Some(detail))
+                UIStore.changeLogEntryDetail(Some(detail))
                 setTimeout(200) {
                   import SemanticUI.jq2semantic
                   jQuery(".ui.modal").modal("show")
@@ -79,11 +79,11 @@ case class JobProcessView(context: String, websocketPath: String)
 
   @dom
   private def renderDetail = {
-    val show = uiState.showProjectInfo.bind
-    val adapterInfo = uiState.adapterInfo.bind
+    val show = UIStore.uiState.showProjectInfo.bind
+    val adapterInfo = UIStore.uiState.adapterInfo.bind
     if (show)
       <div>
-        {Constants(adapterInfo.toSeq: _*).map(ai => ProjectInfoDialog(ai, uiState).showDetail().bind)}
+        {Constants(adapterInfo.toSeq: _*).map(ai => ProjectInfoDialog(ai).showDetail().bind)}
       </div>
     else
       <div></div>
@@ -91,11 +91,11 @@ case class JobProcessView(context: String, websocketPath: String)
 
   @dom
   private def renderLogEntryDetail = {
-    val leDetail = uiState.logEntryDetail.bind
+    val leDetail = UIStore.uiState.logEntryDetail.bind
 
     if (leDetail.isDefined)
       <div>
-        {Constants(leDetail.toSeq: _*).map(d => LogEntryDetailDialog(d, uiState).showDetail().bind)}
+        {Constants(leDetail.toSeq: _*).map(d => LogEntryDetailDialog(d).showDetail().bind)}
       </div>
     else
       <div></div>
@@ -103,10 +103,10 @@ case class JobProcessView(context: String, websocketPath: String)
 
   @dom
   private def renderJobConfigsDetail = {
-    val showJobs = uiState.showJobs.bind
+    val showJobs = UIStore.uiState.showJobs.bind
     if (showJobs)
       <div>
-        {JobConfigDialog(uiState, context)
+        {JobConfigDialog(context)
         .showDetail().bind}
       </div>
     else
@@ -115,11 +115,11 @@ case class JobProcessView(context: String, websocketPath: String)
 
   @dom
   private def renderClientConfigsDetail = {
-    val showClients = uiState.showClients.bind
-    val selectedClientConfig = uiState.selectedClientConfig.bind
+    val showClients = UIStore.uiState.showClients.bind
+    val selectedClientConfig = UIStore.uiState.selectedClientConfig.bind
     if (showClients && selectedClientConfig.isDefined)
       <div>
-        {ClientConfigDialog(uiState, context)
+        {ClientConfigDialog(context)
         .showDetail().bind}
       </div>
     else
@@ -128,11 +128,11 @@ case class JobProcessView(context: String, websocketPath: String)
 
   @dom
   private def renderLastResultsDetail = {
-    val showLastResults = uiState.showLastResults.bind
-    val selectedJobConfig = uiState.selectedClientConfig.bind
+    val showLastResults = UIStore.uiState.showLastResults.bind
+    val selectedJobConfig = UIStore.uiState.selectedClientConfig.bind
     if (showLastResults && selectedJobConfig.isDefined)
       <div>
-        {LastResultDialog(uiState)
+        {LastResultDialog()
         .showDetail().bind}
       </div>
     else

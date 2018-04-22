@@ -21,9 +21,9 @@ case class JobResultsView(context: String
                           , resultsInfos: CustomResultsInfos)
                          (implicit concreteResult: ConcreteResult[JobResultsRow])
   extends AdaptersClient
-    with UIStore {
+    with ClientUtils {
 
-  lazy val socket: ClientWebsocket = ClientWebsocket(uiState, context)
+  lazy val socket: ClientWebsocket = ClientWebsocket(context)
 
   // 1. level of abstraction
   // **************************
@@ -61,8 +61,8 @@ case class JobResultsView(context: String
 
   @dom
   private def resultsTable = {
-    val lastResults = uiState.lastResults.bind
-    toConcreteResults(uiState.jobResultsRows, lastResults)
+    val lastResults = UIStore.uiState.lastResults.bind
+    toConcreteResults(UIStore.uiState.jobResultsRows, lastResults)
     <div class="ui main container">
         <table class="ui padded table">
         <thead>
@@ -72,7 +72,7 @@ case class JobResultsView(context: String
           </tr>
         </thead>
         <tbody>
-          {Constants(uiState.jobResultsRows.value.map(_.resultRow): _*)
+          {Constants(UIStore.uiState.jobResultsRows.value.map(_.resultRow): _*)
           .map(_.bind)}
         </tbody>
       </table>
@@ -84,7 +84,7 @@ case class JobResultsView(context: String
 
   @dom
   private def headerTitle = {
-    val clientConfig = uiState.selectedClientConfig.bind
+    val clientConfig = UIStore.uiState.selectedClientConfig.bind
     <div class="ui header item">
       {s"Last Result (as raw JSON): ${clientConfig.map(_.jobConfig.webPath).getOrElse("")}"}
     </div>
@@ -101,7 +101,7 @@ case class JobResultsView(context: String
                placeholder="Results..."
                size={3}
                onchange={_: Event =>
-                 changeResultCount(s"${resultCountInput.value}")}>
+                 UIStore.changeResultCount(s"${resultCountInput.value}")}>
         </input>
       </div>
     </div>
@@ -118,7 +118,7 @@ case class JobResultsView(context: String
                size={45}
                placeholder="Filter Results..."
                onkeyup={_: Event =>
-                 changeResultFilter(s"${filterInput.value}")}>
+                 UIStore.changeResultFilter(s"${filterInput.value}")}>
         </input>
       </div>
     </div>
@@ -129,7 +129,7 @@ case class JobResultsView(context: String
     <div class="ui item">
       <button class="ui basic icon button"
               onclick={_: Event =>
-                connectToWebsocket(uiState.selectedClientConfig.value)}
+                connectToWebsocket(UIStore.uiState.selectedClientConfig.value)}
               data:data-tooltip="Reconnect the WebSocket (new filter)"
               data:data-position="bottom right">
         <i class="refresh icon large"></i>

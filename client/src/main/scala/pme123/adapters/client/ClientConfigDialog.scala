@@ -4,18 +4,17 @@ import com.thoughtworks.binding.Binding.Constants
 import com.thoughtworks.binding.{Binding, dom}
 import org.scalajs.dom.raw.HTMLElement
 import pme123.adapters.shared.ClientConfig
+import UIStore._
 
-private[client] case class ClientConfigDialog(uiState: UIState
-                                              , context: String)
-  extends UIStore
-    with IntellijImplicits {
+private[client] case class ClientConfigDialog(context: String)
+  extends IntellijImplicits {
 
   // 1. level of abstraction
   // **************************
   @dom
   private[client] def showDetail(): Binding[HTMLElement] =
     <div class="ui modal">
-      {ServerServices(uiState, context).clientConfigs().bind}{//
+      {ServerServices(context).clientConfigs().bind}{//
       detailHeader.bind}{//
       clientsTable.bind}
     </div>

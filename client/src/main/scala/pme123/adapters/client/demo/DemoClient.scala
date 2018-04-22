@@ -14,14 +14,10 @@ import scala.language.implicitConversions
 import scala.scalajs.js.annotation.JSExportTopLevel
 
 case class DemoClient(context: String, websocketPath: String)
-  extends AdaptersClient
-    with DemoUIStore {
-
-  // init the custom UIState
-  val demoUIState = DemoUIState()
+  extends AdaptersClient {
 
   // create the websocket
-  private lazy val socket = ClientWebsocket(uiState, context)
+  private lazy val socket = ClientWebsocket(context)
 
   @dom
   protected def render: Binding[HTMLElement] = {
@@ -35,8 +31,8 @@ case class DemoClient(context: String, websocketPath: String)
   // **************************
   @dom
   private def imageContainer = {
-    val lastResults = uiState.lastResults.bind
-    val imageElems = updateImageElems(lastResults)
+    val lastResults = UIStore.uiState.lastResults.bind
+    val imageElems = DemoUIStore.updateImageElems(lastResults)
     <div>
       {Constants(imageElems: _*)
       .map(_.imageElement.bind)}

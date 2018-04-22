@@ -5,17 +5,15 @@ import com.thoughtworks.binding.{Binding, dom}
 import org.scalajs.dom.raw.HTMLElement
 import pme123.adapters.shared.JobConfig
 
-private[client] case class JobConfigDialog(uiState: UIState
-                                           , context: String)
-  extends UIStore
-    with IntellijImplicits {
+private[client] case class JobConfigDialog(context: String)
+  extends ClientUtils {
 
   // 1. level of abstraction
   // **************************
   @dom
   private[client] def showDetail(): Binding[HTMLElement] =
     <div class="ui modal">
-      {ServerServices(uiState, context).jobConfigs().bind}{//
+      {ServerServices(context).jobConfigs().bind}{//
       detailHeader.bind}{//
       jobsTable.bind}
     </div>
@@ -30,7 +28,7 @@ private[client] case class JobConfigDialog(uiState: UIState
 
   @dom
   private def jobsTable = {
-    val jobs = uiState.allJobs.bind
+    val jobs = UIStore.uiState.allJobs.bind
     <div class="content">
       <table class="ui padded table">
         <thead>

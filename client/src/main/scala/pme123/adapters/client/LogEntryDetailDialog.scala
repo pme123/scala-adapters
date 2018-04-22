@@ -5,9 +5,8 @@ import com.thoughtworks.binding.{Binding, dom}
 import org.scalajs.dom.raw.HTMLElement
 import pme123.adapters.shared._
 
-private[client] case class LogEntryDetailDialog(logEntry: LogEntry, uiState: UIState)
-  extends UIStore
-    with ClientUtils {
+private[client] case class LogEntryDetailDialog(logEntry: LogEntry)
+  extends ClientUtils {
 
   // 1. level of abstraction
   // **************************

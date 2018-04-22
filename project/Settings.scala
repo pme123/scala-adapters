@@ -23,7 +23,7 @@ object Settings {
   lazy val scalaV = "2.12.4"
   lazy val bindingV = "11.0.1"
   lazy val jQueryV = "2.2.4"
-  lazy val sloggingV = "0.6.0"
+  lazy val sloggingV = "0.6.1"
   lazy val semanticV = "2.3.1"
   lazy val scalaTestV = "3.0.4"
 
