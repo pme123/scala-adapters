@@ -20,4 +20,5 @@ For an example - see [scala-adapters-example](scala-adapters-example)
       
 ## Further Reading
 {% include pages-list.md %}
+{% include posts-list.md %}
 {% include web-links.md %}

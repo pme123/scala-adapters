@@ -12,6 +12,8 @@
 [Semantic]: https://semantic-ui.com
 [Shapeless]: http://github.com/milessabin/shapeless
 [SLog]: https://github.com/jokade/slogging
+[Redux-intro]: http://www.gistia.com/beginners-guide-redux/
+
 
 {::comment} Images {:/comment}
 
