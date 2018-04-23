@@ -117,7 +117,10 @@ private[client] case class JobProcessHeader(socket: ClientWebsocket)
 
     <div class="ui item">
       <button class="ui basic icon button"
-              onclick={_: Event => UIStore.showRunJobDialog()}
+              onclick={_: Event => UIStore.showRunJobDialog()
+                setTimeout(200) {
+                  jQuery(".ui.modal").modal("show")
+                }}
               disabled={runDisabled}
               data:data-tooltip="Run the Adapter"
               data:data-position="bottom right">

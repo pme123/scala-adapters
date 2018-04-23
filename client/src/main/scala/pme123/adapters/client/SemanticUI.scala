@@ -19,6 +19,8 @@ object SemanticUI {
     def popup(params: js.Any*): SemanticJQuery = js.native
     def modal(params: js.Any*): SemanticJQuery = js.native
     def checkbox(params: js.Any*): SemanticJQuery = js.native
+    def form(params: js.Any*): SemanticJQuery = js.native
+
   }
 
   // Monkey patching JQuery with implicit conversion
@@ -30,5 +32,19 @@ object SemanticUI {
     case INFO => "blue info circle icon"
     case DEBUG => "grey info circle icon"
 
+  }
+
+  trait Form extends js.Object {
+    def fields: js.Object
+  }
+
+  trait Field extends js.Object {
+    def identifier: String
+    def rules: js.Array[Rule]
+  }
+
+  trait Rule extends js.Object {
+    def `type`: String
+    def prompt: js.UndefOr[String] = js.undefined
   }
 }
