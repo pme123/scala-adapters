@@ -15,7 +15,7 @@ title                    : "Scala Adapters"
 title_separator          : "-"
 name                     : &name "Pascal Mengelt" # &name is a YAML anchor which can be *referenced later
 description              : &description "A simple framework to implement batch jobs - provides standard UI-clients to monitor and test them."
-url                      : https://pme123.github.io # the base hostname & protocol for your site e.g. "https://pme123.github.io"
+url                      : https://github.com/pme123 # the base hostname & protocol for your site e.g. "https://pme123.github.io"
 baseurl                  : "/scala-adapters" # the subpath of your site, e.g. "/blog"
 repository               : "pme123/scala-adapters"
 teaser                   : # path of fallback teaser image, e.g. "/assets/images/500x300.png"
@@ -39,7 +39,7 @@ staticman:
   format                 : # "yml"
   moderation             : # true
   path                   : # "_data/comments/{options.slug}"
-  requiredFields         : ['name', 'message']
+  requiredFields         : # ['name', 'email', 'message']
   transforms:
     email                : # "md5"
   generatedFields:
