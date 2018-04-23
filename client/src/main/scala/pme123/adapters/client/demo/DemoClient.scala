@@ -45,7 +45,6 @@ object DemoClient
     with Logger {
 
   LoggerConfig.factory = ConsoleLoggerFactory()
-
   // @JSExportTopLevel exposes this function with the defined name in Javascript.
   // this is called by the index.scala.html of the server.
   // the only connection that is not type-safe!
@@ -56,7 +55,8 @@ object DemoClient
       case CUSTOM_PAGE =>
         DemoClient(context, websocketPath).create()
       case JOB_PROCESS =>
-        JobProcessView(context, websocketPath).create()
+        val socket = ClientWebsocket(context)
+        JobProcessView(socket, context, websocketPath, DefaultRunJobDialog(socket)).create()
       case JOB_RESULTS =>
         JobResultsView(context
           , websocketPath
