@@ -2,7 +2,7 @@
 title: "Using Redux with Binding.scala"
 categories:
   - development
-excerpt: "My interpretation on how to use the Redux framework with Binding.scala."
+excerpt: "Using Principles and Ideas of Redux with Binding.scala."
 
 tags:
   - binding.scala
