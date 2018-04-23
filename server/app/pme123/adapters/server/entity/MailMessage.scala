@@ -29,16 +29,14 @@ case class MailAttachment(name: String, path: String)
   *
   * @param tls      if tls should be used with the smtp connections
   * @param ssl      if ssl should be used with the smtp connections
-  * @param port     the smtp port
-  * @param host     the smtp host name
-  * @param user     the smtp user
-  * @param password thw smtp password
+  * @param smtpAuth true if there is an authentication needed
   */
 case class SmtpConfig(
-                       tls: Boolean = false,
-                       ssl: Boolean = false,
-                       port: Int = 25,
-                       host: String,
-                       user: String,
-                       password: String
+                       tls: Boolean = false
+                       , ssl: Boolean = false
+                       , port: Int = 25
+                       , smtpAuth: Boolean = false
+                       , host: String
+                       , user: String
+                       , password: String
                      )
