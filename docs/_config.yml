@@ -22,7 +22,7 @@ teaser                   : # path of fallback teaser image, e.g. "/assets/images
 # breadcrumbs            : false # true, false (default)
 words_per_minute         : 200
 comments:
-  provider               : false # false (default), "disqus", "discourse", "facebook", "google-plus", "staticman_v2", "staticman" "custom"
+  provider               : "staticman_v2" # false (default), "disqus", "discourse", "facebook", "google-plus", "staticman_v2", "staticman" "custom"
   disqus:
     shortname            :
   discourse:
@@ -39,7 +39,7 @@ staticman:
   format                 : # "yml"
   moderation             : # true
   path                   : # "_data/comments/{options.slug}"
-  requiredFields         : # ['name', 'email', 'message']
+  requiredFields         : ['name', 'message']
   transforms:
     email                : # "md5"
   generatedFields:
