@@ -17,7 +17,7 @@ name                     : &name "Pascal Mengelt" # &name is a YAML anchor which
 description              : &description "A simple framework to implement batch jobs - provides standard UI-clients to monitor and test them."
 url                      : https://github.com/pme123 # the base hostname & protocol for your site e.g. "https://pme123.github.io"
 baseurl                  : "/scala-adapters" # the subpath of your site, e.g. "/blog"
-repository               : "pme123/scala-adapters"
+repository               : "scala-adapters/pme123.github.io"
 teaser                   : # path of fallback teaser image, e.g. "/assets/images/500x300.png"
 # breadcrumbs            : false # true, false (default)
 words_per_minute         : 200
