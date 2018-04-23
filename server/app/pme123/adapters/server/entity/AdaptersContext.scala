@@ -24,6 +24,7 @@ object AdaptersSettings extends Logger {
 
   val mailHostProp = "mail.host"
   val mailPortProp = "mail.port"
+  val mailSmtpAuthProp = "mail.smtp.auth"
   val mailSmtpTlsProp = "mail.smtp.tls"
   val mailSmtpSslProp = "mail.smtp.ssl"
   val mailUsernameProp = "mail.username"
@@ -71,6 +72,7 @@ class AdaptersSettings(config: Config) extends Logger {
   // mail server
   val mailSmtpTls: Boolean = baseConfig.getBoolean(mailSmtpTlsProp)
   val mailSmtpSsl: Boolean = baseConfig.getBoolean(mailSmtpSslProp)
+  val mailSmtpAuth: Boolean = baseConfig.getBoolean(mailSmtpAuthProp)
   val mailHost: String = baseConfig.getString(mailHostProp)
   val mailPort: Int = baseConfig.getInt(mailPortProp)
   val mailUsername: String = baseConfig.getString(mailUsernameProp)
@@ -79,6 +81,7 @@ class AdaptersSettings(config: Config) extends Logger {
     mailSmtpTls,
     mailSmtpSsl,
     mailPort,
+    mailSmtpAuth,
     mailHost,
     mailUsername,
     mailPassword

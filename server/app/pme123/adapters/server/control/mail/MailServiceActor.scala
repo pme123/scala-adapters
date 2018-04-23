@@ -81,7 +81,7 @@ class MailServiceWorker extends Actor with Logger {
     mail.setSSLOnConnect(mailMessage.smtpConfig.ssl)
     mail.setSmtpPort(mailMessage.smtpConfig.port)
     mail.setHostName(mailMessage.smtpConfig.host)
-    if (null != mailMessage.smtpConfig.user) {
+    if (mailMessage.smtpConfig.smtpAuth) {
       mail.setAuthenticator(new DefaultAuthenticator(
         mailMessage.smtpConfig.user,
         mailMessage.smtpConfig.password
