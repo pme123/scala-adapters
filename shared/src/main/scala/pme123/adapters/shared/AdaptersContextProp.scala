@@ -13,7 +13,15 @@ object AdaptersContextProps {
 
 }
 
-case class AdaptersContextProp(key: String, value: String)
+case class AdaptersContextProp(key: String, value: String) {
+
+  def asString(name: String): String =
+    propString(name)
+
+  def propString(name: String) =
+    s"${name.toUpperCase} '$key' >> $value"
+
+}
 
 object AdaptersContextProp {
   implicit val jsonFormat: OFormat[AdaptersContextProp] = derived.oformat[AdaptersContextProp]()
