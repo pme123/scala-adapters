@@ -6,6 +6,7 @@ import pme123.adapters.shared.LogLevel._
 
 import scala.language.implicitConversions
 import scala.scalajs.js
+import scala.scalajs.js.annotation.ScalaJSDefined
 
 /**
   *
@@ -34,15 +35,18 @@ object SemanticUI {
 
   }
 
+  @ScalaJSDefined
   trait Form extends js.Object {
     def fields: js.Object
   }
 
+  @ScalaJSDefined
   trait Field extends js.Object {
     def identifier: String
     def rules: js.Array[Rule]
   }
 
+  @ScalaJSDefined
   trait Rule extends js.Object {
     def `type`: String
     def prompt: js.UndefOr[String] = js.undefined

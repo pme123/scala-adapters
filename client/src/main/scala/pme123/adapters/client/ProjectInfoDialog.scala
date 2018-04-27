@@ -12,13 +12,13 @@ private[client] case class ProjectInfoDialog(projectInfo: ProjectInfo)
   // **************************
   @dom
   private[client] def showDetail(): Binding[HTMLElement] =
-    <div class="ui modal">
+    <div class="ui modal detailDialog">
       {detailHeader.bind}{//
       infoList.bind}{//
       versionList.bind}{//
       propTable("Project Properties", projectInfo.adapterProps).bind}{//
       propTable("Common Properties", projectInfo.commonProps).bind}
-    </div>
+      </div>
 
   // 2. level of abstraction
   // **************************

@@ -17,7 +17,7 @@ object DemoUIStore {
 
     override def fromJson(lastResult: JsValue): JsResult[ImageElem] =
       Json.fromJson[DemoResult](lastResult)
-        .map(ImageElem)
+        .map(dr => ImageElem(dr))
   }
 
   def updateImageElems(lastResults: Seq[JsValue]): Seq[ImageElem] = {

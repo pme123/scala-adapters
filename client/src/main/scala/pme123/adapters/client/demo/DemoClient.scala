@@ -77,7 +77,7 @@ object DemoClient
     override def fromJson(lastResult: JsValue): JsResult[JobResultsRow] =
       Json.fromJson[DemoResult](lastResult)
         .map(dr => JobResultsRow(
-          Seq(td(dr.name), tdImg(dr.imgUrl), tdDateTime(dr.created))))
+          Seq(td(dr.name), tdImg(ImageElem.urlFromImg(dr.img)), tdDateTime(dr.created))))
   }
 
 

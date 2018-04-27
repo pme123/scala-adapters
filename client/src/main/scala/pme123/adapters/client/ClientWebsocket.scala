@@ -3,7 +3,7 @@ package pme123.adapters.client
 import com.thoughtworks.binding.Binding.Var
 import org.scalajs.dom.raw._
 import org.scalajs.dom.window
-import play.api.libs.json.{JsError, JsSuccess, Json}
+import play.api.libs.json.{JsError, JsSuccess, JsValue, Json}
 import pme123.adapters.shared.{AdapterMsg, RunJob, RunStarted, _}
 
 import scala.scalajs.js.timers.setTimeout
@@ -78,9 +78,13 @@ case class ClientWebsocket(context: String)
   }
 
   def runAdapter() {
+    runAdapter(None)
+  }
+
+  def runAdapter(payload: Option[JsValue]) {
     info("run Adapter")
     webSocket.value
-      .foreach(_.send(Json.toJson(RunJob())
+      .foreach(_.send(Json.toJson(RunJob(payload = payload))
         .toString()))
   }
 
