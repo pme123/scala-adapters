@@ -48,7 +48,9 @@ class DemoAdapterSettings(config: Config) {
 // settings on startup
 class DemoAdapterContext(val config: Config)
   extends AdaptersContextPropsImplicits {
-import DemoAdapterSettings._
+
+  import DemoAdapterSettings._
+
   val name = "demo"
 
   val settings = new DemoAdapterSettings(config)
