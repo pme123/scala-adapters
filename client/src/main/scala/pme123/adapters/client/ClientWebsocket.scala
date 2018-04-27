@@ -25,7 +25,7 @@ case class ClientWebsocket(context: String)
       webSocket.value = Some(socket)
       info(s"Connect to Websocket: $path")
       socket.onmessage = {
-        (e: MessageEvent) =>
+        e: MessageEvent =>
           val message = Json.parse(e.data.toString)
           message.validate[AdapterMsg] match {
             case JsSuccess(AdapterRunning(logReport), _) =>
@@ -58,15 +58,15 @@ case class ClientWebsocket(context: String)
               errors.foreach(e => error(e.toString))
           }
       }
-      socket.onerror = { (e: ErrorEvent) =>
+      socket.onerror = { e: ErrorEvent =>
         error(s"exception with websocket: ${e.message}!")
         socket.close(0, e.message)
       }
-      socket.onopen = { (_: Event) =>
+      socket.onopen = { _: Event =>
         info("websocket open!")
         UIStore.clearLogData()
       }
-      socket.onclose = { (e: CloseEvent) =>
+      socket.onclose = { e: CloseEvent =>
         info("closed socket" + e.reason)
         if (e.code != reconnectWSCode) {
           setTimeout(1000) {

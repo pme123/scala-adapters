@@ -3,12 +3,17 @@ package pme123.adapters.server.control.demo
 import java.time.LocalDateTime
 
 import pme123.adapters.server.entity.ISODateTimeHelper
+import pme123.adapters.server.entity.demo.DemoAdapterContext.settings
+import pme123.adapters.shared.Logger
 import pme123.adapters.shared.demo.DemoResult
 
 import scala.util.Random
 
 object DemoService
-  extends ISODateTimeHelper {
+  extends ISODateTimeHelper
+    with Logger {
+
+  info(s"Demo init $settings")
 
   lazy val results: Seq[DemoResult] =
     for {

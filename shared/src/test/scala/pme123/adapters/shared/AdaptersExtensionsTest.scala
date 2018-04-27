@@ -1,5 +1,8 @@
 package pme123.adapters.shared
 
+import org.scalatest.DoNotDiscover
+
+@DoNotDiscover
 class AdaptersExtensionsTest extends UnitTest {
 import AdaptersExtensions._
 

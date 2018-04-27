@@ -146,9 +146,7 @@ class AdaptersContext(config: Config)
 }
 
 // default Configuration
-object AdaptersContext extends AdaptersContext(config()) {
-  AdaptersContext.logSettings
-}
+object AdaptersContext extends AdaptersContext(config())
 
 // this contains implicit conversions!
 trait AdaptersContextPropsImplicits

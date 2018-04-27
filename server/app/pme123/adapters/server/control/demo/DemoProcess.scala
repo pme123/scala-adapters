@@ -11,7 +11,7 @@ import pme123.adapters.server.control.JobActor.{ClientsChange, LastResult}
 import pme123.adapters.server.control.demo.DemoService.toISODateTimeString
 import pme123.adapters.server.control.{JobProcess, LogService}
 import pme123.adapters.server.entity.JsonParseException
-import pme123.adapters.server.entity.demo.DemoResults
+import pme123.adapters.server.entity.demo.{DemoAdapterContext, DemoAdapterSettings, DemoResults}
 import pme123.adapters.shared.LogLevel.{DEBUG, ERROR, INFO, WARN}
 import pme123.adapters.shared._
 import pme123.adapters.shared.demo.{DemoResult, ImageUpload}
@@ -26,7 +26,9 @@ trait DemoProcess
   def jobLabel: String
 
   def createInfo(): ProjectInfo = // same version as the adapters!
-    createInfo(pme123.adapters.version.BuildInfo.version)
+    createInfo(pme123.adapters.version.BuildInfo.version
+      , AdaptersContextProps(DemoAdapterSettings.configPath, DemoAdapterContext.props)
+    )
 
   def runJob(user: String)
             (implicit logService: LogService, jobActor: ActorRef): Future[LogService] =
@@ -51,7 +53,7 @@ trait DemoProcess
     }
   }
 
-  protected def handleImage(payload: Option[JsValue])(implicit logService: LogService)= {
+  protected def handleImage(payload: Option[JsValue])(implicit logService: LogService): List[DemoResult] = {
     payload.map(p => Json.fromJson[ImageUpload](p) match {
       case JsSuccess(iu, _) => iu
       case JsError(errors) =>
