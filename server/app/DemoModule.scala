@@ -1,9 +1,10 @@
 import com.google.inject.AbstractModule
 import play.api.libs.concurrent.AkkaGuiceSupport
-import pme123.adapters.server.boundary.{AccessControl, NoAccessControl}
+import pme123.adapters.server.boundary.NoAccessControl
 import pme123.adapters.server.control.JobCreation
 import pme123.adapters.server.control.demo.DemoJobCreation
 import pme123.adapters.server.entity.demo.DemoAdapterContext
+import pme123.adapters.shared.AccessControl
 
 class DemoModule extends AbstractModule with AkkaGuiceSupport {
 

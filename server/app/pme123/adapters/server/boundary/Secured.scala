@@ -5,6 +5,7 @@ import play.Environment
 import play.api.Logger
 import play.api.mvc._
 import pme123.adapters.shared
+import pme123.adapters.shared.AccessControl
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -71,9 +72,6 @@ trait Secured {
   }
 
 }
-
-@deprecated("Use pme123.adapters.sharedSharedAccessControl instead")
-trait AccessControl extends shared.AccessControl
 
 // no access control needed
 class NoAccessControl extends AccessControl {
