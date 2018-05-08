@@ -79,7 +79,7 @@ case class DemoRunJobDialog(socket: ClientWebsocket)
                   if (jQuery(".ui.form").form("is valid").asInstanceOf[Boolean]) {
                     import scala.scalajs.js.typedarray.Uint8Array
                     val reader = new FileReader()
-                    reader.readAsText(demoImage.files(0), "UTF-8")
+                    reader.readAsDataURL(demoImage.files(0))
                     reader.onload = (_: UIEvent) => {
                       socket.runAdapter(Some(Json.toJson(ImageUpload(demoDescr.value, s"${reader.result}"))))
                     }
