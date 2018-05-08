@@ -12,13 +12,19 @@ private[client] case class ProjectInfoDialog(projectInfo: ProjectInfo)
   // **************************
   @dom
   private[client] def showDetail(): Binding[HTMLElement] =
-    <div class="ui modal">
+    <div class="ui modal detailDialog">
       {detailHeader.bind}{//
       infoList.bind}{//
       versionList.bind}{//
-      propTable("Project Properties", projectInfo.adapterProps).bind}{//
-      propTable("Common Properties", projectInfo.commonProps).bind}
-    </div>
+      val projectProps = projectInfo.projectProps
+      propTable(s"Project Properties (${projectProps.key})", projectProps.props).bind}{//
+      val adapterProps = projectInfo.adapterProps
+      propTable(s"scala-adapters Properties (${adapterProps.key})", adapterProps.props).bind}{//
+      Constants(
+        projectInfo.additionalProps
+          .map(ap => propTable(s"Additional Properties (${ap.key})", ap.props)): _*)
+        .map(_.bind)}
+      </div>
 
   // 2. level of abstraction
   // **************************

@@ -13,3 +13,17 @@
     max-width: 200px;
     max-height: 200px;
 }
+
+.detailDialog {
+    overflow-y: auto;
+    max-height: calc(100vh - 4em);
+}
+
+.inputFile {
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+}

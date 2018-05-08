@@ -1,6 +1,7 @@
 import com.google.inject.AbstractModule
 import play.api.libs.concurrent.AkkaGuiceSupport
 import pme123.adapters.server.control._
+import pme123.adapters.server.entity.AdaptersContext
 import slogging.{LoggerConfig, SLF4JLoggerFactory}
 
 class AdaptersModule extends AbstractModule with AkkaGuiceSupport {
@@ -18,5 +19,7 @@ class AdaptersModule extends AbstractModule with AkkaGuiceSupport {
 
     bind(classOf[ApplicationInitializer])
       .asEagerSingleton()
+
+    AdaptersContext.logSettings
   }
 }

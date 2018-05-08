@@ -12,7 +12,7 @@ private[client] case class LogEntryDetailDialog(logEntry: LogEntry)
   // **************************
   @dom
   private[client] def showDetail(): Binding[HTMLElement] =
-    <div class="ui modal">
+    <div class="ui modal detailDialog">
       <div class="content">
         {jsLocalDateTime(logEntry.timestamp)}
       </div>{detailHeader.bind}{//

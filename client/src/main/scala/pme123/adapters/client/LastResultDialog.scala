@@ -12,7 +12,7 @@ private[client] case class LastResultDialog()
   // **************************
   @dom
   private[client] def showDetail(): Binding[HTMLElement] =
-    <div class="ui modal">
+    <div class="ui modal detailDialog">
       {detailHeader.bind}{//
       resultsTable.bind}
     </div>

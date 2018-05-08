@@ -11,9 +11,7 @@ import scala.language.implicitConversions
 import scala.scalajs.js.Dynamic.{global => g}
 import scala.scalajs.js.timers.setTimeout
 
-private[client] case class JobProcessHeader(context: String
-                                            , websocketPath: String
-                                            , socket: ClientWebsocket)
+private[client] case class JobProcessHeader(socket: ClientWebsocket)
   extends ClientUtils {
 
   // 1. level of abstraction
@@ -119,7 +117,10 @@ private[client] case class JobProcessHeader(context: String
 
     <div class="ui item">
       <button class="ui basic icon button"
-              onclick={_: Event => socket.runAdapter()}
+              onclick={_: Event => UIStore.showRunJobDialog()
+                setTimeout(200) {
+                  jQuery(".ui.modal").modal("show")
+                }}
               disabled={runDisabled}
               data:data-tooltip="Run the Adapter"
               data:data-position="bottom right">

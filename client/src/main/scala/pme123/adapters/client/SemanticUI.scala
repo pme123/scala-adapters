@@ -6,6 +6,7 @@ import pme123.adapters.shared.LogLevel._
 
 import scala.language.implicitConversions
 import scala.scalajs.js
+import scala.scalajs.js.annotation.ScalaJSDefined
 
 /**
   *
@@ -19,6 +20,8 @@ object SemanticUI {
     def popup(params: js.Any*): SemanticJQuery = js.native
     def modal(params: js.Any*): SemanticJQuery = js.native
     def checkbox(params: js.Any*): SemanticJQuery = js.native
+    def form(params: js.Any*): SemanticJQuery = js.native
+
   }
 
   // Monkey patching JQuery with implicit conversion
@@ -30,5 +33,22 @@ object SemanticUI {
     case INFO => "blue info circle icon"
     case DEBUG => "grey info circle icon"
 
+  }
+
+  @ScalaJSDefined
+  trait Form extends js.Object {
+    def fields: js.Object
+  }
+
+  @ScalaJSDefined
+  trait Field extends js.Object {
+    def identifier: String
+    def rules: js.Array[Rule]
+  }
+
+  @ScalaJSDefined
+  trait Rule extends js.Object {
+    def `type`: String
+    def prompt: js.UndefOr[String] = js.undefined
   }
 }

@@ -18,7 +18,7 @@ object AdapterMsg extends InstantHelper {
 
 // a client want's to start the Adapter process
 // you can trigger the next SchedulerInfo - if the RunAdapter was sent by the Scheduler
-case class RunJob(userName: String = "Anonymous")
+case class RunJob(userName: String = "Anonymous", payload: Option[JsValue] = None)
   extends AdapterMsg
 
 // the server indicates that the Adapter process is already running
@@ -45,9 +45,10 @@ case class ProjectInfo(projectVersion: String
                        , adaptersVersion: String
                        , buildTime: String
                        , adminMailRecipient: String
-                       , adapterProps: Seq[AdaptersContextProp]
-                       , commonProps: Seq[AdaptersContextProp]
+                       , projectProps: AdaptersContextProps
+                       , adapterProps: AdaptersContextProps
                        , additionalVersions: Seq[AdaptersContextProp] = Nil
+                       , additionalProps: Seq[AdaptersContextProps] = Nil
                        , lastExecution: Option[Instant] = None
                        , schedulerInfo: Option[SchedulerInfo] = None
                       ) extends AdapterMsg

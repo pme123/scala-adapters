@@ -8,14 +8,13 @@ import play.api.libs.json._
 import play.api.libs.ws.WSResponse
 import play.mvc.Http.Status
 import pme123.adapters.server.control.http.{WebAccessForbiddenException, WebBadStatusException, WebNotAcceptableException, WebNotFoundException}
-import pme123.adapters.server.entity.{AdaptersException, JsonParseException}
+import pme123.adapters.server.entity.JsonParseException
 import pme123.adapters.shared.LogLevel.DEBUG
-import pme123.adapters.shared.{LogLevel, Logger}
+import pme123.adapters.shared.{AdaptersException, LogLevel, Logger}
 
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.control.NonFatal
 import scala.util.{Failure, Success, Try}
-import pme123.adapters.shared.AdaptersExtensions._
 
 /**
   * Created by pascal.mengelt on 11.10.2016.
