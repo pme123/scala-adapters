@@ -4,6 +4,8 @@ import javax.inject.Inject
 import play.Environment
 import play.api.Logger
 import play.api.mvc._
+import pme123.adapters.shared
+import pme123.adapters.shared.AccessControl
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -27,7 +29,7 @@ trait Secured {
 
   def env: Environment
 
-  def accessControl: AccessControl
+  def accessControl: shared.AccessControl
 
   /**
     * Request action builder that allows to add authentication
@@ -69,21 +71,6 @@ trait Secured {
     }
   }
 
-}
-
-
-trait AccessControl {
-
-  /**
-    * A user is valid for authentication if:
-    * - is the 'importer' user
-    * - is a user with the 'admin' role
-    *
-    * @param user username
-    * @param pwd  plain password
-    * @return valid logged user for importing
-    */
-  def isValidUser(user: String, pwd: String): Boolean
 }
 
 // no access control needed

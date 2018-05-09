@@ -12,7 +12,7 @@ private[client] case class JobConfigDialog(context: String)
   // **************************
   @dom
   private[client] def showDetail(): Binding[HTMLElement] =
-    <div class="ui modal">
+    <div class="ui modal detailDialog">
       {ServerServices(context).jobConfigs().bind}{//
       detailHeader.bind}{//
       jobsTable.bind}

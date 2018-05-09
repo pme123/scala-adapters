@@ -13,7 +13,7 @@ private[client] case class ClientConfigDialog(context: String)
   // **************************
   @dom
   private[client] def showDetail(): Binding[HTMLElement] =
-    <div class="ui modal">
+    <div class="ui modal detailDialog">
       {ServerServices(context).clientConfigs().bind}{//
       detailHeader.bind}{//
       clientsTable.bind}

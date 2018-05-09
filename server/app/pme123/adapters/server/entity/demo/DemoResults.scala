@@ -16,7 +16,7 @@ case class DemoResults(results: Seq[DemoResult])
 
     def doFilter(filterable: DemoResult)(implicit filters: Map[String, String]): Boolean = {
       matchText("name", filterable.name) &&
-        matchText("imgUrl", filterable.imgUrl) &&
+        matchText("imgUrl", s"${if(filterable.img.isLeft) filterable.img.left else filterable.img.right}") &&
         matchDate(dateTimeAfterL, filterable.created, (a, b) => a <= b) &&
         matchDate(dateTimeBeforeL, filterable.created, (a, b) => a >= b)
     }

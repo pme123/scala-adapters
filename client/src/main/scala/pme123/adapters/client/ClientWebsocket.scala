@@ -3,7 +3,7 @@ package pme123.adapters.client
 import com.thoughtworks.binding.Binding.Var
 import org.scalajs.dom.raw._
 import org.scalajs.dom.window
-import play.api.libs.json.{JsError, JsSuccess, Json}
+import play.api.libs.json.{JsError, JsSuccess, JsValue, Json}
 import pme123.adapters.shared.{AdapterMsg, RunJob, RunStarted, _}
 
 import scala.scalajs.js.timers.setTimeout
@@ -25,7 +25,7 @@ case class ClientWebsocket(context: String)
       webSocket.value = Some(socket)
       info(s"Connect to Websocket: $path")
       socket.onmessage = {
-        (e: MessageEvent) =>
+        e: MessageEvent =>
           val message = Json.parse(e.data.toString)
           message.validate[AdapterMsg] match {
             case JsSuccess(AdapterRunning(logReport), _) =>
@@ -58,15 +58,15 @@ case class ClientWebsocket(context: String)
               errors.foreach(e => error(e.toString))
           }
       }
-      socket.onerror = { (e: ErrorEvent) =>
+      socket.onerror = { e: ErrorEvent =>
         error(s"exception with websocket: ${e.message}!")
         socket.close(0, e.message)
       }
-      socket.onopen = { (_: Event) =>
+      socket.onopen = { _: Event =>
         info("websocket open!")
         UIStore.clearLogData()
       }
-      socket.onclose = { (e: CloseEvent) =>
+      socket.onclose = { e: CloseEvent =>
         info("closed socket" + e.reason)
         if (e.code != reconnectWSCode) {
           setTimeout(1000) {
@@ -78,9 +78,13 @@ case class ClientWebsocket(context: String)
   }
 
   def runAdapter() {
+    runAdapter(None)
+  }
+
+  def runAdapter(payload: Option[JsValue]) {
     info("run Adapter")
     webSocket.value
-      .foreach(_.send(Json.toJson(RunJob())
+      .foreach(_.send(Json.toJson(RunJob(payload = payload))
         .toString()))
   }
 

@@ -146,9 +146,7 @@ class AdaptersContext(config: Config)
 }
 
 // default Configuration
-object AdaptersContext extends AdaptersContext(config()) {
-  AdaptersContext.logSettings
-}
+object AdaptersContext extends AdaptersContext(config())
 
 // this contains implicit conversions!
 trait AdaptersContextPropsImplicits
@@ -158,22 +156,12 @@ trait AdaptersContextPropsImplicits
   def props: Seq[AdaptersContextProp]
 
   lazy val logSettings: Seq[LogEntry] =
-    props.map(printString)
+    props.map(_.asString(name))
       .map(info(_))
-
-  lazy val asString: String = props.map(printString).mkString("\n")
-
-  lazy val asHtml: String = "<LI>" + props.map(printString)
-    .mkString("</LI><LI>") + "</LI>"
 
   protected def pwd(value:String): String = "*" * value.length
 
-  private def printString(prop: AdaptersContextProp): String =
-    propString(prop.key, prop.value)
-
-  private def propString(label: String, value: Any) =
-    s"${name.toUpperCase} '$label' >> $value"
-
+  lazy val asString: String = props.map(_.asString(name)).mkString("\n")
 
   implicit def fromAny(bool: Boolean): String = bool.toString
 

@@ -30,7 +30,8 @@ object DefaultClient {
                    , clientType: String): Unit = {
     ClientType.fromString(clientType) match {
       case JOB_PROCESS =>
-        JobProcessView(context, websocketPath).create()
+        val socket = ClientWebsocket(context)
+        JobProcessView(socket, context, websocketPath, DefaultRunJobDialog(socket)).create()
       case JOB_RESULTS =>
         DefaultView("there is no JobResults page defined").create()
       case CUSTOM_PAGE =>

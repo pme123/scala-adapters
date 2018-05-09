@@ -49,10 +49,10 @@ class JobActor @Inject()(@Assisted jobConfig: JobConfig
     case si: SchedulerInfo =>
       projectInfo = projectInfo.copy(schedulerInfo = Some(si))
       sendToSubscriber(projectInfo)
-    case RunJob(user) =>
-      doRunJob(user)
+    case RunJob(user, payload) =>
+      doRunJob(user, payload)
     case RunJobFromScheduler(nextExecution) =>
-      doRunJob("From Scheduler")
+      doRunJob("From Scheduler", None)
       nextExecution()
     case msg: AdapterMsg =>
       sendToSubscriber(msg)
@@ -90,7 +90,7 @@ class JobActor @Inject()(@Assisted jobConfig: JobConfig
   }
 
   // called if a user runs the Adapter Process (Button)
-  private def doRunJob(user: String) = {
+  private def doRunJob(user: String, payload: Option[JsValue]) = {
     info(s"called runAdapter: $user")
     if (isRunning) // this should not happen as the button is disabled, if running
       warn("The adapter is running already!")
@@ -100,7 +100,7 @@ class JobActor @Inject()(@Assisted jobConfig: JobConfig
       sendToSubscriber(RunStarted)
       implicit val logServ: LogService = LogService(s"Run Job: ${jobConfig.webPath}", user, Some(self))
       logService = Some(logServ)
-      handleImportResult(jobProcess.runJob(user))
+      handleImportResult(jobProcess.runJob(user, payload))
     }
   }
 

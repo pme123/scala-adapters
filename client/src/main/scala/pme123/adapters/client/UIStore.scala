@@ -80,6 +80,13 @@ object UIStore extends Logger {
     uiState.showLastResults.value = true
   }
 
+
+  def showRunJobDialog() {
+    info(s"UIStore: showRunJobDialog")
+    hideAllDialogs()
+    uiState.showRunJobDialog.value = true
+  }
+
   def hideProjectInfo() {
     info(s"UIStore: hide ProjectInfo")
     uiState.showProjectInfo.value = false
@@ -140,6 +147,7 @@ object UIStore extends Logger {
     uiState.showClients.value = false
     uiState.showLastResults.value = false
     uiState.showProjectInfo.value = false
+    uiState.showRunJobDialog.value = false
     uiState.logEntryDetail.value = None
   }
 }
@@ -155,6 +163,7 @@ case class UIState(logData: Vars[LogEntry] = Vars[LogEntry]()
                    , showJobs: Var[Boolean] = Var(false)
                    , showClients: Var[Boolean] = Var(false)
                    , showLastResults: Var[Boolean] = Var(false)
+                   , showRunJobDialog: Var[Boolean] = Var(false)
                    , allJobs: Vars[JobConfig] = Vars()
                    , selectedClientConfig: Var[Option[ClientConfig]] = Var(None)
                    , lastResults: Vars[JsValue] = Vars()
