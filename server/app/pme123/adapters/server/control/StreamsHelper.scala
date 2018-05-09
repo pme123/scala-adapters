@@ -83,10 +83,10 @@ trait StreamsHelper
       error(exc, "Exception from the warning above.")
       Supervision.Resume
     case NonFatal(exc) =>
-      logService.error(exc, s"$label - stream resumed: $exc")
+      logService.error(exc, s"$label - stream resumed because of a NON fatal exception: $exc")
       Supervision.Resume
     case exc: Exception =>
-      logService.error(exc, s"$label - stream resumed: $exc")
+      logService.error(exc, s"$label - stream stopped because of fatal exception: $exc")
       Supervision.Stop
   }
 
