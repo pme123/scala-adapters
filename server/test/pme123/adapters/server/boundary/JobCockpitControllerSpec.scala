@@ -95,7 +95,7 @@ class JobCockpitControllerSpec
       await().until(() => webSocket.isOpen && queue.peek() != null)
       webSocket.sendMessage(Json.toJson(RunJob("Tester")).toString())
       while (queue.peek() != null) {
-        info(s"From Queue: ${queue.take()}")
+        Logger.info(s"From Queue: ${queue.take()}")
       }
       webSocket.sendMessage(Json.toJson(RunJob("Tester")).toString())
       await().until(() => queue.peek() != null)

@@ -66,7 +66,7 @@ case class DemoRunJobDialog(socket: ClientWebsocket)
           <input type="text" id="demoDescr" placeholder="..."/>
         </div>
         <div class="field">
-          <input type="file" class="inputFile" id="demoImage" />
+          <input type="file" class="inputFile" id="demoImage" accept="image/*"/>
 
           <label for="demoImage" class="ui button">
             <i class="ui upload icon"></i>
@@ -77,7 +77,6 @@ case class DemoRunJobDialog(socket: ClientWebsocket)
         <button class="ui basic icon button"
                 onclick={_: Event =>
                   if (jQuery(".ui.form").form("is valid").asInstanceOf[Boolean]) {
-                    import scala.scalajs.js.typedarray.Uint8Array
                     val reader = new FileReader()
                     reader.readAsDataURL(demoImage.files(0))
                     reader.onload = (_: UIEvent) => {
@@ -87,24 +86,14 @@ case class DemoRunJobDialog(socket: ClientWebsocket)
                   }
 
                 }>Submit</button>
+        <div class="ui error message"></div>
       </form>
     </div>
   }
 
-  private def fileUpload() = {
-
-  }
-
-
   // this must be called after rendering!
   private def initForm() = {
-
-
-    println(s"Correct Form: ${JSON.stringify(form)}")
-
     jQuery(".ui.form").form(form)
-
-
   }
 
 
