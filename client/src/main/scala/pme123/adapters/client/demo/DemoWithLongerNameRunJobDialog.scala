@@ -13,7 +13,7 @@ import pme123.adapters.shared.demo.ImageUpload
 import scala.scalajs.js
 import scala.scalajs.js.JSON
 
-case class DemoRunJobDialog(socket: ClientWebsocket)
+case class DemoWithLongerNameRunJobDialog(socket: ClientWebsocket)
   extends RunJobDialog
     with Logger {
 

@@ -56,7 +56,7 @@ object DemoClient
         DemoClient(context, websocketPath).create()
       case JOB_PROCESS =>
         val socket = ClientWebsocket(context)
-        JobProcessView(socket, context, websocketPath, DemoRunJobDialog(socket)).create()
+        JobProcessView(socket, context, websocketPath, DemoWithLongerNameRunJobDialog(socket)).create()
       case JOB_RESULTS =>
         JobResultsView(context
           , websocketPath
