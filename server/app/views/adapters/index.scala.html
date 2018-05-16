@@ -4,19 +4,45 @@
 @(projConfig: ProjectConfig
         , assets: AssetsFinder)(implicit r: Request[_], rh: RequestHeader)
 
-@views.html.adapters.main(assets = assets
-    , webJarsUtil = webJarsUtil
-)(projConfig = projConfig
-    , icon = assets.withUrlPrefix(projConfig.context).path("assets/images/favicon.png")
-    , styles = Html(projConfig.styleName.map(style=> "<link rel=\"stylesheet\" type=\"text/css\" href=\"" + assets.withUrlPrefix(projConfig.context).path(s"assets/stylesheets/$style.css") + "\">").getOrElse(""))
-) {
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>@projConfig.pageTitle</title>
+        <link rel="shortcut icon" type="image/png" href="@assets.withUrlPrefix(projConfig.context).path("assets/images/favicon.png")">
+        @Html(webJarsUtil.css("semantic.min.css"))
+        @if(projConfig.isDemo) {
+            @Html("<link rel=\"stylesheet\" type=\"text/css\" href=\"" + assets.withUrlPrefix(projConfig.context).path("assets/stylesheets/main.css") + "\">")
+        } else {
+            @Html(webJarsUtil.css("stylesheets/main.css"))
+        }
+        @Html(projConfig.styleName.map(style => "<link rel=\"stylesheet\" type=\"text/css\" href=\"" + assets.withUrlPrefix(projConfig.context).path(s"assets/stylesheets/$style.css") + "\">").getOrElse(""))
+            <!-- for scalajs routing -->
+        @helper.javascriptRouter("jsRoutes")(routes.javascript.Assets.versioned)
 
-    @scalajs.html.scripts(s"${projConfig.projectName}-client",
-        routes.Assets.at(_).toString,
-        name => getClass.getResource(s"/public/$name") != null)
+        @if(projConfig.isDemo) {
+            @Html("<script src=\"" + assets.withUrlPrefix(projConfig.context).path("assets/javascripts/versioned.js") + "\" ></script>")
+        } else {
+            @Html(webJarsUtil.script("javascripts/versioned.js"))
+        }
 
-    <script src=@(s"${projConfig.context}/assets/${projConfig.projectName}-client-jsdeps${if(projConfig.isDevMode) "" else ".min"}.js") ></script>
-    <script src=@(s"${projConfig.context}/assets/${projConfig.projectName}-client-${if(projConfig.isDevMode) "fast" else ""}opt.js") ></script>
+        <script type="text/javascript">
+                (function () {
+                    var oldVersioned = jsRoutes.controllers.Assets.versioned;
+                    jsRoutes.controllers.Assets.versioned = function (path) {
+                        return oldVersioned.apply(jsRoutes.controllers.Assets, [versioned[path] || path]);
+                    };
+                })();
+        </script>
+    </head>
+    <body>
+        @scalajs.html.scripts(s"${projConfig.projectName}-client",
+            routes.Assets.at(_).toString,
+            name => getClass.getResource(s"/public/$name") != null)
 
-    <script>client.@(projConfig.clientName).main("@projConfig.context", "@projConfig.websocketPath", "@projConfig.clientType");</script>
-}
+        <script src=@(s"${projConfig.context}/assets/${projConfig.projectName}-client-jsdeps${if(projConfig.isDevMode) "" else ".min"}.js") ></script>
+        <script src=@(s"${projConfig.context}/assets/${projConfig.projectName}-client-${if(projConfig.isDevMode) "fast" else ""}opt.js") ></script>
+
+        <script>client.@(projConfig.clientName).main("@projConfig.context", "@projConfig.websocketPath", "@projConfig.clientType");</script>
+
+    </body>
+</html>
