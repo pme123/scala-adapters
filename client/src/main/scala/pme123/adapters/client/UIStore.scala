@@ -164,11 +164,11 @@ case class UIState(logData: Vars[LogEntry] = Vars[LogEntry]()
                    , showClients: Var[Boolean] = Var(false)
                    , showLastResults: Var[Boolean] = Var(false)
                    , showRunJobDialog: Var[Boolean] = Var(false)
-                   , allJobs: Vars[JobConfig] = Vars()
+                   , allJobs: Vars[JobConfig] = Vars.empty[JobConfig]
                    , selectedClientConfig: Var[Option[ClientConfig]] = Var(None)
-                   , lastResults: Vars[JsValue] = Vars()
-                   , allClients: Vars[ClientConfig] = Vars()
-                   , jobResultsRows: Vars[JobResultsRow] = Vars()
+                   , lastResults: Vars[JsValue] = Vars.empty[JsValue]
+                   , allClients: Vars[ClientConfig] = Vars.empty[ClientConfig]
+                   , jobResultsRows: Vars[JobResultsRow] = Vars.empty[JobResultsRow]
                   )
 
 object ToConcreteResults
