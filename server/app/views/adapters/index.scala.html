@@ -9,6 +9,7 @@
     <head>
         <title>@projConfig.pageTitle</title>
         <link rel="shortcut icon" type="image/png" href="@assets.withUrlPrefix(projConfig.context).path("assets/images/favicon.png")">
+        <meta http-equiv="x-ua-compatible" content="IE=edge">
         @Html(webJarsUtil.css("semantic.min.css"))
         @if(projConfig.isDemo) {
             @Html("<link rel=\"stylesheet\" type=\"text/css\" href=\"" + assets.withUrlPrefix(projConfig.context).path("assets/stylesheets/main.css") + "\">")
