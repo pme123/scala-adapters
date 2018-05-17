@@ -28,7 +28,6 @@ private[client] case class JobConfigDialog(context: String)
 
   @dom
   private def jobsTable = {
-    val jobs = UIStore.uiState.allJobs.bind
     <div class="content">
       <table class="ui padded table">
         <thead>
@@ -41,8 +40,7 @@ private[client] case class JobConfigDialog(context: String)
           </tr>
         </thead>
         <tbody>
-          {Constants(jobs.map(propRow): _*)
-          .map(_.bind)}
+          {for (jr <- UIStore.uiState.allJobs) yield propRow(jr).bind}
         </tbody>
       </table>
     </div>
