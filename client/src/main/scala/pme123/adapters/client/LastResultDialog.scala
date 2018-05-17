@@ -1,6 +1,5 @@
 package pme123.adapters.client
 
-import com.thoughtworks.binding.Binding.Constants
 import com.thoughtworks.binding.{Binding, dom}
 import org.scalajs.dom.raw.HTMLElement
 import play.api.libs.json.JsValue
@@ -27,7 +26,6 @@ private[client] case class LastResultDialog()
 
   @dom
   private def resultsTable = {
-    val lastResults = UIStore.uiState.lastResults.bind
     <div class="content">
       <table class="ui padded table">
         <thead>
@@ -36,8 +34,7 @@ private[client] case class LastResultDialog()
           </tr>
         </thead>
         <tbody>
-          {Constants(lastResults.map(resultRow): _*)
-          .map(_.bind)}
+          {for (lr <- UIStore.uiState.lastResults) yield resultRow(lr).bind}
         </tbody>
       </table>
     </div>

@@ -1,10 +1,9 @@
 package pme123.adapters.client
 
-import com.thoughtworks.binding.Binding.Constants
 import com.thoughtworks.binding.{Binding, dom}
 import org.scalajs.dom.raw.HTMLElement
+import pme123.adapters.client.UIStore._
 import pme123.adapters.shared.ClientConfig
-import UIStore._
 
 private[client] case class ClientConfigDialog(context: String)
   extends IntellijImplicits {
@@ -29,7 +28,6 @@ private[client] case class ClientConfigDialog(context: String)
 
   @dom
   private def clientsTable = {
-    val clients = uiState.allClients.bind
     <div class="content">
       <table class="ui padded table">
         <thead>
@@ -42,8 +40,7 @@ private[client] case class ClientConfigDialog(context: String)
           </tr>
         </thead>
         <tbody>
-          {Constants(clients.map(propRow): _*)
-          .map(_.bind)}
+          {for (cc <- uiState.allClients) yield propRow(cc).bind}
         </tbody>
       </table>
     </div>
