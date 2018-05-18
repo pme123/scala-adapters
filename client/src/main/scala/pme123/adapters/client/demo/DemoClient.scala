@@ -7,7 +7,7 @@ import play.api.libs.json.{JsResult, JsValue, Json}
 import pme123.adapters.client.ToConcreteResults.ConcreteResult
 import pme123.adapters.client._
 import pme123.adapters.shared._
-import pme123.adapters.shared.demo.DemoResult
+import pme123.adapters.shared.demo.{DemoJobs, DemoResult}
 import slogging.{ConsoleLoggerFactory, LoggerConfig}
 
 import scala.language.implicitConversions
@@ -56,7 +56,12 @@ object DemoClient
         DemoClient(context, websocketPath).create()
       case JOB_PROCESS =>
         val socket = ClientWebsocket(context)
-        JobProcessView(socket, context, websocketPath, DemoRunJobDialog(socket)).create()
+        val jobDialog =
+        if(websocketPath.endsWith(DemoJobs.demoJobIdent))
+          DemoRunJobDialog(socket)
+        else
+          DefaultRunJobDialog(socket)
+        JobProcessView(socket, context, websocketPath, jobDialog).create()
       case JOB_RESULTS =>
         JobResultsView(context
           , websocketPath

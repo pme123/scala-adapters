@@ -3,15 +3,15 @@ package pme123.adapters.server.entity
 import pme123.adapters.shared.ClientType
 import pme123.adapters.server.entity.AdaptersContext.settings.projectConfig
 
-case class ProjectConfig(context: String
-                         , projectName: String
-                         , clientName: String
-                         , clientType: ClientType
-                         , websocketPath: String
-                         , pageTitle: String
-                         , isDemo: Boolean
-                         , isDevMode: Boolean
-                         , styleName: Option[String] = None
+case class ProjectConfig(context: String // the context the project is running (play.http.context)
+                         , projectName: String // the name of the project (Settings.projectName of your project)
+                         , clientName: String // the exported name of the client Entry method (see for example pme123.adapters.client.demo.DemoClient.main)
+                         , clientType: ClientType // type of the page
+                         , websocketPath: String // the path of the websocket to use (can also be used to differentiate between JobProcesses)
+                         , pageTitle: String // title displayed on the webpage
+                         , isDemo: Boolean // demo is within scala-adapters - and so the paths are different
+                         , isDevMode: Boolean // in dev mode you have fast opt JavaScripts
+                         , styleName: Option[String] = None // name of a custom CSS-file
                         ) {
 
 }

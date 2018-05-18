@@ -33,17 +33,15 @@ case class JobProcessView(socket: ClientWebsocket
 
   @dom
   private lazy val adapterContainer = {
-    val logEntries = UIStore.uiState.logData.bind
     val text = UIStore.uiState.filterText.bind
     val level = UIStore.uiState.filterLevel.bind
-    val filteredLE =
-      logEntries
-        .filter(le => le.level >= level)
-        .filter(le => le.msg.toLowerCase.contains(text.toLowerCase))
-    scrollDown()
-    <div class="ui main container">
+    <div id="log-container" class="ui main container">
       <div id="log-panel" class="ui relaxed divided list">
-        {Constants(filteredLE: _*).map(logEntry(_).bind)}
+        {for {
+        le: LogEntry <- UIStore.uiState.logData
+        if le.level >= level
+        if le.msg.toLowerCase.contains(text.toLowerCase)
+      } yield logEntry(le).bind}
       </div>
     </div>
   }
@@ -51,7 +49,9 @@ case class JobProcessView(socket: ClientWebsocket
   @dom
   private def logEntry(entry: LogEntry) =
     <div class="item">
-      {Constants(entry.detail.toList: _*).map(_ => logEntryDetail(entry).bind)}{//
+      {//
+      scrollDown()
+      Constants(entry.detail.toList: _*).map(_ => logEntryDetail(entry).bind)}{//
       logLevelIcon(entry).bind}<div class="content">
       <div class="header">
         {entry.msg}

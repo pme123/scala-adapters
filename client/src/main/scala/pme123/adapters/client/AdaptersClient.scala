@@ -15,10 +15,10 @@ trait AdaptersClient
 
   protected def render: Binding[HTMLElement]
 
-  protected def scrollDown(divId: String = "log-panel") {
-    setTimeout(200) {
+  protected def scrollDown(divId: String = "log-container") {
+    setTimeout(100) {
       val objDiv = document.getElementById(divId)
-      objDiv.scrollTop = objDiv.scrollHeight - UIStore.uiState.logData.value.size * 20
+      objDiv.scrollTop = objDiv.scrollHeight
     }
   }
 }
