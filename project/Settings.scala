@@ -17,7 +17,7 @@ object Settings {
   lazy val orgId = "pme123"
   lazy val orgHomepage = Some(new URL("https://github.com/pme123"))
   lazy val projectName = "scala-adapters"
-  lazy val projectV = "1.3.5"
+  lazy val projectV = "1.3.9"
 
   // main versions
   lazy val scalaV = "2.12.4"

@@ -8,6 +8,7 @@ import scala.language.implicitConversions
 import scala.reflect.ClassTag
 
 object UIStore extends Logger {
+  val maxLogEntries = 200
   val uiState = UIState()
 
   def clearLogData() {
@@ -18,11 +19,18 @@ object UIStore extends Logger {
   def addLogReport(logReport: LogReport) {
     info(s"UIStore: addLogReport")
     uiState.logData.value ++= logReport.logEntries
+    restrictEntries()
   }
 
   def addLogEntry(logEntry: LogEntry) {
     info(s"UIStore: addLogEntry ${logEntry.level}: ${logEntry.msg}")
     uiState.logData.value += logEntry
+    restrictEntries()
+  }
+
+  private def restrictEntries() {
+    if (uiState.logData.value.length > maxLogEntries)
+      uiState.logData.value.remove(0, uiState.logData.value.length - maxLogEntries)
   }
 
   def changeFilterText(text: String) {
@@ -152,7 +160,7 @@ object UIStore extends Logger {
   }
 }
 
-case class UIState(logData: Vars[LogEntry] = Vars[LogEntry]()
+case class UIState(logData: Vars[LogEntry] = Vars.empty[LogEntry]
                    , isRunning: Var[Boolean] = Var(false)
                    , filterText: Var[String] = Var("")
                    , filterLevel: Var[LogLevel] = Var[LogLevel](LogLevel.INFO)
@@ -164,11 +172,11 @@ case class UIState(logData: Vars[LogEntry] = Vars[LogEntry]()
                    , showClients: Var[Boolean] = Var(false)
                    , showLastResults: Var[Boolean] = Var(false)
                    , showRunJobDialog: Var[Boolean] = Var(false)
-                   , allJobs: Vars[JobConfig] = Vars()
+                   , allJobs: Vars[JobConfig] = Vars.empty[JobConfig]
                    , selectedClientConfig: Var[Option[ClientConfig]] = Var(None)
-                   , lastResults: Vars[JsValue] = Vars()
-                   , allClients: Vars[ClientConfig] = Vars()
-                   , jobResultsRows: Vars[JobResultsRow] = Vars()
+                   , lastResults: Vars[JsValue] = Vars.empty[JsValue]
+                   , allClients: Vars[ClientConfig] = Vars.empty[ClientConfig]
+                   , jobResultsRows: Vars[JobResultsRow] = Vars.empty[JobResultsRow]
                   )
 
 object ToConcreteResults

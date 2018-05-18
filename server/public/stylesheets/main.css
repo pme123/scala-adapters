@@ -1,4 +1,4 @@
-.container {
+.ui.container {
     margin-top: 6em;
     max-height:calc(100vh - 8em);
     overflow: auto;
