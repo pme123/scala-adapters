@@ -36,6 +36,7 @@
 [screenshot_custom_page]: {{ "/assets/images/03/screenshot_custom_page.png" | absolute_url }}
 [screenshot_job_results]: {{ "/assets/images/03/screenshot_job_results.png" | absolute_url }}
 [file_structure]: {{ "/assets/images/03/file_structure.png" | absolute_url }}
+[screenshot_job_payload]: {{ "/assets/images/03/screenshot_job_payload.png" | absolute_url }}
 
 {::comment} 04 Deployment {:/comment}
 

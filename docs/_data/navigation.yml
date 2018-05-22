@@ -33,6 +33,8 @@ docs:
         url: /docs/03/custom-page/
       - title: "Custom Controller"
         url: /docs/03/custom-controller/
+      - title: "Payload for a Job"
+        url: /docs/03/job-payload/
   - title: "Deployment View"
     url: /docs/deployment-view/
     children:

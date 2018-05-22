@@ -2,7 +2,7 @@ package pme123.adapters.client.demo
 
 import com.thoughtworks.binding.{Binding, dom}
 import org.scalajs.dom.UIEvent
-import org.scalajs.dom.raw.{Event, FileReader, HTMLElement}
+import org.scalajs.dom.raw.{Event, FileReader, HTMLElement, HTMLInputElement}
 import org.scalajs.jquery.jQuery
 import play.api.libs.json.Json
 import pme123.adapters.client.SemanticUI.{Field, Form, Rule, jq2semantic}
@@ -11,7 +11,6 @@ import pme123.adapters.shared.Logger
 import pme123.adapters.shared.demo.ImageUpload
 
 import scala.scalajs.js
-import scala.scalajs.js.JSON
 
 case class DemoRunJobDialog(socket: ClientWebsocket)
   extends RunJobDialog
@@ -59,6 +58,7 @@ case class DemoRunJobDialog(socket: ClientWebsocket)
   @dom
   private def demoForm: Binding[HTMLElement] = {
     <div class="content">
+      <!-- the Semantic-UI form must be initialized after rendering! -->
       <iframe style="display:none" onload={_: Event => initForm()}></iframe>
       <form class="ui form">
         <div class="field">
@@ -67,7 +67,6 @@ case class DemoRunJobDialog(socket: ClientWebsocket)
         </div>
         <div class="field">
           <input type="file" class="inputFile" id="demoImage" accept="image/*"/>
-
           <label for="demoImage" class="ui button">
             <i class="ui upload icon"></i>
             Choose image
@@ -76,15 +75,9 @@ case class DemoRunJobDialog(socket: ClientWebsocket)
 
         <button class="ui basic icon button"
                 onclick={_: Event =>
-                  if (jQuery(".ui.form").form("is valid").asInstanceOf[Boolean]) {
-                    val reader = new FileReader()
-                    reader.readAsDataURL(demoImage.files(0))
-                    reader.onload = (_: UIEvent) => {
-                      socket.runAdapter(Some(Json.toJson(ImageUpload(demoDescr.value, s"${reader.result}"))))
-                    }
-
-                  }
-
+                  // demoDescr, demoImage references the input-ids - a convenience of Binding.scala
+                  // - but sadly not supported by Intellij
+                  submitForm(demoDescr, demoImage)
                 }>Submit</button>
         <div class="ui error message"></div>
       </form>
@@ -96,5 +89,14 @@ case class DemoRunJobDialog(socket: ClientWebsocket)
     jQuery(".ui.form").form(form)
   }
 
+  private def submitForm(demoDescr: HTMLInputElement, demoImage: HTMLInputElement) {
+    if (jQuery(".ui.form").form("is valid").asInstanceOf[Boolean]) {
+      val reader = new FileReader()
+      reader.readAsDataURL(demoImage.files(0))
+      reader.onload = (_: UIEvent) => {
+        socket.runAdapter(Some(Json.toJson(ImageUpload(demoDescr.value, s"${reader.result}"))))
+      }
 
+    }
+  }
 }
