@@ -37,7 +37,7 @@ class JobActor @Inject()(@Assisted jobConfig: JobConfig
   protected var isRunning = false
 
   // a map with all clients (Websocket-Actor) that needs the status about the process
-  private val clientActors: mutable.Map[ClientConfig, ActorRef] = mutable.Map()
+  private val wsActors: mutable.Map[ClientConfig, ActorRef] = mutable.Map()
 
   private var lastResult: Option[AConcreteResult] = None
 
@@ -68,7 +68,7 @@ class JobActor @Inject()(@Assisted jobConfig: JobConfig
   // this is called when the websocket for a user is created
   private def subscribeClient(clientConfig: ClientConfig, wsActor: ActorRef) {
     info(s"Subscribed User: $clientConfig: $wsActor")
-    val aRef = clientActors.getOrElseUpdate(clientConfig, wsActor)
+    val aRef = wsActors.getOrElseUpdate(clientConfig, wsActor)
     val status =
       if (isRunning)
         AdapterRunning(logService.get.logReport)
@@ -86,7 +86,7 @@ class JobActor @Inject()(@Assisted jobConfig: JobConfig
   // this is called when the connection from a user websocket is closed
   private def unsubscribeClient(clientConfig: ClientConfig) = {
     info(s"Unsubscribe User: $clientConfig")
-    clientActors -= clientConfig
+    wsActors -= clientConfig
   }
 
   // called if a user runs the Adapter Process (Button)
@@ -106,11 +106,11 @@ class JobActor @Inject()(@Assisted jobConfig: JobConfig
 
   private def checkAndFilter(result: AConcreteResult, append: Boolean): Unit = {
     sender() ! ClientsChange(
-      clientActors.map {
-        case (clientConfig, clientActor) =>
+      wsActors.map {
+        case (clientConfig, wsActor) =>
           val newResult = filterConcreteResult(clientConfig, result)
           if (newResult.nonEmpty) {
-            clientActor ! GenericResults(newResult.get, append)
+            wsActor ! GenericResults(newResult.get, append)
             Some(clientConfig)
           } else
             None
@@ -133,7 +133,7 @@ class JobActor @Inject()(@Assisted jobConfig: JobConfig
 
   // sends an AdapterMsg to all subscribed users
   private def sendToSubscriber(adapterMsg: AdapterMsg): Unit =
-    clientActors.values
+    wsActors.values
       .foreach(_ ! adapterMsg)
 
   // helper to finish import and notify the Admin
@@ -192,4 +192,16 @@ object JobActor {
     def apply(jobConfig: JobConfig, jobProcess: JobProcess): Actor
   }
 
+  val list = List("vbBaselIIIData_201802_3_d.data.20180405.txt.gz"
+    , "vbBaselIIIData_201802_4_d.data.20180405.txt.gz"
+    , "vbBaselIIIData_201803_4_d.data.20180405.txt.gz"
+    , "vbBaselIIIData_201803_5_d.data.20180405.txt.gz")
+
+  println(
+    list.map { f =>
+      val s = f.split("_").toList
+      (s(1), f)
+    }.groupBy(f => f._1)
+      .map((e: (ClientIdent, List[(ClientIdent, ClientIdent)])) => e._2.max).values
+  )
 }
