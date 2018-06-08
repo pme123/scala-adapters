@@ -1,5 +1,63 @@
 # Change Log
 
+## [1.4.0](https://github.com/pme123/scala-adapters/tree/1.4.0) (2018-06-08)
+[Full Changelog](https://github.com/pme123/scala-adapters/compare/1.3.9...1.4.0)
+
+**Merged pull requests:**
+
+- Issues 7 enumeration [\#10](https://github.com/pme123/scala-adapters/pull/10) ([pme123](https://github.com/pme123))
+- Issues 8 improvements [\#9](https://github.com/pme123/scala-adapters/pull/9) ([pme123](https://github.com/pme123))
+
+## [1.3.9](https://github.com/pme123/scala-adapters/tree/1.3.9) (2018-05-22)
+[Full Changelog](https://github.com/pme123/scala-adapters/compare/1.3.8...1.3.9)
+
+## [1.3.8](https://github.com/pme123/scala-adapters/tree/1.3.8) (2018-05-17)
+[Full Changelog](https://github.com/pme123/scala-adapters/compare/1.3.7...1.3.8)
+
+**Merged pull requests:**
+
+- General improvements [\#6](https://github.com/pme123/scala-adapters/pull/6) ([pme123](https://github.com/pme123))
+
+## [1.3.7](https://github.com/pme123/scala-adapters/tree/1.3.7) (2018-05-16)
+[Full Changelog](https://github.com/pme123/scala-adapters/compare/1.3.6...1.3.7)
+
+## [1.3.6](https://github.com/pme123/scala-adapters/tree/1.3.6) (2018-05-08)
+[Full Changelog](https://github.com/pme123/scala-adapters/compare/1.3.5...1.3.6)
+
+**Merged pull requests:**
+
+- Run job with content [\#5](https://github.com/pme123/scala-adapters/pull/5) ([pme123](https://github.com/pme123))
+
+## [1.3.5](https://github.com/pme123/scala-adapters/tree/1.3.5) (2018-04-27)
+[Full Changelog](https://github.com/pme123/scala-adapters/compare/1.3.4...1.3.5)
+
+## [1.3.4](https://github.com/pme123/scala-adapters/tree/1.3.4) (2018-04-27)
+[Full Changelog](https://github.com/pme123/scala-adapters/compare/1.3.2...1.3.4)
+
+## [1.3.2](https://github.com/pme123/scala-adapters/tree/1.3.2) (2018-04-27)
+[Full Changelog](https://github.com/pme123/scala-adapters/compare/1.3.0...1.3.2)
+
+## [1.3.0](https://github.com/pme123/scala-adapters/tree/1.3.0) (2018-04-27)
+[Full Changelog](https://github.com/pme123/scala-adapters/compare/1.3.3...1.3.0)
+
+## [1.3.3](https://github.com/pme123/scala-adapters/tree/1.3.3) (2018-04-24)
+[Full Changelog](https://github.com/pme123/scala-adapters/compare/1.2.1...1.3.3)
+
+## [1.2.1](https://github.com/pme123/scala-adapters/tree/1.2.1) (2018-04-23)
+[Full Changelog](https://github.com/pme123/scala-adapters/compare/1.2.0...1.2.1)
+
+## [1.2.0](https://github.com/pme123/scala-adapters/tree/1.2.0) (2018-04-22)
+[Full Changelog](https://github.com/pme123/scala-adapters/compare/1.1.4...1.2.0)
+
+## [1.1.4](https://github.com/pme123/scala-adapters/tree/1.1.4) (2018-04-13)
+[Full Changelog](https://github.com/pme123/scala-adapters/compare/1.1.3...1.1.4)
+
+## [1.1.3](https://github.com/pme123/scala-adapters/tree/1.1.3) (2018-04-10)
+[Full Changelog](https://github.com/pme123/scala-adapters/compare/1.1.2...1.1.3)
+
+## [1.1.2](https://github.com/pme123/scala-adapters/tree/1.1.2) (2018-04-05)
+[Full Changelog](https://github.com/pme123/scala-adapters/compare/1.1.1...1.1.2)
+
 ## [1.1.1](https://github.com/pme123/scala-adapters/tree/1.1.1) (2018-03-27)
 [Full Changelog](https://github.com/pme123/scala-adapters/compare/1.1.0...1.1.1)
 
