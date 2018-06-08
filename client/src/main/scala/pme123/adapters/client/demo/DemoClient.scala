@@ -13,15 +13,12 @@ import slogging.{ConsoleLoggerFactory, LoggerConfig}
 import scala.language.implicitConversions
 import scala.scalajs.js.annotation.JSExportTopLevel
 
-case class DemoClient(context: String, websocketPath: String)
+case class DemoClient(websocketPath: String)
   extends AdaptersClient {
-
-  // create the websocket
-  private lazy val socket = ClientWebsocket(context)
 
   @dom
   protected def render: Binding[HTMLElement] = {
-    socket.connectWS(Some(websocketPath))
+    ClientWebsocket.connectWS(Some(websocketPath))
     <div>
       {imageContainer.bind}
     </div>
@@ -51,20 +48,19 @@ object DemoClient
   @JSExportTopLevel("client.DemoClient.main")
   def main(context: String, websocketPath: String, clientType: String): Unit = {
     info(s"DemoClient $clientType: $context$websocketPath")
+    UIStore.changeWebContext(context)
     ClientType.fromString(clientType) match {
       case CUSTOM_PAGE =>
-        DemoClient(context, websocketPath).create()
+        DemoClient(websocketPath).create()
       case JOB_PROCESS =>
-        val socket = ClientWebsocket(context)
-        val jobDialog =
+        val jobDialog:RunJobDialog =
         if(websocketPath.endsWith(DemoJobs.demoJobIdent))
-          DemoRunJobDialog(socket)
+          DemoRunJobDialog
         else
-          DefaultRunJobDialog(socket)
-        JobProcessView(socket, context, websocketPath, jobDialog).create()
+          DefaultRunJobDialog
+        JobProcessView(websocketPath, jobDialog).create()
       case JOB_RESULTS =>
-        JobResultsView(context
-          , websocketPath
+        JobResultsView(websocketPath
           , CustomResultsInfos(Seq("Name", "Image Url", "Created")
             ,
             s"""<ul>

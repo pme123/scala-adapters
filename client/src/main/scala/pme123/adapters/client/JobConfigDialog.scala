@@ -1,11 +1,10 @@
 package pme123.adapters.client
 
-import com.thoughtworks.binding.Binding.Constants
 import com.thoughtworks.binding.{Binding, dom}
 import org.scalajs.dom.raw.HTMLElement
 import pme123.adapters.shared.JobConfig
 
-private[client] case class JobConfigDialog(context: String)
+private[client] object JobConfigDialog
   extends ClientUtils {
 
   // 1. level of abstraction
@@ -13,7 +12,7 @@ private[client] case class JobConfigDialog(context: String)
   @dom
   private[client] def showDetail(): Binding[HTMLElement] =
     <div class="ui modal detailDialog">
-      {ServerServices(context).jobConfigs().bind}{//
+      {ServerServices.jobConfigs().bind}{//
       detailHeader.bind}{//
       jobsTable.bind}
     </div>
@@ -65,6 +64,6 @@ private[client] case class JobConfigDialog(context: String)
         {jobConfig.subWebPath}
       </td>
     </tr>
-  
+
 
 }

@@ -15,14 +15,11 @@ import scala.language.implicitConversions
 import scala.scalajs.js
 import scala.scalajs.js.URIUtils
 
-case class JobResultsView(context: String
-                          , websocketPath: String
+case class JobResultsView(websocketPath: String
                           , resultsInfos: CustomResultsInfos)
                          (implicit concreteResult: ConcreteResult[JobResultsRow])
   extends AdaptersClient
     with ClientUtils {
-
-  lazy val socket: ClientWebsocket = ClientWebsocket(context)
 
   // 1. level of abstraction
   // **************************
@@ -35,7 +32,7 @@ case class JobResultsView(context: String
 
   @dom
   def render: Binding[HTMLElement] = {
-    socket.connectWS(Some(websocketPath))
+    ClientWebsocket.connectWS(Some(websocketPath))
     <div>
       {adapterHeader.bind}{//
       resultsTable.bind}
@@ -149,7 +146,7 @@ case class JobResultsView(context: String
       val resultCount = s"$resultCountL=${clientConfig.resultCount}"
       val filter = clientConfig.resultFilter.map(f => s"$resultFilterL=${URIUtils.encodeURIComponent(f)}").getOrElse("")
       s"${clientConfig.jobConfig.webPath}?$resultCount&$filter"
-    }.foreach(path => socket.connectWS(Some(path)))
+    }.foreach(path => ClientWebsocket.connectWS(Some(path)))
   }
 
   @dom

@@ -8,11 +8,11 @@ import pme123.adapters.shared.{ClientConfig, JobConfig}
 /**
   * Created by pascal.mengelt on 16.07.2017.
   */
-case class ServerServices(context: String)
+object ServerServices
   extends HttpServices {
 
   def jobConfigs(): Binding[HTMLElement] = {
-    val apiPath = s"$context/jobConfigs"
+    val apiPath = s"${UIStore.uiState.webContext.value}/jobConfigs"
 
     def toObj(jsValue: JsValue) =
       jsValue.validate[Seq[JobConfig]]
@@ -22,7 +22,7 @@ case class ServerServices(context: String)
   }
 
   def clientConfigs(): Binding[HTMLElement] = {
-    val apiPath = s"$context/clientConfigs"
+    val apiPath = s"${UIStore.uiState.webContext.value}/clientConfigs"
 
     def toObj(jsValue: JsValue) =
       jsValue.validate[Seq[ClientConfig]]

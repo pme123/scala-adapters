@@ -8,7 +8,7 @@ trait RunJobDialog {
   def create(): Binding[HTMLElement]
 }
 
-case class DefaultRunJobDialog(socket: ClientWebsocket)
+object DefaultRunJobDialog
   extends RunJobDialog
     with Logger {
 
@@ -16,7 +16,7 @@ case class DefaultRunJobDialog(socket: ClientWebsocket)
   def create(): Binding[HTMLElement] = {
     val show = UIStore.uiState.showRunJobDialog.bind
     if (show) {
-      socket.runAdapter()
+      ClientWebsocket.runAdapter()
       info("Run Adapter")
 
     }
