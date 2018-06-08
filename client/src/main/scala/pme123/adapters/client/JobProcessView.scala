@@ -9,17 +9,15 @@ import pme123.adapters.shared.LogEntry
 import scala.language.implicitConversions
 import scala.scalajs.js.timers.setTimeout
 
-case class JobProcessView(socket: ClientWebsocket
-                          , context: String
-                          , websocketPath: String
+case class JobProcessView(websocketPath: String
                           , runJobDialog: RunJobDialog)
   extends AdaptersClient {
 
   @dom
   protected def render: Binding[HTMLElement] = {
-    socket.connectWS(Some(websocketPath))
+    ClientWebsocket.connectWS(Some(websocketPath))
     <div>
-      {JobProcessHeader(socket).showHeader().bind}{//
+      {JobProcessHeader.showHeader().bind}{//
       adapterContainer.bind}{//
       renderDetail.bind}{//
       renderLogEntryDetail.bind}{//
@@ -108,7 +106,7 @@ case class JobProcessView(socket: ClientWebsocket
     val showJobs = UIStore.uiState.showJobs.bind
     if (showJobs)
       <div>
-        {JobConfigDialog(context)
+        {JobConfigDialog
         .showDetail().bind}
       </div>
     else
@@ -121,7 +119,7 @@ case class JobProcessView(socket: ClientWebsocket
     val selectedClientConfig = UIStore.uiState.selectedClientConfig.bind
     if (showClients && selectedClientConfig.isDefined)
       <div>
-        {ClientConfigDialog(context)
+        {ClientConfigDialog
         .showDetail().bind}
       </div>
     else

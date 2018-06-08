@@ -149,6 +149,11 @@ object UIStore extends Logger {
         .map(_.copy(resultFilter = newFilter))
   }
 
+  def changeWebContext(context: String) {
+    info(s"UIStore: changeWebContext $context")
+    uiState.webContext.value = context
+  }
+
   // make sure all are closed
   private def hideAllDialogs(): Unit = {
     uiState.showJobs.value = false
@@ -177,6 +182,7 @@ case class UIState(logData: Vars[LogEntry] = Vars.empty[LogEntry]
                    , lastResults: Vars[JsValue] = Vars.empty[JsValue]
                    , allClients: Vars[ClientConfig] = Vars.empty[ClientConfig]
                    , jobResultsRows: Vars[JobResultsRow] = Vars.empty[JobResultsRow]
+                   , webContext: Var[String] = Var("")
                   )
 
 object ToConcreteResults

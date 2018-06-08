@@ -8,10 +8,9 @@ import pme123.adapters.client.SemanticUI.jq2semantic
 import pme123.adapters.shared.LogLevel
 
 import scala.language.implicitConversions
-import scala.scalajs.js.Dynamic.{global => g}
 import scala.scalajs.js.timers.setTimeout
 
-private[client] case class JobProcessHeader(socket: ClientWebsocket)
+private[client] object JobProcessHeader
   extends ClientUtils {
 
   // 1. level of abstraction

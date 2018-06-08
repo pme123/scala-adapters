@@ -8,10 +8,12 @@ import pme123.adapters.shared.{AdapterMsg, RunJob, RunStarted, _}
 
 import scala.scalajs.js.timers.setTimeout
 
-case class ClientWebsocket(context: String)
+object ClientWebsocket
   extends ClientUtils {
 
-  private lazy val wsURL = s"${window.location.protocol.replace("http", "ws")}//${window.location.host}$context/ws"
+  private lazy val wsURL =
+    s"${window.location.protocol
+      .replace("http", "ws")}//${window.location.host}${UIStore.uiState.webContext.value}/ws"
 
   private val webSocket: Var[Option[WebSocket]] = Var(None)
   private val reconnectWSCode = 3001

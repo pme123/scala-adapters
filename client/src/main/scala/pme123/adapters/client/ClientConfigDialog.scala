@@ -5,7 +5,7 @@ import org.scalajs.dom.raw.HTMLElement
 import pme123.adapters.client.UIStore._
 import pme123.adapters.shared.ClientConfig
 
-private[client] case class ClientConfigDialog(context: String)
+private[client] object ClientConfigDialog
   extends IntellijImplicits {
 
   // 1. level of abstraction
@@ -13,7 +13,7 @@ private[client] case class ClientConfigDialog(context: String)
   @dom
   private[client] def showDetail(): Binding[HTMLElement] =
     <div class="ui modal detailDialog">
-      {ServerServices(context).clientConfigs().bind}{//
+      {ServerServices.clientConfigs().bind}{//
       detailHeader.bind}{//
       clientsTable.bind}
     </div>
