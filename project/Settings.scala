@@ -17,7 +17,7 @@ object Settings {
   lazy val orgId = "pme123"
   lazy val orgHomepage = Some(new URL("https://github.com/pme123"))
   lazy val projectName = "scala-adapters"
-  lazy val projectV = "1.3.9"
+  lazy val projectV = "1.4.0"
 
   // main versions
   lazy val scalaV = "2.12.4"
@@ -100,6 +100,7 @@ object Settings {
 
   lazy val sharedDependencies: Seq[Def.Setting[_]] = Def.settings(libraryDependencies ++= Seq(
     "org.julienrf" %%% "play-json-derived-codecs" % "4.0.0"
+    , "com.beachape" %%% "enumeratum" % "1.5.13"
     // logging lib that also works with ScalaJS
     , "biz.enef" %%% "slogging" % sloggingV
     , "org.scalatest" %%% "scalatest" % scalaTestV % Test

@@ -12,7 +12,7 @@ import pme123.adapters.shared.demo.ImageUpload
 
 import scala.scalajs.js
 
-case class DemoRunJobDialog(socket: ClientWebsocket)
+object DemoRunJobDialog
   extends RunJobDialog
     with Logger {
 
@@ -94,7 +94,7 @@ case class DemoRunJobDialog(socket: ClientWebsocket)
       val reader = new FileReader()
       reader.readAsDataURL(demoImage.files(0))
       reader.onload = (_: UIEvent) => {
-        socket.runAdapter(Some(Json.toJson(ImageUpload(demoDescr.value, s"${reader.result}"))))
+        ClientWebsocket.runAdapter(Some(Json.toJson(ImageUpload(demoDescr.value, s"${reader.result}"))))
       }
 
     }

@@ -7,21 +7,19 @@ import play.api.libs.json.{JsResult, JsValue, Json}
 import pme123.adapters.client.ToConcreteResults.ConcreteResult
 import pme123.adapters.client._
 import pme123.adapters.shared._
+import pme123.adapters.shared.ClientType._
 import pme123.adapters.shared.demo.{DemoJobs, DemoResult}
 import slogging.{ConsoleLoggerFactory, LoggerConfig}
 
 import scala.language.implicitConversions
 import scala.scalajs.js.annotation.JSExportTopLevel
 
-case class DemoClient(context: String, websocketPath: String)
+case class DemoClient(websocketPath: String)
   extends AdaptersClient {
-
-  // create the websocket
-  private lazy val socket = ClientWebsocket(context)
 
   @dom
   protected def render: Binding[HTMLElement] = {
-    socket.connectWS(Some(websocketPath))
+    ClientWebsocket.connectWS(Some(websocketPath))
     <div>
       {imageContainer.bind}
     </div>
@@ -51,20 +49,19 @@ object DemoClient
   @JSExportTopLevel("client.DemoClient.main")
   def main(context: String, websocketPath: String, clientType: String): Unit = {
     info(s"DemoClient $clientType: $context$websocketPath")
-    ClientType.fromString(clientType) match {
-      case CUSTOM_PAGE =>
-        DemoClient(context, websocketPath).create()
-      case JOB_PROCESS =>
-        val socket = ClientWebsocket(context)
-        val jobDialog =
+    UIStore.changeWebContext(context)
+    ClientType.withNameInsensitiveOption(clientType) match {
+      case Some(CUSTOM_PAGE) =>
+        DemoClient(websocketPath).create()
+      case Some(JOB_PROCESS) =>
+        val jobDialog:RunJobDialog =
         if(websocketPath.endsWith(DemoJobs.demoJobIdent))
-          DemoRunJobDialog(socket)
+          DemoRunJobDialog
         else
-          DefaultRunJobDialog(socket)
-        JobProcessView(socket, context, websocketPath, jobDialog).create()
-      case JOB_RESULTS =>
-        JobResultsView(context
-          , websocketPath
+          DefaultRunJobDialog
+        JobProcessView(websocketPath, jobDialog).create()
+      case Some(JOB_RESULTS) =>
+        JobResultsView(websocketPath
           , CustomResultsInfos(Seq("Name", "Image Url", "Created")
             ,
             s"""<ul>

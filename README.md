@@ -11,7 +11,7 @@ Check the documentation: **[pme123.github.io/scala-adapters/](https://pme123.git
 ## Documentation
 
 Run Demo app locally:
-`sbt run -Dconfig.file=./server/conf/demo.conf`
+`sbt run -Dconfig.resource=demo.conf`
 
 Run Jekyll locally for working on the docs:
 

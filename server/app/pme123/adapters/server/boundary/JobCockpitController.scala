@@ -14,6 +14,7 @@ import pme123.adapters.server.control.JobParentActor.GetAllJobConfigs
 import pme123.adapters.server.entity.AdaptersContext.settings
 import pme123.adapters.server.entity.ProjectConfig
 import pme123.adapters.shared.JobConfig.JobIdent
+import pme123.adapters.shared.ClientType._
 import pme123.adapters.shared._
 
 import scala.concurrent.ExecutionContext
