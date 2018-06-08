@@ -1,6 +1,6 @@
 package pme123.adapters.server.entity
 
-import pme123.adapters.shared.JOB_RESULTS
+import pme123.adapters.shared.ClientType.JOB_RESULTS
 
 class ProjectConfigTest extends UnitTest {
 
