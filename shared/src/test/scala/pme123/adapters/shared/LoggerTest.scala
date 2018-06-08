@@ -2,7 +2,7 @@ package pme123.adapters.shared
 
 import pme123.adapters.shared.LogLevel._
 
-import scala.util.Success
+import scala.util.Try
 
 /**
   * Created by pascal.mengelt on 05.03.2015.
@@ -111,23 +111,23 @@ class LoggerTest extends UnitTest {
   // LogLevel.fromLevel
   {
     "A LogLevel DEBUG" should "be created from the String Debug" in {
-      LogLevel.fromLevel("Debug") should be(Success(DEBUG))
+      LogLevel.withNameInsensitive("Debug") should be(DEBUG)
     }
     "A LogLevel INFO" should "be created from the String Info" in {
-      LogLevel.fromLevel("Info") should be(Success(INFO))
+      LogLevel.withNameInsensitive("Info") should be(INFO)
     }
     "A LogLevel WARN" should "be created from the String Warn" in {
-      LogLevel.fromLevel("Warn") should be(Success(WARN))
+      LogLevel.withNameInsensitive("Warn") should be(WARN)
     }
     "A LogLevel ERROR" should "be created from the String Error" in {
-      LogLevel.fromLevel("Error") should be(Success(ERROR))
+      LogLevel.withNameInsensitive("Error") should be(ERROR)
     }
 
     "An unsupported Level" should "return a Failure with an IllegalArgumentException." in {
       val badLevel = "autsch"
-      val fromLevel = LogLevel.fromLevel(badLevel)
+      val fromLevel = Try(LogLevel.withNameInsensitive(badLevel))
       assert(fromLevel.isFailure)
-      fromLevel.failed.get.getMessage should be(LogLevel.unsupportedLogLevel + badLevel)
+      fromLevel.failed.get.getMessage should be("autsch is not a member of Enum (DEBUG, INFO, WARN, ERROR)")
     }
   }
   // LogLevel >= logLevel

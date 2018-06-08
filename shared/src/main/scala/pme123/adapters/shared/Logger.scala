@@ -120,7 +120,6 @@ sealed trait LogLevel
 
 object LogLevel
   extends Enum[LogLevel] {
-  val unsupportedLogLevel = "Unsupported LogLevel: "
 
   val values = findValues
 
