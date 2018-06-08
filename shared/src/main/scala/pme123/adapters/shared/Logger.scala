@@ -2,12 +2,13 @@ package pme123.adapters.shared
 
 import java.time.Instant
 
+import enumeratum.{Enum, EnumEntry}
 import julienrf.json.derived
 import play.api.libs.json.OFormat
 import pme123.adapters.shared.LogLevel.WARN
 import slogging.LazyLogging
 
-import scala.util.{Failure, Success, Try}
+import scala.util.Try
 
 /**
   * Created by pascal.mengelt on 18.02.2015.
@@ -100,7 +101,9 @@ object LogEntry extends InstantHelper {
 
 }
 
-sealed trait LogLevel extends LazyLogging {
+sealed trait LogLevel
+  extends EnumEntry
+    with LazyLogging {
   def level: String
 
   def colorClass: String
@@ -115,17 +118,14 @@ sealed trait LogLevel extends LazyLogging {
 
 }
 
-object LogLevel {
+object LogLevel
+  extends Enum[LogLevel] {
   val unsupportedLogLevel = "Unsupported LogLevel: "
 
-  def fromLevel(level: String): Try[LogLevel] = level.toLowerCase match {
-    case "debug" => Success(DEBUG)
-    case "info" => Success(INFO)
-    case "warn" => Success(WARN)
-    case "error" => Success(ERROR)
-    case _ =>
-      Failure(new IllegalArgumentException(unsupportedLogLevel + level))
-  }
+  val values = findValues
+
+  @deprecated("use LogLevel.withName(name)")
+  def fromLevel(level: String): Try[LogLevel] = Try(LogLevel.withNameInsensitive(level))
 
   case object DEBUG extends LogLevel {
     val level = "debug"
@@ -187,7 +187,7 @@ object LogLevel {
       logger.error(msg)
     }
 
-    def log(exc:Throwable, msg: String) {
+    def log(exc: Throwable, msg: String) {
       logger.error(msg, exc)
     }
 

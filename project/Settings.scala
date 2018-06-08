@@ -100,6 +100,7 @@ object Settings {
 
   lazy val sharedDependencies: Seq[Def.Setting[_]] = Def.settings(libraryDependencies ++= Seq(
     "org.julienrf" %%% "play-json-derived-codecs" % "4.0.0"
+    , "com.beachape" %%% "enumeratum" % "1.5.13"
     // logging lib that also works with ScalaJS
     , "biz.enef" %%% "slogging" % sloggingV
     , "org.scalatest" %%% "scalatest" % scalaTestV % Test
