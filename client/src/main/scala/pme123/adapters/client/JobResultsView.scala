@@ -13,7 +13,6 @@ import pme123.adapters.shared.ClientConfig.{resultCountL, resultFilterL}
 
 import scala.language.implicitConversions
 import scala.scalajs.js
-import scala.scalajs.js.Dynamic.{global => g}
 import scala.scalajs.js.URIUtils
 
 case class JobResultsView(context: String

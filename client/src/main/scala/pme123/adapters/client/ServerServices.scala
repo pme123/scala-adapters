@@ -2,42 +2,33 @@ package pme123.adapters.client
 
 import com.thoughtworks.binding.Binding
 import org.scalajs.dom.raw.HTMLElement
-import play.api.libs.json.{JsError, JsSuccess, JsValue}
+import play.api.libs.json.JsValue
 import pme123.adapters.shared.{ClientConfig, JobConfig}
 
 /**
   * Created by pascal.mengelt on 16.07.2017.
   */
 case class ServerServices(context: String)
-  extends ClientUtils {
+  extends HttpServices {
 
   def jobConfigs(): Binding[HTMLElement] = {
     val apiPath = s"$context/jobConfigs"
 
-    def toJobConfigs(jsValue: JsValue) = jsValue.validate[Seq[JobConfig]] match {
-      case JsSuccess(jcs, _) =>
-        UIStore.changeJobConfigs(jcs)
-        ""
-      case JsError(errors) =>
-        error(s"errors: $errors")
-        s"Problem parsing JobConfigs: ${errors.map(e => s"${e._1} -> ${e._2}")}"
-    }
+    def toObj(jsValue: JsValue) =
+      jsValue.validate[Seq[JobConfig]]
+        .map(results => UIStore.changeJobConfigs(results))
 
-    callService(apiPath, toJobConfigs)
+    httpGet(apiPath, toObj)
   }
 
   def clientConfigs(): Binding[HTMLElement] = {
     val apiPath = s"$context/clientConfigs"
 
-    def toClientConfigs(jsValue: JsValue) = jsValue.validate[List[ClientConfig]] match {
-      case JsSuccess(u, _) =>
-        UIStore.replaceAllClients(u)
-        ""
-      case JsError(errors) =>
-        s"Problem parsing List[ClientConfig]: ${errors.map(e => s"${e._1} -> ${e._2}")}"
-    }
+    def toObj(jsValue: JsValue) =
+      jsValue.validate[Seq[ClientConfig]]
+        .map(results => UIStore.replaceAllClients(results))
 
-    callService(apiPath, toClientConfigs)
+    httpGet(apiPath, toObj)
   }
 
 
