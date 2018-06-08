@@ -2,6 +2,7 @@ package pme123.adapters.client
 
 import com.thoughtworks.binding.{Binding, dom}
 import org.scalajs.dom.raw.HTMLElement
+import pme123.adapters.shared.ClientType._
 import pme123.adapters.shared._
 import slogging.{ConsoleLoggerFactory, LoggerConfig}
 
@@ -31,12 +32,12 @@ object DefaultClient
     info(s"DemoClient $clientType: $context$websocketPath")
     UIStore.changeWebContext(context)
 
-    ClientType.fromString(clientType) match {
-      case JOB_PROCESS =>
+    ClientType.withNameInsensitiveOption(clientType) match {
+      case Some(JOB_PROCESS) =>
         JobProcessView(websocketPath, DefaultRunJobDialog).create()
-      case JOB_RESULTS =>
+      case Some(JOB_RESULTS) =>
         DefaultView("there is no JobResults page defined").create()
-      case CUSTOM_PAGE =>
+      case Some(CUSTOM_PAGE) =>
         DefaultView("there is no custom page defined").create()
       case other => warn(s"Unexpected ClientType: $other")
     }

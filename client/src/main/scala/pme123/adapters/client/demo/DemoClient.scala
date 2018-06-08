@@ -7,6 +7,7 @@ import play.api.libs.json.{JsResult, JsValue, Json}
 import pme123.adapters.client.ToConcreteResults.ConcreteResult
 import pme123.adapters.client._
 import pme123.adapters.shared._
+import pme123.adapters.shared.ClientType._
 import pme123.adapters.shared.demo.{DemoJobs, DemoResult}
 import slogging.{ConsoleLoggerFactory, LoggerConfig}
 
@@ -49,17 +50,17 @@ object DemoClient
   def main(context: String, websocketPath: String, clientType: String): Unit = {
     info(s"DemoClient $clientType: $context$websocketPath")
     UIStore.changeWebContext(context)
-    ClientType.fromString(clientType) match {
-      case CUSTOM_PAGE =>
+    ClientType.withNameInsensitiveOption(clientType) match {
+      case Some(CUSTOM_PAGE) =>
         DemoClient(websocketPath).create()
-      case JOB_PROCESS =>
+      case Some(JOB_PROCESS) =>
         val jobDialog:RunJobDialog =
         if(websocketPath.endsWith(DemoJobs.demoJobIdent))
           DemoRunJobDialog
         else
           DefaultRunJobDialog
         JobProcessView(websocketPath, jobDialog).create()
-      case JOB_RESULTS =>
+      case Some(JOB_RESULTS) =>
         JobResultsView(websocketPath
           , CustomResultsInfos(Seq("Name", "Image Url", "Created")
             ,
