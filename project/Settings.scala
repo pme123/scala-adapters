@@ -4,6 +4,7 @@ import com.typesafe.sbt.web.Import.Assets
 import com.typesafe.sbt.web.SbtWeb.autoImport.pipelineStages
 import org.scalajs.sbtplugin.ScalaJSPlugin.AutoImport.jsDependencies
 import org.scalajs.sbtplugin.ScalaJSPlugin.autoImport._
+import org.portablescala.sbtplatformdeps.PlatformDepsPlugin.autoImport._
 import org.scalajs.sbtplugin.Stage
 import play.sbt.PlayImport.{filters, guice, ws}
 import sbt.Keys._
@@ -17,10 +18,10 @@ object Settings {
   lazy val orgId = "pme123"
   lazy val orgHomepage = Some(new URL("https://github.com/pme123"))
   lazy val projectName = "scala-adapters"
-  lazy val projectV = "1.4.0"
+  lazy val projectV = "1.4.1"
 
   // main versions
-  lazy val scalaV = "2.12.4"
+  lazy val scalaV = "2.12.6"
   lazy val bindingV = "11.0.1"
   lazy val jQueryV = "2.2.4"
   lazy val sloggingV = "0.6.1"
@@ -85,7 +86,7 @@ object Settings {
     )
   )
   lazy val clientDependencies: Seq[Def.Setting[_]] = Def.settings(libraryDependencies ++= Seq(
-    "org.scala-js" %%% "scalajs-dom" % "0.9.3"
+    "org.scala-js" %%% "scalajs-dom" % "0.9.6"
     , "org.scala-lang.modules" %% "scala-xml" % "1.0.6"
     , "com.typesafe.play" %%% "play-json" % "2.6.1"
     , "com.thoughtworks.binding" %%% "dom" % bindingV

@@ -27,14 +27,15 @@ object DefaultClient
 
   @JSExportTopLevel("client.DefaultClient.main")
   def mainPage(context: String
-               , websocketPath: String
+               , webPath: String
                , clientType: String): Unit = {
-    info(s"DemoClient $clientType: $context$websocketPath")
+    info(s"DemoClient $clientType: $context$webPath")
     UIStore.changeWebContext(context)
+    UIStore.changeWebPath(webPath)
 
     ClientType.withNameInsensitiveOption(clientType) match {
       case Some(JOB_PROCESS) =>
-        JobProcessView(websocketPath, DefaultRunJobDialog).create()
+        JobProcessView(DefaultRunJobDialog).create()
       case Some(JOB_RESULTS) =>
         DefaultView("there is no JobResults page defined").create()
       case Some(CUSTOM_PAGE) =>

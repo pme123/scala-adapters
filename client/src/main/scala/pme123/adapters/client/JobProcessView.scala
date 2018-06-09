@@ -9,13 +9,12 @@ import pme123.adapters.shared.LogEntry
 import scala.language.implicitConversions
 import scala.scalajs.js.timers.setTimeout
 
-case class JobProcessView(websocketPath: String
-                          , runJobDialog: RunJobDialog)
+case class JobProcessView(runJobDialog: RunJobDialog)
   extends AdaptersClient {
 
   @dom
   protected def render: Binding[HTMLElement] = {
-    ClientWebsocket.connectWS(Some(websocketPath))
+    ClientWebsocket.connectWS()
     <div>
       {JobProcessHeader.showHeader().bind}{//
       adapterContainer.bind}{//
