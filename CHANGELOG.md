@@ -1,5 +1,17 @@
 # Change Log
 
+## [1.4.1](https://github.com/pme123/scala-adapters/tree/1.4.1) (2018-06-09)
+[Full Changelog](https://github.com/pme123/scala-adapters/compare/1.4.0...1.4.1)
+
+**Implemented enhancements:**
+
+- Add Enumeration library [\#7](https://github.com/pme123/scala-adapters/issues/7)
+- Issues 11 websocketpath [\#12](https://github.com/pme123/scala-adapters/pull/12) ([pme123](https://github.com/pme123))
+
+**Closed issues:**
+
+- Small Improvements [\#8](https://github.com/pme123/scala-adapters/issues/8)
+
 ## [1.4.0](https://github.com/pme123/scala-adapters/tree/1.4.0) (2018-06-08)
 [Full Changelog](https://github.com/pme123/scala-adapters/compare/1.3.9...1.4.0)
 
