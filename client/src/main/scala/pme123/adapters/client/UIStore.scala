@@ -149,9 +149,16 @@ object UIStore extends Logger {
         .map(_.copy(resultFilter = newFilter))
   }
 
-  def changeWebContext(context: String) {
-    info(s"UIStore: changeWebContext $context")
-    uiState.webContext.value = context
+  def changeWebContext(webContext: String): String = {
+    info(s"UIStore: changeWebContext $webContext")
+    uiState.webContext.value = webContext
+    webContext
+  }
+
+  def changeWebPath(webPath: String): String = {
+    info(s"UIStore: changeWebPath $webPath")
+    uiState.webPath.value = webPath
+    webPath
   }
 
   // make sure all are closed
@@ -183,6 +190,7 @@ case class UIState(logData: Vars[LogEntry] = Vars.empty[LogEntry]
                    , allClients: Vars[ClientConfig] = Vars.empty[ClientConfig]
                    , jobResultsRows: Vars[JobResultsRow] = Vars.empty[JobResultsRow]
                    , webContext: Var[String] = Var("")
+                   , webPath: Var[String] = Var("")
                   )
 
 object ToConcreteResults

@@ -44,6 +44,7 @@ private[client] object JobProcessHeader
       {s"Job Cockpit: ${clientConfig.map(_.jobConfig.jobIdent).getOrElse("")}"}
     </div>
   }
+
   @dom
   private def lastLevel = {
     val logLevel = UIStore.uiState.lastLogLevel.bind
@@ -65,7 +66,8 @@ private[client] object JobProcessHeader
       <span
            data:data-tooltip={"Log level last Adapter Process: " + logLevel.getOrElse("Not run!")}
            data:data-position="bottom center">
-        {logConstants(levelClass).bind}
+        {Constants(levelClass.toList: _*)
+        .map(_.bind).bind}
       </span>
     </div>
   }
@@ -116,7 +118,8 @@ private[client] object JobProcessHeader
 
     <div class="ui item">
       <button class="ui basic icon button"
-              onclick={_: Event => UIStore.showRunJobDialog()
+              onclick={_: Event =>
+                UIStore.showRunJobDialog()
                 setTimeout(200) {
                   jQuery(".ui.modal").modal("show")
                 }}

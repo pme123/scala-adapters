@@ -5,7 +5,7 @@ script:
 after_success:
   - sbt coveralls
 scala:
-   - 2.12.4
+   - 2.12.6
 jdk:
   - oraclejdk8
 

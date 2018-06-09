@@ -15,8 +15,7 @@ import scala.language.implicitConversions
 import scala.scalajs.js
 import scala.scalajs.js.URIUtils
 
-case class JobResultsView(websocketPath: String
-                          , resultsInfos: CustomResultsInfos)
+case class JobResultsView(resultsInfos: CustomResultsInfos)
                          (implicit concreteResult: ConcreteResult[JobResultsRow])
   extends AdaptersClient
     with ClientUtils {
@@ -32,7 +31,7 @@ case class JobResultsView(websocketPath: String
 
   @dom
   def render: Binding[HTMLElement] = {
-    ClientWebsocket.connectWS(Some(websocketPath))
+    ClientWebsocket.connectWS()
     <div>
       {adapterHeader.bind}{//
       resultsTable.bind}
@@ -146,7 +145,7 @@ case class JobResultsView(websocketPath: String
       val resultCount = s"$resultCountL=${clientConfig.resultCount}"
       val filter = clientConfig.resultFilter.map(f => s"$resultFilterL=${URIUtils.encodeURIComponent(f)}").getOrElse("")
       s"${clientConfig.jobConfig.webPath}?$resultCount&$filter"
-    }.foreach(path => ClientWebsocket.connectWS(Some(path)))
+    }.foreach(path => ClientWebsocket.connectWS())
   }
 
   @dom

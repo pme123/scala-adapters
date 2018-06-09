@@ -14,12 +14,12 @@ import slogging.{ConsoleLoggerFactory, LoggerConfig}
 import scala.language.implicitConversions
 import scala.scalajs.js.annotation.JSExportTopLevel
 
-case class DemoClient(websocketPath: String)
+case class DemoClient()
   extends AdaptersClient {
 
   @dom
   protected def render: Binding[HTMLElement] = {
-    ClientWebsocket.connectWS(Some(websocketPath))
+    ClientWebsocket.connectWS()
     <div>
       {imageContainer.bind}
     </div>
@@ -43,28 +43,30 @@ object DemoClient
     with Logger {
 
   LoggerConfig.factory = ConsoleLoggerFactory()
+
   // @JSExportTopLevel exposes this function with the defined name in Javascript.
   // this is called by the index.scala.html of the server.
   // the only connection that is not type-safe!
   @JSExportTopLevel("client.DemoClient.main")
-  def main(context: String, websocketPath: String, clientType: String): Unit = {
-    info(s"DemoClient $clientType: $context$websocketPath")
+  def main(context: String, webPath: String, clientType: String): Unit = {
+    info(s"DemoClient $clientType: $context$webPath")
     UIStore.changeWebContext(context)
+    UIStore.changeWebPath(webPath)
+
     ClientType.withNameInsensitiveOption(clientType) match {
       case Some(CUSTOM_PAGE) =>
-        DemoClient(websocketPath).create()
+        DemoClient().create()
       case Some(JOB_PROCESS) =>
-        val jobDialog:RunJobDialog =
-        if(websocketPath.endsWith(DemoJobs.demoJobIdent))
-          DemoRunJobDialog
-        else
-          DefaultRunJobDialog
-        JobProcessView(websocketPath, jobDialog).create()
+        val jobDialog: RunJobDialog =
+          if (webPath.endsWith(DemoJobs.demoJobIdent))
+            DemoRunJobDialog
+          else
+            DefaultRunJobDialog
+        JobProcessView(jobDialog).create()
       case Some(JOB_RESULTS) =>
-        JobResultsView(websocketPath
-          , CustomResultsInfos(Seq("Name", "Image Url", "Created")
-            ,
-            s"""<ul>
+        JobResultsView(CustomResultsInfos(Seq("Name", "Image Url", "Created")
+          ,
+          s"""<ul>
                   <li>name, imgUrl: String, * matches any part. Examples are name=Example*, subject=*Excel*</li>
                   <li>$dateTimeAfterL: take created from the defined DateTime, for example: 2017-12-22T12:00</li>
                   <li>$dateTimeBeforeL: take created until the defined DateTime, for example: 2018-01-22T23:00</li>

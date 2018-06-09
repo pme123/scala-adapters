@@ -90,7 +90,7 @@ class AdaptersSettings(config: Config) extends Logger {
   val adminMailActive: Boolean = baseConfig.getBoolean(adminMailActiveProp)
   val adminMailRecipient: String = baseConfig.getString(adminMailRecipientProp)
   val adminMailSubject: String = baseConfig.getString(adminMailSubjectProp)
-  val adminMailLoglevel: LogLevel = LogLevel.fromLevel(baseConfig.getString(adminMailLoglevelProp)).get
+  val adminMailLoglevel: LogLevel = LogLevel.withNameInsensitive(baseConfig.getString(adminMailLoglevelProp))
   val wsocketHostsAllowed: Seq[String] = baseConfig.getStringList(wsocketHostsAllowedProp).asScala
 
   val processLogEnabled: Boolean = baseConfig.getBoolean(processLogEnabledProp)
