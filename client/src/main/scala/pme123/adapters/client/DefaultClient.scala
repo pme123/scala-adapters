@@ -2,6 +2,7 @@ package pme123.adapters.client
 
 import com.thoughtworks.binding.{Binding, dom}
 import org.scalajs.dom.raw.HTMLElement
+import pme123.adapters.client.demo.DemoClient.initClient
 import pme123.adapters.shared.ClientType._
 import pme123.adapters.shared._
 import slogging.{ConsoleLoggerFactory, LoggerConfig}
@@ -21,7 +22,7 @@ import scala.scalajs.js.annotation.JSExportTopLevel
   * }
   */
 object DefaultClient
-  extends Logger {
+  extends AdaptersClient {
 
   LoggerConfig.factory = ConsoleLoggerFactory()
 
@@ -29,9 +30,7 @@ object DefaultClient
   def mainPage(context: String
                , webPath: String
                , clientType: String): Unit = {
-    info(s"DemoClient $clientType: $context$webPath")
-    UIStore.changeWebContext(context)
-    UIStore.changeWebPath(webPath)
+    initClient("DefaultClient", context, webPath, clientType)
 
     ClientType.withNameInsensitiveOption(clientType) match {
       case Some(JOB_PROCESS) =>
@@ -47,7 +46,7 @@ object DefaultClient
 }
 
 case class DefaultView(message: String)
-  extends AdaptersClient {
+  extends AdaptersView {
 
   @dom
   protected def render: Binding[HTMLElement] =

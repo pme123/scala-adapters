@@ -10,11 +10,10 @@ import scala.language.implicitConversions
 import scala.scalajs.js.timers.setTimeout
 
 case class JobProcessView(runJobDialog: RunJobDialog)
-  extends AdaptersClient {
+  extends AdaptersView {
 
   @dom
   protected def render: Binding[HTMLElement] = {
-    ClientWebsocket.connectWS()
     <div>
       {JobProcessHeader.showHeader().bind}{//
       adapterContainer.bind}{//

@@ -1,61 +1,29 @@
 package pme123.adapters.client.demo
 
-import com.thoughtworks.binding.Binding.Constants
-import com.thoughtworks.binding.{Binding, dom}
-import org.scalajs.dom.raw._
+import com.thoughtworks.binding.dom
 import play.api.libs.json.{JsResult, JsValue, Json}
 import pme123.adapters.client.ToConcreteResults.ConcreteResult
 import pme123.adapters.client._
-import pme123.adapters.shared._
 import pme123.adapters.shared.ClientType._
+import pme123.adapters.shared._
 import pme123.adapters.shared.demo.{DemoJobs, DemoResult}
-import slogging.{ConsoleLoggerFactory, LoggerConfig}
 
 import scala.language.implicitConversions
 import scala.scalajs.js.annotation.JSExportTopLevel
 
-case class DemoClient()
-  extends AdaptersClient {
-
-  @dom
-  protected def render: Binding[HTMLElement] = {
-    ClientWebsocket.connectWS()
-    <div>
-      {imageContainer.bind}
-    </div>
-  }
-
-  // 2. level of abstraction
-  // **************************
-  @dom
-  private def imageContainer = {
-    val lastResults = UIStore.uiState.lastResults.bind
-    val imageElems = DemoUIStore.updateImageElems(lastResults)
-    <div>
-      {Constants(imageElems: _*)
-      .map(_.imageElement.bind)}
-    </div>
-  }
-}
-
 object DemoClient
-  extends ClientUtils
-    with Logger {
-
-  LoggerConfig.factory = ConsoleLoggerFactory()
+  extends AdaptersClient {
 
   // @JSExportTopLevel exposes this function with the defined name in Javascript.
   // this is called by the index.scala.html of the server.
   // the only connection that is not type-safe!
   @JSExportTopLevel("client.DemoClient.main")
-  def main(context: String, webPath: String, clientType: String): Unit = {
-    info(s"DemoClient $clientType: $context$webPath")
-    UIStore.changeWebContext(context)
-    UIStore.changeWebPath(webPath)
+  def main(context: String, webPath: String, clientType: String) {
+    initClient("DemoClient", context, webPath, clientType)
 
     ClientType.withNameInsensitiveOption(clientType) match {
       case Some(CUSTOM_PAGE) =>
-        DemoClient().create()
+        DemoView.create()
       case Some(JOB_PROCESS) =>
         val jobDialog: RunJobDialog =
           if (webPath.endsWith(DemoJobs.demoJobIdent))

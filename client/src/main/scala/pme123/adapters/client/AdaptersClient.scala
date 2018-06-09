@@ -1,24 +1,21 @@
 package pme123.adapters.client
 
-import com.thoughtworks.binding.{Binding, dom}
-import org.scalajs.dom.document
-import org.scalajs.dom.raw.HTMLElement
+import pme123.adapters.shared.Logger
+import slogging.{ConsoleLoggerFactory, LoggerConfig}
 
-import scala.scalajs.js.timers.setTimeout
 trait AdaptersClient
-  extends ClientUtils {
+  extends ClientUtils
+    with Logger {
 
+  LoggerConfig.factory = ConsoleLoggerFactory()
 
-  def create(): Unit = {
-    dom.render(document.body, render)
-  }
-
-  protected def render: Binding[HTMLElement]
-
-  protected def scrollDown(divId: String = "log-container") {
-    setTimeout(100) {
-      val objDiv = document.getElementById(divId)
-      objDiv.scrollTop = objDiv.scrollHeight
-    }
+  def initClient(clientName: String
+                 , context: String
+                 , webPath: String
+                 , clientType: String): Unit = {
+    info(s"$clientName $clientType: $context$webPath")
+    UIStore.changeWebContext(context)
+    UIStore.changeWebPath(webPath)
+    ClientWebsocket.connectWS()
   }
 }
