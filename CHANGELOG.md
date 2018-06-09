@@ -1,7 +1,22 @@
 # Change Log
 
+## [1.4.3](https://github.com/pme123/scala-adapters/tree/1.4.3) (2018-06-09)
+[Full Changelog](https://github.com/pme123/scala-adapters/compare/1.4.1...1.4.3)
+
+**Implemented enhancements:**
+
+- Put websocketPath to UI-Store [\#11](https://github.com/pme123/scala-adapters/issues/11)
+- \#13: Provide a general Client init so Clients forget something.  [\#14](https://github.com/pme123/scala-adapters/pull/14) ([pme123](https://github.com/pme123))
+
+**Closed issues:**
+
+- Provide general Client init [\#13](https://github.com/pme123/scala-adapters/issues/13)
+
 ## [1.4.1](https://github.com/pme123/scala-adapters/tree/1.4.1) (2018-06-09)
-[Full Changelog](https://github.com/pme123/scala-adapters/compare/1.4.0...1.4.1)
+[Full Changelog](https://github.com/pme123/scala-adapters/compare/1.4.2...1.4.1)
+
+## [1.4.2](https://github.com/pme123/scala-adapters/tree/1.4.2) (2018-06-09)
+[Full Changelog](https://github.com/pme123/scala-adapters/compare/1.4.0...1.4.2)
 
 **Implemented enhancements:**
 
