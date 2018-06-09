@@ -17,7 +17,7 @@ import scala.scalajs.js.URIUtils
 
 case class JobResultsView(resultsInfos: CustomResultsInfos)
                          (implicit concreteResult: ConcreteResult[JobResultsRow])
-  extends AdaptersClient
+  extends AdaptersView
     with ClientUtils {
 
   // 1. level of abstraction
@@ -31,7 +31,6 @@ case class JobResultsView(resultsInfos: CustomResultsInfos)
 
   @dom
   def render: Binding[HTMLElement] = {
-    ClientWebsocket.connectWS()
     <div>
       {adapterHeader.bind}{//
       resultsTable.bind}
