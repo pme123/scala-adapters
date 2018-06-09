@@ -17,3 +17,11 @@ Run Jekyll locally for working on the docs:
 
 `cd PROJECT_DIR/docs` 
 `bundle exec jekyll serve --config _config.yml,_config.dev.yml`
+
+Create CHANGELOG:
+
+Adjust version: `.github_changelog_generator`
+
+`github_changelog_generator -u pme123 -p scala-adapters -t TOKEN`
+
+Check here for the TOKEN: https://github.com/settings/tokens
