@@ -19,7 +19,7 @@ object JobConfig {
 
 }
 
-case class ScheduleConfig(firstTime: String, intervalInMin: Int, firstWeekDay: Option[String] = None)
+case class ScheduleConfig(firstTime: String, intervalInMin: Double, firstWeekDay: Option[String] = None)
 
 object ScheduleConfig {
   implicit val jsonFormat: OFormat[ScheduleConfig] = derived.oformat[ScheduleConfig]()

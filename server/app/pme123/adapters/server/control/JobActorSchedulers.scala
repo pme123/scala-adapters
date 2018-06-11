@@ -57,7 +57,7 @@ class JobActorSchedulers @Inject()()
 
       def init(execDateTime: Instant): Instant = {
         if (execDateTime isBefore Instant.now) {
-          init(execDateTime.plusSeconds(jobSchedule.intervalInMin * 60))
+          init(execDateTime.plusSeconds((jobSchedule.intervalInMin * 60).asInstanceOf[Long]))
         } else {
           execDateTime
         }
