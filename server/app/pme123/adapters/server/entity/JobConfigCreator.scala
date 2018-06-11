@@ -36,7 +36,7 @@ case class ScheduleConfigCreator(config: Config, timezone: ZoneId) {
     if (config.hasPath(firstTimeProp)) config.getString(firstTimeProp) else defaultFirstTime
 
   private val intervalInMin =
-    if (config.hasPath(intervalInMinProp)) config.getInt(intervalInMinProp) else defaultIntervalInMin
+    if (config.hasPath(intervalInMinProp)) config.getDouble(intervalInMinProp) else defaultIntervalInMin
 
   private val firstWeekday =
     if (config.hasPath(firstWeekdayProp)) Some(config.getString(firstWeekdayProp)) else defaultFirstWeekday

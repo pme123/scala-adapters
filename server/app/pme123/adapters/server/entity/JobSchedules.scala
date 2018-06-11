@@ -24,9 +24,8 @@ object JobSchedules {
 
 case class JobSchedule(jobIdent: JobIdent, scheduleConfig: ScheduleConfig) {
 
-  private val minIntervalInMin = 1
-  val intervalInMin: Long = Math.max(minIntervalInMin, scheduleConfig.intervalInMin).asInstanceOf[Long]
-
+  private val minIntervalInMin = 1.0/60 // min 1 second
+  val intervalInMin: Double = Math.max(minIntervalInMin, scheduleConfig.intervalInMin)
   val intervalDuration: FiniteDuration = intervalInMin.minutes
 
   // parameters for testing
