@@ -31,7 +31,7 @@ object AdaptersContextProp {
 case class SchedulerInfo(jobIdent: JobIdent
                          , nextExecution: Instant
                          , firstWeekday: String
-                         , periodInMin: Long)
+                         , periodInMin: Double)
 
 object SchedulerInfo extends InstantHelper {
   implicit val jsonFormat: OFormat[SchedulerInfo] = derived.oformat[SchedulerInfo]()

@@ -3,7 +3,7 @@ package pme123.adapters.client
 import com.thoughtworks.binding.{Binding, FutureBinding, dom}
 import org.scalajs.dom.ext.{Ajax, AjaxException}
 import org.scalajs.dom.raw.{HTMLElement, XMLHttpRequest}
-import play.api.libs.json.{JsError, JsResult, JsValue, Json}
+import play.api.libs.json._
 import pme123.adapters.shared.Logger
 
 import scala.concurrent.Future
@@ -13,13 +13,16 @@ import scala.util.{Failure, Success}
 trait HttpServices
   extends Logger {
 
-  def httpGet(apiPath: String, toEntity: JsValue => JsResult[Unit]): Binding[HTMLElement] =
-    callService(apiPath, Ajax.get(apiPath), toEntity)
+  def httpGet[A](apiPath: String
+                  , storeChange: A => Unit)
+                 (implicit reads: Reads[A]): Binding[HTMLElement] =
+    callService[A](apiPath, Ajax.get(apiPath), storeChange)
 
   @dom
-  def callService(apiPath: String
-                  , ajaxCall: Future[XMLHttpRequest]
-                  , toEntity: JsValue => JsResult[Unit]): Binding[HTMLElement] = {
+  def callService[A](apiPath: String
+                      , ajaxCall: Future[XMLHttpRequest]
+                      , storeChange: A => Unit)
+                     (implicit reads: Reads[A]): Binding[HTMLElement] = {
     FutureBinding(ajaxCall)
       .bind match {
       case None =>
@@ -30,7 +33,8 @@ trait HttpServices
         val json: JsValue = Json.parse(response.responseText)
         info(s"Json received from $apiPath: ${json.toString().take(20)}")
         <div>
-          {toEntity(json)
+          {json.validate[A]
+          .map(storeChange)
           .map(_ => "")
           .recover { case JsError(errors) =>
             error(s"errors: $errors")

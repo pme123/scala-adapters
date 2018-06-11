@@ -2,7 +2,6 @@ package pme123.adapters.client
 
 import com.thoughtworks.binding.Binding
 import org.scalajs.dom.raw.HTMLElement
-import play.api.libs.json.JsValue
 import pme123.adapters.shared.{ClientConfig, JobConfig}
 
 /**
@@ -14,21 +13,13 @@ object ServerServices
   def jobConfigs(): Binding[HTMLElement] = {
     val apiPath = s"${UIStore.uiState.webContext.value}/jobConfigs"
 
-    def toObj(jsValue: JsValue) =
-      jsValue.validate[Seq[JobConfig]]
-        .map(results => UIStore.changeJobConfigs(results))
-
-    httpGet(apiPath, toObj)
+    httpGet(apiPath, (results: Seq[JobConfig]) => UIStore.changeJobConfigs(results))
   }
 
   def clientConfigs(): Binding[HTMLElement] = {
     val apiPath = s"${UIStore.uiState.webContext.value}/clientConfigs"
 
-    def toObj(jsValue: JsValue) =
-      jsValue.validate[Seq[ClientConfig]]
-        .map(results => UIStore.replaceAllClients(results))
-
-    httpGet(apiPath, toObj)
+    httpGet(apiPath, (results: Seq[ClientConfig]) => UIStore.replaceAllClients(results))
   }
 
 
