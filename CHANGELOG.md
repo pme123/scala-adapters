@@ -1,7 +1,19 @@
 # Change Log
 
+## [1.4.4](https://github.com/pme123/scala-adapters/tree/1.4.4) (2018-06-11)
+[Full Changelog](https://github.com/pme123/scala-adapters/compare/1.4.3...1.4.4)
+
+**Implemented enhancements:**
+
+- Change format for Scheduler's interval to double [\#16](https://github.com/pme123/scala-adapters/issues/16)
+- Optimize the Rest Service callService [\#15](https://github.com/pme123/scala-adapters/issues/15)
+
+**Merged pull requests:**
+
+- \#15 rest services [\#17](https://github.com/pme123/scala-adapters/pull/17) ([pme123](https://github.com/pme123))
+
 ## [1.4.3](https://github.com/pme123/scala-adapters/tree/1.4.3) (2018-06-09)
-[Full Changelog](https://github.com/pme123/scala-adapters/compare/1.4.1...1.4.3)
+[Full Changelog](https://github.com/pme123/scala-adapters/compare/1.4.2...1.4.3)
 
 **Implemented enhancements:**
 
@@ -12,11 +24,11 @@
 
 - Provide general Client init [\#13](https://github.com/pme123/scala-adapters/issues/13)
 
-## [1.4.1](https://github.com/pme123/scala-adapters/tree/1.4.1) (2018-06-09)
-[Full Changelog](https://github.com/pme123/scala-adapters/compare/1.4.2...1.4.1)
-
 ## [1.4.2](https://github.com/pme123/scala-adapters/tree/1.4.2) (2018-06-09)
-[Full Changelog](https://github.com/pme123/scala-adapters/compare/1.4.0...1.4.2)
+[Full Changelog](https://github.com/pme123/scala-adapters/compare/1.4.1...1.4.2)
+
+## [1.4.1](https://github.com/pme123/scala-adapters/tree/1.4.1) (2018-06-09)
+[Full Changelog](https://github.com/pme123/scala-adapters/compare/1.4.0...1.4.1)
 
 **Implemented enhancements:**
 
