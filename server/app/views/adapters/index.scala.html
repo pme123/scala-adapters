@@ -1,8 +1,7 @@
 @import pme123.adapters.server.entity.ProjectConfig
 
-@this(webJarsUtil: org.webjars.play.WebJarsUtil)
-@(projConfig: ProjectConfig
-        , assets: AssetsFinder)(implicit r: Request[_], rh: RequestHeader)
+@this(webJarsUtil: org.webjars.play.WebJarsUtil, assets: AssetsFinder)
+@(projConfig: ProjectConfig)(implicit r: Request[_], rh: RequestHeader)
 
 <!DOCTYPE html>
 <html>

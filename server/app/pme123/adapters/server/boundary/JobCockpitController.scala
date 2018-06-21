@@ -1,10 +1,8 @@
 package pme123.adapters.server.boundary
 
-import javax.inject._
-
 import akka.actor.ActorRef
 import akka.pattern.ask
-import controllers.AssetsFinder
+import javax.inject._
 import play.Environment
 import play.api.Configuration
 import play.api.libs.json._
@@ -13,8 +11,8 @@ import pme123.adapters.server.control.ClientParentActor.GetClientConfigs
 import pme123.adapters.server.control.JobParentActor.GetAllJobConfigs
 import pme123.adapters.server.entity.AdaptersContext.settings
 import pme123.adapters.server.entity.ProjectConfig
-import pme123.adapters.shared.JobConfig.JobIdent
 import pme123.adapters.shared.ClientType._
+import pme123.adapters.shared.JobConfig.JobIdent
 import pme123.adapters.shared._
 
 import scala.concurrent.ExecutionContext
@@ -29,7 +27,6 @@ class JobCockpitController @Inject()(@Named("clientParentActor")
                                      , @Named("jobParentActor")
                                      jobParentActor: ActorRef
                                      , template: views.html.adapters.index
-                                     , assetsFinder: AssetsFinder
                                      , val env: Environment
                                      , val cc: ControllerComponents
                                      , val config: Configuration
@@ -47,22 +44,19 @@ class JobCockpitController @Inject()(@Named("clientParentActor")
 
   def jobProcess(jobIdent: JobIdent) = AuthenticatedAction { implicit request: Request[AnyContent] =>
     // uses the AssetsFinder API
-    Ok(template(ProjectConfig(context, JOB_PROCESS, s"/$jobIdent", env.isDev)
-      , assetsFinder))
+    Ok(template(ProjectConfig(context, JOB_PROCESS, s"/$jobIdent", env.isDev)))
   }
 
   def defaultJobResults(): Action[AnyContent] = jobResults(firstJobConfig)
 
   def jobResults(jobIdent: JobIdent) = AuthenticatedAction { implicit request: Request[AnyContent] =>
-    Ok(template(ProjectConfig(context, JOB_RESULTS, s"/$jobIdent", env.isDev)
-      , assetsFinder))
+    Ok(template(ProjectConfig(context, JOB_RESULTS, s"/$jobIdent", env.isDev)))
   }
 
   def defaultCustomPage(): Action[AnyContent] = customPage(firstJobConfig)
 
   def customPage(jobIdent: JobIdent) = AuthenticatedAction { implicit request: Request[AnyContent] =>
-    Ok(template(ProjectConfig(context, CUSTOM_PAGE, s"/$jobIdent", env.isDev)
-      , assetsFinder))
+    Ok(template(ProjectConfig(context, CUSTOM_PAGE, s"/$jobIdent", env.isDev)))
   }
 
   def jobConfigs(): Action[AnyContent] = AuthenticatedAction.async { implicit request: Request[AnyContent] =>
