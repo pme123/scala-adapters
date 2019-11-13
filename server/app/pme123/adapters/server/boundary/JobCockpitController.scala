@@ -43,7 +43,6 @@ class JobCockpitController @Inject()(@Named("clientParentActor")
   def defaultJobProcess(): Action[AnyContent] = jobProcess(firstJobConfig)
 
   def jobProcess(jobIdent: JobIdent) = AuthenticatedAction { implicit request: Request[AnyContent] =>
-    // uses the AssetsFinder API
     Ok(template(ProjectConfig(context, JOB_PROCESS, s"/$jobIdent", env.isDev)))
   }
 
